@@ -1,0 +1,61 @@
+{% load widget_tweaks %}
+<!-- FORM CONTENT -->
+<form method="POST" action="{% url 'section-create-form' %}"class="heading-label section-create-form">
+  <div class="row">
+    <div class="col">
+      <h3 class="link" style="margin-top: 10px;">Section Details</h3>
+        </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+      <label>Section ID:</label>
+        <p class="form-control-static">0002</p><!--incremental-->
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <label>Section Name:</label>
+        {{forms.section_name|add_class:"form-control"}}
+      </div>
+      <div class="col-md-6">
+        <label>Adviser:</label>
+        {{forms.adviser|add_class:"form-control"}}
+      </div>
+    </div>
+  <div class="row">
+    <div class="col-md-6">
+        <label>Room Number:</label>
+        {{forms.room|add_class:"form-control"}}
+    </div>
+    <div class="col-md-6">
+        <label>Curriculum Year:</label>
+        {{forms.curriculum|add_class:"form-control"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+        <label>Section Capacity:</label>
+        {{forms.section_capacity|add_class:"form-control"}}
+    </div>
+    <div class="col-md-4">
+        {{forms.section_status|add_class:"custom-controls-stacked"}}
+        <label>Section Status:</label>
+        <div class="custom-controls-stacked">
+          <label class="custom-control custom-radio">
+            <input id="radioActiveSection" name="radio-stacked" type="radio" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Active</span>
+          </label>
+          <label class="custom-control custom-radio">
+            <input id="radioInactiveSection" name="radio-stacked" type="radio" class="custom-control-input">
+            <span class="custom-control-indicator"></span>
+            <span class="custom-control-description">Inactive</span>
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="btn-forms" style="display: flex; justify-content: flex-end">
+      <a href="section-list.html" class="btn btn-link">Cancel</a>
+      <a class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Section Details</a>
+    </div>
+</form>

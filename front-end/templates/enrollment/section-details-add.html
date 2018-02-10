@@ -7,23 +7,19 @@
 
 {%load static%}
 {% block content %}
-<!-- FORM CONTENT -->
-<div class="container-fluid bg-content">
-  <div class="content">
-    
-  </div>
-</div>
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content">
+        
+      </div>
+    </div>
 
-<script>
-$(document).ready(function(){
-    $('[data-toggle="tooltip"]').tooltip();   
-});
-</script>
-    
+<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "student-create" %}',
+        url: '{% url "section-create-form" %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -31,16 +27,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".js-student-create-form", function() {
+  $(".content").on("submit", ".section-create-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "student-create" %}',
+        url: form.attr('action'),
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'student-list' %}"
+                window.location = "{%url 'section-details'%}"
             }
             else {
                 console.log(data.form_is_valid);
@@ -51,7 +47,5 @@ $(function() {
     return false;
 });
 });
-
-
 </script>
 {%endblock%}

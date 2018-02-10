@@ -1,103 +1,54 @@
 {% load widget_tweaks %}
 <form method="POST" action="{% url 'enrollment-create'  student.student_ID %}" class="enrollment-form">
   {% csrf_token %}
-<div class="modal-header">
-  <h3 class="modal-title" id="labelModal">Create Student Registration</h3>
-  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
-<div class="modal-body">
-  
-    <!--<div class="alert alert-success success-message" role="alert">
-      Record successfully added!
-    </div>-->
-    <div class="row">
-      <div class="col-md-4">
-        <label>Student ID:</label>
-        <input class="form-control" id="id_student" name="student" type="text" value="{{student.student_ID}}" hidden>
-        <p class="form-control-static">000{{student.student_ID}}</p><!--incremental-->
+  <div class="row">
+    <div class="col">
+      <h3 class="link" style="margin-top: 10px;">Student Registration</h3>
       </div>
-      <div class="col-md-4">
-        <label>Student Name:</label>
-        <p class="form-control-static">{{student.last_name}}, {{student.first_name}}</p><!--incremental-->
-      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <label>Student ID:</label>
+      <p class="form-control-static">000{{student.student_ID}}</p><!--incremental-->
     </div>
-    <div class="row">
-      <div class="col-md-4">
-        <label>Enrollment ID:</label>
-        <p class="form-control-static">{{last_record.enrollment_ID|add:"1"}}</p><!--incremental-->
-      </div>
-      <div class="col-md-4">
-        <label>Student Type:</label>
-        <p class="form-control-static">{{student.get_student_level_display}}</p><!--incremental-->
-      </div>
+    <div class="col-md-4">
+      <label>Student Name:</label>
+      <p class="form-control-static">{{student.last_name}}, {{student.first_name}}</p><!--incremental-->
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label>Curriculum:</label><br/>
-        <select class="custom-select btn-block" id="curr" required>
-          <option value = "None" selected>Choose a curriculum..</option>
-          {% for option in curriculum_list %}
-            <option value="{{option.curriculum_ID}}">{{option}}</option>
-          {% endfor %}
-          <!-- Values should be from the curriculum years stored in database (ps. idk if this is curriculum ng subjects nila OR curriculum year as in school year-->
-        </select>
-      </div>
-      <div class="col-md-6">
-        <label for="enrollment-date">Date Enrolled:</label>
-        <div class="col-10 date-padding-reset">
-          {{form.date_enrolled|add_class:"form-control"|attr:"type:date"}}
-        </div>
-      </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <label>Enrollment ID:</label>
+      <p class="form-control-static">000{{last_record.enrollment_ID|add:"1"}}</p><!--incremental-->
     </div>
-    <div class="row">
-      <div class="col-md-6">
-        <label>Section:</label>
-        {{form.section|add_class:"custom-select btn-block sections"}}
-        {%for selected in form.section%}
-          {{selected.instance.curriculum}}
-        {%endfor%}
-      </div>
+    <div class="col-md-4">
+      <label>Student Type:</label>
+      <p class="form-control-static">{{student.get_student_level_display}}</p>
     </div>
-    <h5 class="sm-headings">Scholarships </h5>
-    <div class="row">
-      <div class="col-md-4">
-        <label>Scholarship Type:</label>
-        {{form.scholarship|add_class:"custom-select btn-block"}}
-        {% if form.scholarship.errors %}
-                <p class="help-block">{{ form.scholarship.errors }}</p>
-        {% endif %}
-      </div>
-      <div class="col-md-4">
-        <label>School Year:</label>
-        {{form.school_year|add_class:"custom-select btn-block"}}
-        </select>
-      </div>
-      <div class="col-md-4">
-        <label>Scholarship Status:</label>
-        <div class="custom-controls-stacked">
-          <label class="custom-control custom-radio">
-            <input id="radioActiveScholarship" name="radio-stacked" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Active</span>
-          </label>
-          <label class="custom-control custom-radio">
-            <input id="radioInactiveScholarship" name="radio-stacked" type="radio" class="custom-control-input">
-            <span class="custom-control-indicator"></span>
-            <span class="custom-control-description">Inactive</span>
-          </label>
-        </div>
-      </div>
+    <div class="col-md-4">
+      <label>Date Enrolled:</label>
+      <p class="form-control-static">{% now "SHORT_DATETIME_FORMAT" %}</p><!-- current Date and time?-->
     </div>
-    <div class="row">
-      
-      
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Curriculum:</label>
+      {{form.curriculum|add_class:"custom-select btn-block sections"}}
     </div>
-  
-</div>
-<div class="modal-footer">
-  <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-  <button type="submit" class="btn btn-primary" >Save Student Registration</button>
+  </div>
+  <h5 class="sm-headings">Scholarships </h5>
+  <div class="row">
+    <div class="col-md-4">
+      <label>Scholarship Name:</label>
+      {{form.scholarship|add_class:"custom-select btn-block"}}
     </div>
+    <div class="col-md-4">
+      <label>School Year:</label>
+      {{form.school_year|add_class:"custom-select btn-block"}}
+    </div>
+  </div>
+  <div class="btn-forms" style="display: flex; justify-content: flex-end">
+    <a href="student-profile.html" class="btn btn-link">Cancel</a>
+    <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</a>
+  </div>
 </form>

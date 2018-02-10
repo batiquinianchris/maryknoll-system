@@ -21,7 +21,6 @@
 </head>
 
 <body>
-
 	<div class="container">
 		<img src="{% static '03-images/logo.jpg' %}" width="90px" height="90px" />
 		<h2 class="title"> Maryknoll Academy <br/> of Cateel <br/> Enrollment System </h2>
@@ -31,14 +30,17 @@
 		<div class="col">
 			{% if form.errors %}
 			<p class="alert alert-danger">Your username and password didn't match. Please try again.</p>
-			{% elif next %} {% if user.is_authenticated %}
+			{% elif next %} 
+			{% endif %}
+			
+			{% if user.is_authenticated %}
 			<p class="alert alert-danger">Your account doesn't have access to this page. To proceed, please login with an account that has access.</p>
 			{% else %}
-			{% endif %} {% endif %}</div>
+			{% endif %}</div>
 		<div class="col"></div>
 	</div>
 	{% load widget_tweaks %}
-	<div class="container">
+	<div class="container form-container">
 		<div class="form-input">
 			<form class="form " method="post" action="{% url 'login' %}">
 				{% csrf_token %}

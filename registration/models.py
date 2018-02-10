@@ -93,7 +93,7 @@ DROPPED = 'd'
 
 class Enrollment(models.Model):
     enrollment_ID = models.AutoField(primary_key=True)
-    section = models.ForeignKey('enrollment.Section', on_delete=models.CASCADE, default=0)
+    curriculum = models.ForeignKey('enrollment.Curriculum', on_delete=models.CASCADE, default=0)
     student = models.ForeignKey(Student, on_delete=models.CASCADE, default=0)
     scholarship = models.ForeignKey('enrollment.Scholarship', on_delete=models.CASCADE, default=0)
     date_enrolled = models.DateField(auto_now_add=True)
@@ -113,7 +113,7 @@ class Enrollment(models.Model):
         verbose_name = "Enrollment"
         
     def __str__(self):
-        return "%s enrolled under %s" % (self.student, self.section)
+        return "%s enrolled under %s" % (self.student, self.curriculum)
     #For detailed view
     def get_absolute_url(self):
         return reverse('enrollment-table', args=[str(self.enrollment_ID)])

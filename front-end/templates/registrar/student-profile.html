@@ -48,16 +48,9 @@
             <h2>Student Registration</h2>
           </div>
           <div class="col-md-4">
-            <div class="float-right">
-              <button type="button" class="add-button btn btn-primary js-create-registration" data-toggle="modal" data-target="#addModal" {%if not record%} {%elif record.student_type != 'p' %} disabled {%endif%}>Create Student Registration</button>
-              <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="addModal" aria-hidden="true" id="enrollment-modal">
-                <div class="modal-dialog modal-lg" role="document">
-                  <div class="modal-content">
-                    
-                  </div>
-                </div>
+              <div class="btn-group float-right">
+                <a href="{%url 'enrollment-add' student.student_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create Student Registration</a>
               </div>
-            </div>
           </div>
         </div>
         <div class="row table-records table-responsive enrollment-table">
@@ -80,41 +73,6 @@ $(function(){
         success: function(data) {
             $(".enrollment-table").html(data.html_form);
         }
-  });
-  
-  $(".js-create-registration").click(function() {
-    $.ajax({
-        url: '{% url "enrollment-create" student.student_ID%}',
-        type: 'get',
-        dataType: 'json',
-        beforeSend: function() {
-            $("#addModal").modal("show");
-        },
-        success: function(data) {
-            $("#addModal .modal-content").html(data.html_form);
-        }
-    });
-  });
-  
-  $("#addModal").on("submit", ".enrollment-form", function() {
-      var form = $(this);
-      $.ajax({
-          url: form.attr("action"),
-          data: form.serialize(),
-          type: form.attr("method"),
-          dataType: 'json',
-          success: function(data) {
-              if (data.form_is_valid) {
-                  location.reload()
-              }
-              else {
-                  $("#enrollment-modal .modal-content").html(data.html_form);
-                console.log("wat");
-                
-              }
-          }
-      });
-      return false;
   });
 });
 </script>

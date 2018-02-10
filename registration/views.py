@@ -32,7 +32,9 @@ def studentDetails(request, pk='pk'):
     except:
         last_record = Enrollment.objects.filter(student=student)
     return render(request, 'registrar/student-profile.html', {'student': student, 'record':last_record})
-
+    
+def addEnrollment(request):
+    return render(request, 'registrar/student-profile-add.html')
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -107,7 +109,9 @@ def tableEnrollmentList(request, pk='pk'):
         context,
         request = request,
     )
-    return JsonResponse({'html_form' : html_form})
+    
+    data = {'html_form' : html_form}
+    return JsonResponse(data)
 
 def createEnrollment(request, pk='pk'):
     data = {'form_is_valid' : False }
@@ -116,10 +120,6 @@ def createEnrollment(request, pk='pk'):
         enrollment = Enrollment.objects.latest('enrollment_ID')
     except:
         enrollment = None
-    try:
-        curriculum_list = Curriculum.objects.all()
-    except:
-        curriculum_list = None
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
         if form.is_valid():
@@ -132,7 +132,7 @@ def createEnrollment(request, pk='pk'):
             data['form_is_valid'] = False
     else:
         form = RegistrationForms()
-    context = {'form': form, 'student':current_student, 'last_record':enrollment, 'curriculum_list':curriculum_list}
+    context = {'form': form, 'student':current_student, 'last_record':enrollment}
     data['html_form'] = render_to_string('registrar/forms-registration-create.html',
         context,
         request=request,
