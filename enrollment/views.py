@@ -1,9 +1,17 @@
+<<<<<<< HEAD
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.utils import timezone
 from datetime import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from .forms import CurriculumForms
+=======
+from django.shortcuts import render
+from .models import *
+from .forms import *
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+>>>>>>> f63eab60e0856a440db3511d6c9df8cdb0354e80
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -18,6 +26,7 @@ def index(request):
 def curriculumList(request):
     return render(request, 'enrollment/curriculum-list.html')
 
+<<<<<<< HEAD
 def addCurriculumProfile(request):
     return render(request, 'enrollment/curriculum-list-add.html')
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
@@ -71,12 +80,16 @@ def createCurriculumProfile(request):
     )
     return JsonResponse(data)
 #--------------------------------------SECTION--------------------------------------------------------
+=======
+#STATIC VIEWS ------------------------------------------------------------------
+>>>>>>> f63eab60e0856a440db3511d6c9df8cdb0354e80
 def sectionList(request):
     section_list = Section.objects.all()
     context = {
         'section_list' : section_list
     }
     return render(request,'enrollment/section-list.html', context)
+<<<<<<< HEAD
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 def tableScholarshipList(request):
     scholarship_list = Scholarship.objects.all()
@@ -106,12 +119,34 @@ def tableScholarshipList(request):
         last_scholarship = None
     if request.method == 'POST':
         form = ScholarshipForms(request.POST)
+=======
+    
+def addSection(request):
+    return render(request, 'enrollment/section-details-add.html')
+    
+def sectionDetails(request, pk='pk'):
+    section = get_object_or_404(Section, pk=pk)
+    
+    return render(request, 'enrollment/student-details.html', {'section': section})
+    
+#AJAX VIEWS --------------------------------------------------------------------
+
+def generateSectionForm(request):
+    data = {'form_is_valid' : False }
+    try:
+        last_section = Section.objects.latest('section_ID')
+    except:
+        last_section = None
+    if request.method == 'POST':
+        form = SectionForms(request.POST)
+>>>>>>> f63eab60e0856a440db3511d6c9df8cdb0354e80
         if form.is_valid():
             form.save()
             data['form_is_valid'] = True
         else:
             data['form_is_valid'] = False
     else:
+<<<<<<< HEAD
         form = ScholarshipForms()
     context = {'form': form, 'scholarship':last_scholarship}
     data['html_form'] = render_to_string('enrollment/forms-scholarship-create.html',
@@ -119,3 +154,13 @@ def tableScholarshipList(request):
         request=request,
     )
     return JsonResponse(data)'''
+=======
+        form = SectionForms()
+    context = {'form': form, 'section':last_section}
+    print form
+    data['html_form'] = render_to_string('enrollment/forms-section-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+>>>>>>> f63eab60e0856a440db3511d6c9df8cdb0354e80

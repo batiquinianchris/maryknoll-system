@@ -114,11 +114,11 @@ class Offering(models.Model):
  
 class Section(models.Model):
     section_ID = models.AutoField(primary_key=True)
-    year_level = models.ForeignKey(YearLevel, on_delete = models.CASCADE)
     section_name = models.CharField(max_length=50)
     section_capacity = models.IntegerField()
     adviser = models.ForeignKey(TeacherDetails, on_delete = models.CASCADE)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
+    room = models.CharField(max_length=50)
     #Section status
     STATUS_CHOICES = (
         (ACTIVE, 'Active'),
@@ -133,9 +133,25 @@ class Section(models.Model):
     class Meta:
         verbose_name = "Section"
     def __str__(self):
-        return self.section_name
-
-class Section_Details(models.Model):
+        return "%s - %s" % (self.year_level,self.section_name)
+       
+class Section_Enrollee(models.Model):
+    enrollee = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE, default=0)
+    section = models.ForeignKey(Section, on_delete=models.CASCADE)
+    STATUS_CHOICES = (
+        (ACTIVE, 'Active'),
+        (INACTIVE, 'Inactive'),
+    )
+    section_status = models.CharField(max_length=1,
+        choices=STATUS_CHOICES,
+        blank=False,
+        default=INACTIVE
+        )
+    class Meta:
+	    verbose_name = "Enrollees in Sections"
+    def __str__(self):
+        return "%s enrolled in %s" % (self.enrollee, self.section)
+class Section_Offerings(models.Model):
 	sectionDetails_ID = models.AutoField(primary_key=True)
 	section_ID = models.ForeignKey(Section, on_delete=models.CASCADE, default=0)
 	offering_ID = models.ForeignKey(Offering, on_delete=models.CASCADE, default=0)
