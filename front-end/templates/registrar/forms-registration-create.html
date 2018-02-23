@@ -1,5 +1,5 @@
 {% load widget_tweaks %}
-<form method="POST" action="{% url 'enrollment-create'  student.student_ID %}" class="enrollment-form">
+<form method="POST" action="{% url 'enrollment-create'  student.student_ID %}" id="form1" class="enrollment-form">
   {% csrf_token %}
   <div class="row">
     <div class="col">
@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-4">
       <label>Date Enrolled:</label>
-      <p class="form-control-static">{% now "SHORT_DATETIME_FORMAT" %}</p><!-- current Date and time?-->
+      <p class="form-control-static">{% now "SHORT_DATE_FORMAT" %}</p><!-- current Date and time?-->
     </div>
   </div>
   <div class="row">
@@ -45,10 +45,12 @@
     <div class="col-md-4">
       <label>School Year:</label>
       {{form.school_year|add_class:"custom-select btn-block"}}
+      {{form.date_enrolled|attr:"hidden"}}
+      {{form.student|attr:"hidden"}}
     </div>
   </div>
   <div class="btn-forms" style="display: flex; justify-content: flex-end">
-    <a href="student-profile.html" class="btn btn-link">Cancel</a>
-    <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</a>
+    <a href="{% url 'student-details' student.student_ID %}" class="btn btn-link">Cancel</a>
+    <a href="#" onclick="document.getElementById('form1').submit();" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</a>
   </div>
 </form>

@@ -33,8 +33,9 @@ def studentDetails(request, pk='pk'):
         last_record = Enrollment.objects.filter(student=student)
     return render(request, 'registrar/student-profile.html', {'student': student, 'record':last_record})
     
-def addEnrollment(request):
-    return render(request, 'registrar/student-profile-add.html')
+def addEnrollment(request, pk = 'pk'):
+    student = Student.objects.get(student_ID = pk)
+    return render(request, 'registrar/student-profile-add.html', {'student': student})
 #AJAX VIEWS --------------------------------------------------------------------
 from django.template.loader import render_to_string
 from django.http import JsonResponse
@@ -122,13 +123,16 @@ def createEnrollment(request, pk='pk'):
         enrollment = None
     if request.method == 'POST':
         form = RegistrationForms(request.POST)
+        form.date_enrolled = datetime.now()
+        form.student = Student.objects.get(student_ID = pk)
         if form.is_valid():
             post = form.save(commit=False)
             post.student_type='n'
-            current_student.student_level="Active"
+            current_student.status="a"
             form.save()
             data['form_is_valid'] = True
         else:
+            print form.errors
             data['form_is_valid'] = False
     else:
         form = RegistrationForms()

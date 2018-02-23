@@ -1,0 +1,29 @@
+<table class="table table-bordered bg-nav table-hover">
+    <thead class="thead-light">
+      <tr>
+        <!-- Refer to database for headings -->
+        <th scope="col">Offering ID </th>
+        <th scope="col">Subject Name</th>
+        <th scope="col">Teacher Assigned</th>
+        <th scope="col">Schedule</th>
+        <th scope="col">Section Assigned</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+         {%for subjOff in subjectOffering_list%}
+        <td>{{subjOff.pk}}</td>
+        <td>{{subjOff.subject}}</td>
+        <td>{{subjOff.teacher}}</td>
+        <td>No Scheduling System</td>
+        <td>{{subjOff.section}}</td>
+        <td class="text-center"><a href="#" class="btn btn-success btn-sm view-button">View</a><a href="#" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+      </tr>
+      {% empty %}
+        <tr>
+          <td colspan="6" class="text-center">No Offering</td>
+        </tr>
+     {%endfor%}
+    </tbody>
+  </table>

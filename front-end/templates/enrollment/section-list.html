@@ -67,4 +67,20 @@
     <script>
 
     </script>
+    
+    <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+    <script>
+    $(function() {
+      
+      $.ajax({
+            url: '{% url "section-table" %}',
+            type: 'get',
+            dataType: 'json',
+            success: function(data) {
+                $(".sections").html(data.html_form);
+            }
+        });
+        alert(data.html_form);
+    });
+</script>
 {% endblock %}

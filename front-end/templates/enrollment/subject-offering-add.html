@@ -13,13 +13,11 @@
         
       </div>
     </div>
-
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
-
+    
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "section-create-form" %}',
+        url: '{% url "subjectOffering-create" %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -27,16 +25,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".section-create-form", function() {
+  $(".content").on("submit", ".js-subjectOffering-create-form", function() {
     var form = $(this);
     $.ajax({
-        url: form.attr('action'),
+        url: '{% url "subjectOffering-create" %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'section-list'%}"
+                window.location = "{%url 'subjectOffering-list' %}"
             }
             else {
                 console.log(data.form_is_valid);
@@ -47,5 +45,7 @@ $(function() {
     return false;
 });
 });
+
+
 </script>
 {%endblock%}

@@ -97,19 +97,6 @@ class Subjects(models.Model):
         
     def __str__(self):
         return self.subject_name
-
-class Offering(models.Model):
-	offering_ID = models.AutoField(primary_key=True)
-	subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, default=0)
-	teacher = models.ForeignKey(TeacherDetails, on_delete=models.CASCADE, default=0)
-	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
-	
-	class Meta:
-	    verbose_name = "Offered Subject"
-	def __str__(self):
-	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
-	    
-''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
 	
  
 class Section(models.Model):
@@ -133,7 +120,23 @@ class Section(models.Model):
     class Meta:
         verbose_name = "Section"
     def __str__(self):
-        return "%s - %s" % (self.year_level,self.section_name)
+        return "%s - %s" % (self.curriculum,self.section_name)
+        
+class Offering(models.Model):
+	offering_ID = models.AutoField(primary_key=True)
+	subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, default=0)
+	teacher = models.ForeignKey(TeacherDetails, on_delete=models.CASCADE, default=0)
+	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
+	year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE, null = True)
+	section = models.ForeignKey(Section, on_delete=models.CASCADE, null = True)
+	
+	class Meta:
+	    verbose_name = "Offered Subject"
+	def __str__(self):
+	    return "%s - - - %s" % (self.subject, self.subject.subject_description)
+	    
+''' SCHEDULING WILL BE DEVELOPED IN A DIFFERENT APP '''
+
        
 class Section_Enrollee(models.Model):
     enrollee = models.ForeignKey('registration.Enrollment', on_delete=models.CASCADE, default=0)

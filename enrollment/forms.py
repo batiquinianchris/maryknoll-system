@@ -14,11 +14,20 @@ STATUS_CHOICES = (
     (INACTIVE, 'Inactive'),
 )
 class SectionForms(forms.ModelForm):
-    section_status= forms.CharField(widget=forms.RadioSelect(choices=STATUS_CHOICES))
     class Meta:
         model = Section
-        exclude = ('section_ID',)
+        exclude = ('section_ID', 'section_status',)
 class CurriculumForms(forms.ModelForm):
     class Meta:
         model = Curriculum
         exclude = ('curriculum_ID',)
+        
+class ScholarshipForms(forms.ModelForm):
+    class Meta:
+        model = Scholarship
+        exclude = ('pk',)
+        
+class SubjectOfferingForms(forms.ModelForm):
+    class Meta:
+        model = Offering
+        exclude = ('pk','school_year')

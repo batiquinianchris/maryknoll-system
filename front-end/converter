@@ -1,0 +1,4 @@
+{{form.school_year|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+            {% if form.school_year.errors %}
+              <p class="help-block">{{ form.school_year.errors }}</p>
+            {% endif %}

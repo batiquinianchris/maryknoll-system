@@ -1,0 +1,67 @@
+{% load widget_tweaks %}
+<form action="{% url 'subjectOffering-create' %}" method="POST" class="js-subjectOffering-create-form">
+{% csrf_token %}
+          <div class="row">
+            <div class="col">
+              <h3 class="link" style="margin-top: 10px;">Subject Offering Details</h3>
+                </div>
+            </div>
+          <div class="row">
+            <div class="col-md-4">
+            <label>Offering ID:</label>
+              <p class="form-control-static">0003</p><!--incremental-->
+            </div>
+            <div class="col-md-4">
+            <label>Curriculum Year:</label>
+              <p class="form-control-static">2017</p><!--incremental-->
+            </div>
+            <div class="col-md-4">
+            <label>School Year:</label>
+              <p class="form-control-static">2017-2018</p><!--incremental-->
+            </div>
+          </div>
+          <h5 class="sm-headings">Subject Details </h5>
+          <div class="row">
+            <div class="col-md-6">
+                <label>Subject Name:</label><!-- List makes it searchable-->
+                  {{form.subject|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+                  {% if form.subject.errors %}
+                    <p class="help-block">{{ form.subject.errors }}</p>
+                  {% endif %}
+              </div><!-- All values of subject ID -->
+              <!-- <div class="col-md-6">
+              
+              Database values of SubjectName using SubjectID -->
+            <div class="col-md-6">
+              <label>Teacher Assigned:</label>
+              {{form.teacher|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+            {% if form.teacher.errors %}
+              <p class="help-block">{{ form.teacher.errors }}</p>
+            {% endif %}
+            </div>
+              
+              <!-- Database values for Teacher ID in Table Offering-->
+          </div>
+          <!-- ^^^ Sa query, identify which school year ito, insert this there-->
+          <div class="row">
+            <div class="col-md-4">
+              <label>Year Level:</label>
+              {{form.year_level|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+            {% if form.year_level.errors %}
+              <p class="help-block">{{ form.year_level.errors }}</p>
+            {% endif %}
+            </div>
+            <div class="col-md-4">
+              <label>Section Assigned:</label>
+              {{form.section|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+            {% if form.section.errors %}
+              <p class="help-block">{{ form.section.errors }}</p>
+            {% endif %}
+            </div>
+          </div>
+          
+        <div class="btn-forms" style="display: flex; justify-content: flex-end">
+          <a href="curriculum-list.html" class="btn btn-link">Cancel</a>
+          <input type="submit" class="btn btn-primary" value="Save Offering Details"></input>
+        </div>
+</form>
