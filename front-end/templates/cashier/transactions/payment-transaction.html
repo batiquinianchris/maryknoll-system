@@ -230,7 +230,7 @@ $("#paymentType").change(function(){
 
 function appendMonth(particularNum){
     if (event.target.value != "None"){
-        backEndDataObject.months[toString(particularNum)] = toevent.target.value;
+        backEndDataObject.months[toString(particularNum)] = event.target.value;
         alert(backEndDataObject.months[toString(particularNum)])
         
     }
