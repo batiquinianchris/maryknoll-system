@@ -1,0 +1,136 @@
+<div class="card">
+<div class="card-header link">Payment Summary</div>
+<div class="card-body">
+    <div class="row margin">
+    <div class="container">
+        <div class="summary-title">Student ID:</div>
+        <div class="link">{{student.student_ID}}</div>
+    </div>
+    </div>
+    <div class="row margin">
+    <div class="container">
+        <div class="summary-title">Student Name:</div>
+        <div class="link">{{student.last_name}}, {{student.first_name}}-{{student.middle_name}}</div>
+    </div>
+    </div>
+    <div class="enrollment-summary">
+    <div class="row margin">
+        <div class="container">
+        <div class="summary-title">Account Balance:</div>
+        <div class="summary-value link"><span class="currency"> {{account_balance}}</span></div>
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="container">
+        <div class="summary-title">Total Amount Paid:</div>
+        <!-- IF TUITION, SUMMATION OF ALL STUDENT TRANSACTION-->
+        <div class="summary-value link"><span class="currency"> {{amount_paid}}</span></div>
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="container">
+        <div class="summary-title">Scholarship Deductions:</div>
+        <!--REFER TO RELATIONSHIP BETWEEN STUDENT AND SCHOLARSHIP -->
+        <div class="summary-value link"><span class="currency"> {{scholarship_deductions}}</span></div>
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="container">
+        <!-- SUMMATION OF TUITION FEE > AMOUNT AND IF ENROLLMENT FEE > PAYMENT TYPE > FULL PAYMENT THEN AMOUNT DUE == BALANCE
+            IF ENROLLMENT FEE > PAYMENT TYPE > PARTIAL THEN TOTAL AMOUNT DUE == DOWNPAYMENT (DEFINED IN FEES AND ACCOUNTS)-->
+        <div class="summary-title">Total Amount Due:</div>
+        <div class="summary-value link" id="enrollmentAmount"><span class="currency"> 3,000</span></div>
+        </div>
+    </div>
+    </div>
+    <div id="others-summary">
+    <div class="row margin">
+        <div class="container">
+        <div class="summary-title">Total Amount Due:</div>
+        <div class="summary-value link"><span class="currency" id="othersAmount"> 3,000.00</span></div>
+        <!--SUMMATION OF ALL PRICE AMOUNT WITH DISCOUNT -->
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="container">
+        <div class="summary-title">Subtotal:</div>
+        <div class="summary-value link"><span class="currency"> 4,000.00</span></div>
+        <!-- SUMMATION OF ALL PRICE AMOUNT *WITHOUT* DISCOUNT -->
+        </div>
+    </div>
+    <div class="row margin">
+        <div class="container">
+        <div class="summary-title">Discount:</div>
+        <!--SINCE IT'S NOT A PART OF ANY STUDENT SCHOLARSHIPS,
+            THIS CAN ONLY BE APPLIED IF THERE'S A SPECIAL DISCOUNT
+            WHICH I DO NOT KNOW-->
+        <div class="summary-value link"><span class="currency"> 1,000.00</span></div>
+        </div>
+    </div>
+    </div>
+</div>
+<div class="card-footer">
+    <button type="button" class="btn btn-primary"  data-toggle="modal" data-target="#createTransactionModal">Create Transaction</button>
+    <!-- TRANSACTION MODAL -->
+    <div class="modal fade" id="createTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle">Transaction Details</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+            <div class="col">
+                <label>Payment Method:</label>
+                <select class="custom-select btn-block" id="paymentMethod" required>
+                <option selected>Choose payment method:</option>
+                <option value="Cash">Cash</option>
+                <option value="Cheque">Cheque</option>
+                <option value="Promissory">Promissory Note</option>
+                <option value="Others">Others</option>
+                <!-- `Others` like cows, lots, etc.
+                        IF promissory, leave amount blank -->
+                </select>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+                <div id="paymentOthers">
+                <div class="method">  
+                    <label class="card-subtitle">Specify:</label>  
+                    <input type="text" class="form-control">  
+                    </div> 
+                </div>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+                <label>OR Number:</label>
+                <input type="text" class="form-control" id="ORNumber"/>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+                <label>Payment Amount:</label>
+                <input type="text" class="form-control" id="paymentAmount"/>
+            </div>
+            </div>
+            <div class="row">
+            <div class="col">
+                <label>Change:</label>
+                <h2 id="change" class="link"><span class="currency">900.00</span></h2>
+            </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary">Create Transaction</button>
+        </div>
+        </div>
+    </div>
+    </div>
+</div>
+</div>

@@ -71,9 +71,24 @@ def getTotalGradeLevelPayment(grade_level_instance):
     #Get total amount of fees
     amount = fees_list.aggregate(Sum('fee_amount'))
     
+    return amount['fee_amount__sum']
+
+def getTotalpayment(registration):
+    #get list of transactions made by a registration
+    transacts_list = EnrollmentTransactionsMade.objects.filter(student=registration)
+    #get total of all transactions
+    amount = float(0)
+    for transaction in transacts_list:
+        transaction_list = EnrollmentORDetails.objects.filter(ORnumber=transaction)
+        transact_total = transaction_list.aggregate(Sum('money_given'))
+        amount += transact_total['money_given__sum']
     return amount
-
-
+def getTotalDeductions(registration):
+    scholar_list = StudentScholar.objects.filter(registration=registration)
+    amount = float(0)
+    for scholarship in scholar_list:
+        amount += scholarship.scholar.fee_amount
+    return amount
 # Views
 def index(request):
     return render(request, 'index.html')
@@ -146,22 +161,31 @@ def formFeeAccountEdit(request, pk='pk', template='cashier/fees-and-accounts/for
 # END ACCOUNTS #
 # TRANSACTIONS #
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
-    context = {}
+    registration = Enrollment.objects.get(enrollment_ID=pk)
+    context = {'registration':registration}
     return render(request,template,context)
 
-def summaryView(request, pk='pk',template="test.html"):
+def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
     
-    #Get student's current registration
     registration = Enrollment.objects.get(enrollment_ID = pk)
-    #Get current registration's section
-    section = Section.objects.latest('section_name')
-    registration.section = section
-    offering = Offering.objects.filter(section=registration.section).latest('year_level')
+    offering = Offering.objects.latest('year_level')
     studentGradeLevelAccount = getTotalGradeLevelPayment(offering.year_level)
+    if studentGradeLevelAccount == None:
+        studentGradeLevelAccount = float(0)
+    totalPaymentOfStudent = getTotalpayment(registration)
+    if totalPaymentOfStudent == None:
+        totalPaymentOfStudent = float(0)
+    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent
     
-    account_balance  = studentGradeLevelAccount['fee_amount__sum'] - totalPaymentOfStudent
+    deductions = getTotalDeductions(registration)
     
-    #context = {'account_balance':account_balance}
-    return render(request, template)
+    #print account_balance
+    context = {'student': registration.student,
+        'account_balance':account_balance, 
+        'amount_paid': totalPaymentOfStudent,
+        'scholarship_deductions': deductions,    
+    }
+
+    return ajaxTable(request,template,context)
 
 # END DAILY CASH #
