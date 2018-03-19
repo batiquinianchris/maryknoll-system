@@ -1,18 +1,74 @@
-def updateSectionProfile(request, pk='pk',template = 'registrar/section-profiles/section-registration-list-update.html'):
+def sectionList(request):
+    return render(request,'enrollment/section-list.html')
+    
+def addSection(request):
+    return render(request, 'enrollment/section-list-add.html')
+
+    
+def sectionTable(request):
+    section_list = getSectionList(request)
+    print section_list
+    
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(section_list, 3)
+    
+    try:
+        section = paginator.page(page)
+    except PageNotAnInteger:
+        section = paginator.page(1)
+    except EmptyPage:
+        section = paginator.page(paginator.num_pages)
+        
+    context = {'section_list': section}
+    html_form = render_to_string('enrollment/table-section-list.html',
+        context,
+        request = request,
+    )
+    return JsonResponse({'html_form' : html_form})
+
+def generateSectionForm(request):
+    data = {'form_is_valid' : False }
+    try:
+        last_section = Section.objects.latest('section_ID')
+    except:
+        last_section = None
+    if request.method == 'POST':
+        form = SectionForms(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.section_status = 'a'
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = SectionForms()
+    context = {'forms': form, 'section':last_section}
+    print(form.is_valid())
+    print(form.errors)
+    data['html_form'] = render_to_string('enrollment/forms-section-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+    
+
+def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
     instance = get_object_or_404(Section, pk=pk)
     return render(request, template, {'instance': instance})
     
-def form_updateSectionProfile(request, pk='pk', template = 'enrollmemt/forms-section-create'):
+def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
     instance = get_object_or_404(Section, pk=pk)
     data = {'form_is_valid' : False }
     last_section = getLatest(Section,'section_ID')
 
-    form = updateInstance(request, SectionForms, instance)
+    forms = updateInstance(request, SectionForms, instance)
 
-    if form.is_valid():
+    if forms.is_valid():
         data['form_is_valid'] = True
     else:
         data['form_is_valid'] = False
 
-    context = {'form': form, 'section':last_section, 'instance': instance}
+    context = {'forms': forms, 'section':last_section, 'instance': instance}
     return ajaxTable(request,template,context,data)
