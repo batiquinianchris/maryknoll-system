@@ -238,6 +238,7 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
         last_record = Enrollment.objects.filter(student=current_student).latest('enrollment_ID')
     except:
         last_record = Enrollment.objects.filter(student=current_student)
+    print last_record
     return render(request, template, {'student': current_student, 'record':last_record})
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
     student = get_object_or_404(Student, pk=pk)
@@ -306,11 +307,10 @@ def generateStudentCode(student):
 
 
 def table_studentScholar(request,pk='pk',template='registrar/student-registration/scholarships-list.html'):
-    student = Student.objects.get(student_ID=pk)
-    registration = Enrollment.objects.filter(student=student).latest('date_enrolled')
+    registration = Enrollment.objects.get(enrollment_ID=pk)
     scholarship_list = StudentScholar.objects.filter(registration=registration)
     
-    context = {'scholarship_list':scholarship_list, 'student':student}
+    context = {'scholarship_list':scholarship_list, 'student':registration.student}
     print context
     return ajaxTable(request,template,context)
 
@@ -324,8 +324,7 @@ def deleteScholar(request):
 
 
 def StudentScholarFormView(request, pk='pk',template = "registrar/student-registration/student-scholarship-add.html" ):
-    curr_student = Student.objects.get(student_ID=pk)
-    regist = Enrollment.objects.filter(student=curr_student).latest('date_enrolled')
+    regist = Enrollment.objects.get(enrollment_ID=pk)
     
     if request.method == 'POST':
         form = StudentScholarForm(request.POST)
@@ -333,13 +332,13 @@ def StudentScholarFormView(request, pk='pk',template = "registrar/student-regist
             post = form.save(commit=False)
             post.registration = regist
             form.save()
-            return HttpResponseRedirect(reverse('student-details',kwargs={'pk':curr_student.student_ID}))
+            return HttpResponseRedirect(reverse('student-details',kwargs={'pk':regist.student.student_ID}))
         else:
             print form.errors
     else:
         form = StudentScholarForm()
     
-    context = {'form':form, 'student':curr_student}
+    context = {'form':form, 'student':regist.student}
 
     return render(request, template, context)
         

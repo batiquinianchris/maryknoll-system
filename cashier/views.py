@@ -154,6 +154,13 @@ def formFeeAccountEdit(request, pk='pk', template='cashier/fees-and-accounts/for
     context = {'form': form, 'particular': particular}
     return ajaxTable(request, template, context, data)
 
+
+def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledger.html'):
+    registration = Enrollment.objects.get(pk='pk')
+    transaction_list = EnrollmentORDetails.objects.filter(registration=registration)
+    context = {'transaction_list':transaction_list}
+    return ajaxTable(request,template,context)
+
 # END PARTICULARS #
 # ACCOUNTS #
 
@@ -168,8 +175,7 @@ def transactionView(request,pk='pk',template='cashier/transactions/payment-trans
 def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
     
     registration = Enrollment.objects.get(enrollment_ID = pk)
-    offering = Offering.objects.latest('year_level')
-    studentGradeLevelAccount = getTotalGradeLevelPayment(offering.year_level)
+    studentGradeLevelAccount = getTotalGradeLevelPayment(registration.year_level)
     if studentGradeLevelAccount == None:
         studentGradeLevelAccount = float(0)
     totalPaymentOfStudent = getTotalpayment(registration)
