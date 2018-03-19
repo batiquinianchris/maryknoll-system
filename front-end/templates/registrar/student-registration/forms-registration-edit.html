@@ -2,54 +2,58 @@
 <form method="POST" action="{% url 'enrollment-edit-form'  student.student_ID %}" class="heading-label enrollment-edit-form">
   {% csrf_token %}
   <div class="row">
-    <div class="col">
-      <h3 class="link" style="margin-top: 10px;">Student Registration</h3>
+      <div class="col">
+        <h3 class="link" style="margin-top: 10px;">Student Registration</h3>
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <label>Student ID:</label>
-      <p class="form-control-static">000{{student.student_ID}}</p>
-      <!--incremental-->
+    <div class="row">
+      <div class="col-md-4">
+        <label>Student ID:</label>
+        <p class="form-control-static">000{{student.student_ID}}</p>
+        <!--incremental-->
+      </div>
+      <div class="col-md-4">
+        <label>Student Name:</label>
+        <p class="form-control-static">{{student.last_name}}, {{student.first_name}}</p>
+        <!--incremental-->
+      </div>
     </div>
-    <div class="col-md-4">
-      <label>Student Name:</label>
-      <p class="form-control-static">{{student.last_name}}, {{student.first_name}}</p>
-      <!--incremental-->
+    <div class="row">
+      <div class="col-md-4">
+        <label>Enrollment ID:</label>
+        <p class="form-control-static">000{{last_record|add:"1"}}</p>
+        <!--incremental-->
+      </div>
+      <div class="col-md-4">
+        <label>Student Type:</label>
+        <p class="form-control-static">{{student.get_student_level_display}}</p>
+      </div>
+      <div class="col-md-4">
+        <label>Date Enrolled:</label>
+        <p class="form-control-static">{% now "jS F Y" %}</p>
+        <!-- current Date and time?-->
+      </div>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <label>Enrollment ID:</label>
-      <p class="form-control-static">000{{last_record|add:"1"}}</p>
-      <!--incremental-->
+    <div class="row">
+      <div class="col-md-4">
+        <label>School Year:</label>
+        {{form.school_year|add_class:"custom-select btn-block"|attr:"required"}}
+      </div>
     </div>
-    <div class="col-md-4">
-      <label>Student Type:</label>
-      <p class="form-control-static">{{student.get_student_level_display}}</p>
+    <div class="row">
+      <div class="col-md-4">
+        <label>Enrollment Status:</label>
+        {{form.enrollment_status|add_class:"custom-select btn-block"|attr:"required"}}
+      </div>
+      <div class="col-md-4">
+          <label>Year Level:</label>
+        {{form.year_level|add_class:"custom-select btn-block"|attr:"required"}}
+      </div>
+      <div class="col-md-4">
+        <label>Section: (Optional)</label>
+        {{form.section|add_class:"custom-select btn-block"}}
+      </div>
     </div>
-    <div class="col-md-4">
-      <label>Date Enrolled:</label>
-      <p class="form-control-static">{% now "jS F Y H:i" %}</p>
-      <!-- current Date and time?-->
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <label>School Year:</label>
-      {{form.school_year|add_class:"custom-select btn-block"|attr:"required"}}
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-4">
-      <label>Enrollment Status:</label>
-      {{form.enrollment_status|add_class:"custom-select btn-block"|attr:"required"}}
-    </div>
-    <div class="col-md-4">
-      <label>Section: (Optional)</label>
-      {{form.section|add_class:"custom-select btn-block"}}
-    </div>
-  </div>
   <div class="btn-forms" style="display: flex; justify-content: flex-end">
     <a href="{% url 'student-details' student.student_ID %}" class="btn btn-link">Cancel</a>
     <button type="submit" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student Registration</button>

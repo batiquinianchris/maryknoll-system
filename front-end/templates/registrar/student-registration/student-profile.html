@@ -7,8 +7,7 @@
     </a>
 </li>
 {% endblock %} {%load static%} {% block content %}
-<div class="container-fluid bg-content">
-    <div class="content container">
+
       <div class="seal"></div>
       <div class="row">
         <!--<div class="col-md-6">
@@ -16,7 +15,7 @@
             <h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
           </a>
         </div>-->
-        <div class="col-md-6">
+        <div class="col-md-6 no-print">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{%url 'dashboard' %}">Home</a></li>
@@ -26,8 +25,8 @@
           </nav>
         </div>      
       </div>
-      <div class="card">
-        <div class="card-block">
+      <div class="card container">
+          <div class="card-block inner ">
           <div class="row">
             <div class="col-md-12">
               <div class="row menu-flex">
@@ -36,7 +35,7 @@
                 </div>
                 <div class="col-md-4 line-break no-print">
                   <a href="javascript:window.print()" class="card-link btn btn-outline-primary line-break-child"><i class="fa fa-print" aria-hidden="true"></i> Print Student Profile</a>
-                  <a href="student-registration-list-add.html" class="btn btn-secondary view-button">Edit</a></td>
+                  <a href="{% url 'student-update' student.student_ID %}" class="btn btn-secondary view-button">Edit</a></td>
                 </div>
               </div>
               <div class="row">
@@ -65,6 +64,7 @@
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#studentRegis">Registration</a>
               </li>
+              {% if record %}
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#studentAcc">Financial Records</a>
               </li>
@@ -77,6 +77,7 @@
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#studentScholarships">Scholarships</a>
               </li>
+              {% endif %}
             </ul>
             <div class="tab-content">
               <!-- STUDENT REGISTRATION -->
@@ -98,7 +99,145 @@
               <!-- STUDENT REGISTRATION -->
               <!-- FINANCIAL RECORDS -->
               <div class="tab-pane container" id="studentAcc">
-                
+                  <div class="row records">
+                      <div class="col-md-8">
+                        <h2 >Financial Records</h2>
+                      </div>
+                      <div class="row table-records table-responsive" style="padding-right: 15px;">
+                          <table class="table bg-nav table-hover">
+                            <tbody>
+                              <tr>
+                                <td><h6>Tuition Fee:</h6></td>
+                                <td>₱ 10,580.00</td>
+                                <td><h6>Total(Current)+Old Account</h6></td>
+                                <td>₱ 13,580.00</td>
+                              </tr>
+                              <tr>
+                                <td><h6>Miscellaneous Fee:</h6></td>
+                                <td>₱ 3,000.00</td>
+                                <td><h6>Less Scholarship:</h6></td>
+                                <td>₱ 5,000.00</td>
+                              </tr>
+                              <tr>
+                                <td><h6>Total(Current):</h6></td>
+                                <td>₱ 13,580.00</td>
+                                <td><h6>Total Adjustment:</h6></td>
+                                <td>₱ 0.00</td>
+                              </tr>
+                              <tr>
+                                <td><h6> Old Account: </h6></td>
+                                <td>₱ 0.00</td>
+                                <td><h6> Total Due Payment: <h6></td>
+                                <td>₱ 8,580.00</td>
+                              </tr>
+                              <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td><h3 style="color: red"> Balance: </h3></td>
+                                <td><h3 style="color: red"> ₱ 0.00 </h3></td>
+                              </tr>
+                          </table>
+                        <hr>
+                        <div class="col-md-8">
+                          <h2 style="padding: 10px 10px 10px 0">Payment History for Current School Year</h2>
+                        </div>
+                          <div class="col">
+                            <div class="row">
+                              <div class="col-sm-9"> 
+                          <table class="table table-bordered bg-nav table-hover">
+                            <thead class="thead-light">
+                              <tr>
+                                <th>SCHEDULE</th>
+                                <th>DUE AMOUNT</th>
+                                <th>PAYMENTS</th>
+                                <th>BALANCE (OVERPAYMENT)</th>
+                                <th> DATE PAID </th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>DOWNPAYMENT</td>
+                                <td>₱ 1,580.00</td>
+                                <td>₱ 580.00</td>
+                                <td>- ₱ 1,000.00</td>
+                                <td> 05/23/2017 </td>
+                              </tr>
+                              <tr>
+                                <td>1ST GRADING -PRELIM</td>
+                                <td>₱ 2,000.00</td>
+                                <td>₱ 1,500.00</td>
+                                <td>- ₱ 500.00</td>
+                                <td> 06/13/2017 </td>
+                              </tr>
+                              <tr>
+                                <td>1ST GRADING -PERIODICAL</td>
+                                <td>₱ 1,500.00</td>
+                                <td>₱ 1,500.00</td>
+                                <td>₱ 0.00</td>
+                                <td> 07/08/2017 </td>
+                              </tr>
+                               <tr>
+                                <td>2ND GRADING -PRELIM</td>
+                                <td>₱ 1,000.00</td>
+                                <td>₱ 1,500.00</td>
+                                <td>₱ 500.00</td>
+                                <td> 08/14/2017 </td>
+                              </tr>
+                              <tr>
+                                <td>2ND GRADING -PERIODICAL</td>
+                                <td>₱ 500.00</td>
+                                <td>₱ 500.00</td> 
+                                <td>₱ 0.00</td>
+                                <td> 09/20/2017 </td>
+                              </tr>
+                               <tr>
+                                <td>3RD GRADING -PRELIM</td>
+                                <td>₱ 1,000.00</td>
+                                <td>₱ 1,000.00</td>
+                                <td>₱ 0.00</td>
+                                <td> 11/23/2017 </td>
+                              </tr>
+                              <tr>
+                                <td>3RD GRADING -PERIODICAL</td>
+                                <td>₱ 1,000.00</td>
+                                <td>₱ 500.00</td>
+                                <td>- ₱ 500.00</td>
+                                <td> 12/15/2017 </td>
+                              </tr>
+                              <tr>
+                                <td>4TH GRADING -PRELIM</td>
+                                <td>₱ 1,500.00</td>
+                                <td>₱ 2,000.00</td>
+                                <td>₱ 500.00</td>
+                                <td> 02/05/2018 </td>
+                              </tr>
+                              <tr>
+                                <td>4TH GRADING -PERIODICAL</td>
+                                <td>₱ 500.00</td>
+                                <td>₱ 500.00</td>
+                                <td>₱ 0.00</td>
+                                <td> 03/14/2018 </td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                        <div class="col-sm-3 no-print">
+                          <div class="card">
+                            <div class="card-body">
+                              <h6> Other Payment History </h6>
+                              <ul>
+                                <li><a href="#"> 2015-2016 </a></li>
+                                <li><a href="#"> 2016-2017 </a></li>
+                                <li><a href="#"> 2017-2018 </a></li>
+                                <li><a href="#"> 2018-2019 </a></li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
               <!-- FINANCIAL RECORDS -->
               <!-- SUBJECTS TAKEN -->
@@ -151,7 +290,61 @@
                 </div>
               </div>
               <div class="tab-pane container" id="studentLedger">
-                
+                      <div class="row records">
+                        <div class="col-md-8 no-print">
+                          <h2>Payment Logs</h2>
+                        </div>
+                        <div class="col-md-4">
+                          <div class="btn-group float-right no-print">
+                            {% if record %}
+                            <a href="{% url 'transaction' record.enrollment_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create New Transaction</a>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row table-records table-responsive">
+                        <table class="table table-bordered bg-nav table-hover ledger">
+                          <thead class="thead-light">
+                            <tr>
+                              <!-- Refer to database for headings -->
+                              <th scope="col">Student ID</th>
+                              <th scope="col">Full Name</th>
+                              <th scope="col">Year/Grade</th>
+                              <th scope="col" class="no-print">Status</th>
+                              <th scope="col" class="no-print">Actions</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr>
+                              <td>0001</td>
+                              <td>Brown, Millie-Bobbie</td>
+                              <td>Grade 10</td>
+                              <td class="no-print"><i class="fa fa-circle active-status"></i> Active</td>
+                              <td class="text-center no-print"><a href="student-ledger.html" class="btn btn-secondary btn-sm view-button">View</a></td>
+                            </tr>
+                            <tr>
+                              <td>0002</td>
+                              <td>Dyer, Natalia</td>
+                              <td>Grade 6</td>
+                              <td class="no-print"><i class="fa fa-circle active-status"></i> Active</td>
+                              <td class="text-center no-print"><a href="student-ledger.html" class="btn btn-secondary btn-sm view-button">View</a></td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                      <nav aria-label="Page navigation" class="no-print">
+                        <ul class="pagination pagination-md justify-content-center">
+                          <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                          </li>
+                          <li class="page-item"><a class="page-link" href="#">1</a></li>
+                          <li class="page-item"><a class="page-link" href="#">2</a></li>
+                          <li class="page-item"><a class="page-link" href="#">3</a></li>
+                          <li class="page-item">
+                            <a class="page-link" href="#">Next</a>
+                          </li>
+                        </ul>
+                      </nav>
               </div>
               <div class="tab-pane container" id="studentScholarships">
                 <div class="row records">
@@ -160,7 +353,12 @@
                   </div>
                   <div class="col-md-4">
                     <div class="btn-group float-right no-print">
-                      <a href="{% url 'student-scholars-add' student.student_ID%}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
+                      {% if record %}
+                      <a href="{% url 'student-scholars-add' record.enrollment_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
+                      {% else %}
+                      <a href="#" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
+                      {% endif %}
+                      
                     </div>
                   </div>
                 </div>
@@ -171,23 +369,22 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   <!-- CONTENT -->
-  
-  <script type="text/javascript">
-    function deleteRow(obj, num){
-      $(obj).closest('tr').remove();
-      $.ajax({
-        url: '{% url "delete-scholar" %}?scholar='+num,
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-          generateScholarTable();
-        }
-      });
-    }
-  </script>
+ 
+
+<script type="text/javascript">
+  function deleteRow(obj, num){
+    $(obj).closest('tr').remove();
+    $.ajax({
+      url: '{% url "delete-scholar" %}?scholar='+num,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        generateScholarTable();
+      }
+    });
+  }
+</script>
 
 
 {#---------------------------BACKEND SCRIPTS -------------------------------#}
@@ -211,7 +408,7 @@
 
   function generateScholarTable(){
     $.ajax({
-      url: '{% url "student-scholars-table" student.student_ID %}',
+      url: '{% url "student-scholars-table" record.enrollment_ID %}',
       type: 'get',
       dataType: 'json',
       success: function(data) {

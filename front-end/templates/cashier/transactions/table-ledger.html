@@ -1,0 +1,29 @@
+<table class="table table-bordered bg-nav table-hover">
+    <thead class="thead-light">
+        <tr>
+            <!-- Refer to database for headings -->
+            <th scope="col">Date Paid</th>
+            <th scope="col">OR Number</th>
+            <th scope="col">Particular</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        {% for transaction in transaction_list %}
+        <tr>
+            <td>{{transaction.ORnumber.date_paid}}/td>
+            <td>{{transaction.ORnumber.ORnum}}</td>
+            <td>{{transaction.name_of_item}}</td>
+            <td>₱ {{transaction.money_given}}</td>
+            <td> </td>
+        </tr>
+        {%empty%}
+        <tr>
+            <td colspan="5" class="text-center">No Transaactions Made</td>
+        </tr>
+        {% endfor %}
+
+    </tbody>
+</table>

@@ -41,7 +41,7 @@
                 <div class="col-md-6">
                 <label class="card-subtitle">Particular:</label>
                 <select class="custom-select btn-block" id="particularList" required>
-                    <option selected>Choose particular:</option>
+                    <option selected value="None">Choose particular:</option>
                     <option value="EnrollmentFee">Enrollment Fee</option>
                     <option value="TuitionFee">Tuition Fee</option>
                 </select>
@@ -49,11 +49,22 @@
                 <div class="col-md-6">
                 <div class="details">
                     <label class="card-subtitle">Month:</label>  
-                    <select class="custom-select btn-block" required>  
-                    <option selected>Choose payment month:</option>  
-                    <option value="January">January</option>  
-                    <option value="February">February</option>  
-                    <option value="March">March</option></select>
+                    <select class="custom-select btn-block" id="monthList" onchange="appendMonth(1)" required>  
+                        <option selected value="None">Choose payment month:</option>
+                        <option selected value="JAN">January</option>
+                        <option selected value="FEB">Febuary</option>
+                        <option selected value="MAR">March</option>
+                        <option selected value="APR">April</option>
+                        <option selected value="MAY">May</option>
+                        <option selected value="JUN">June</option>
+                        <option selected value="JUL">July</option>  
+                        <option selected value="AUG">August</option>
+                        <option selected value="SEP">September</option>
+                        <option selected value="OCT">October</option>
+                        <option selected value="NOV">November</option>
+                        <option selected value="DEC">December</option>
+                        
+                    </select>
                 </div>
                 </div>
             </div>
@@ -61,7 +72,7 @@
                 <div class="col-md-6">
                 <div class="tuitionPayment">
                     <label class="card-subtitle">Amount:</label>  
-                    <input type="text" class="form-control">
+                    <input onchange="recordTuitionPayment(1);" type="text" id="tuitionAmount" class="form-control">
                 </div>
                 </div>
             </div>
@@ -70,7 +81,7 @@
                 <div id="paymentTypeInput">
                     <label class="card-subtitle">Payment Type:</label>
                     <select class="custom-select btn-block" id="paymentType" required>
-                        <option selected>Choose payment type:</option>
+                        <option value="None" selected>Choose payment type:</option>
                         <option value="Full">Full Payment</option>
                         <option value="Partial">Partial Payment</option>
                         <!-- `Full` here refers to paying the whole SY's balance.
@@ -167,14 +178,21 @@
 </form>
 </div>
 
+{%endblock%}
+
+{%block backend_scripts%}
+
 {# BACKEND SCRIPTS #}
+<script src="{% static '02-javascript/cashier-scripts.js' %}"></script>
 <script>
 $(function(){
     //Some delay because cannot point to a non existent class(coz ajax has delay lol)
     generateSummaryCard();
-    setTimeout(function(){ init(); }, 100);
+    setTimeout(function(){ init(); }, 50);
 });
-
+$('.user').click(function(){
+    alert(backEndDataObject.months)
+});
 function generateSummaryCard(){
     $.ajax({
         url: '{% url "payment-summary" registration.enrollment_ID %}',
@@ -187,22 +205,49 @@ function generateSummaryCard(){
     
     
 }
+//Sends this to the server through ajax. Data will be appended based on the user activity
+var backEndDataObject = {
+    "particularType":"",
+    "paymentType" : "",
+    "partialAmount" : "",
+    "months" : {},
+    "tuitionAmount" : {},
+    "payments": 0,
+}
+
 $("#particularList").change(function(){
-    /*var month= '<div class="details">'+
-        '<label class="card-subtitle">Month:</label>'+
-        '<select class="custom-select btn-block" required>'+
-        '<option selected>Choose payment month:</option>'+
-        '<option value="January">January</option>'+
-        '<option value="February">February</option>'+
-        '<option value="March">March</option></select></div>';*/
+    if ($(this).val() != "None"){
+        backEndDataObject.particularType = $(this).val()
+        alert(backEndDataObject.particularType)
+    }
+});
+$("#paymentType").change(function(){
+    if ($(this).val() != "None"){
+        backEndDataObject.paymentType = $(this).val()
+        alert(backEndDataObject.paymentType)
+    }
+});
+
+function appendMonth(particularNum){
+    if (event.target.value != "None"){
+        backEndDataObject.months[toString(particularNum)] = toevent.target.value;
+        alert(backEndDataObject.months[toString(particularNum)])
         
-    if ($(this).val() != "TuitionFee"){
-        //Do Enrollment Fee Forms
     }
-    else{
-        //Do Tuition Fee Forms
+}
+function recordTuitionPayment(paymentNum){
+    if (event.target.value != 0){
+        backEndDataObject.tuitionAmount[toString(paymentNum)] = event.target.value;
+        alert(backEndDataObject.tuitionAmount[toString(paymentNum)])
     }
-  });
+}
+$("#paymentType").change(function(){
+    if ($(this).val() != "None"){
+        backEndDataObject.paymentType = $(this).val()
+        alert(backEndDataObject.paymentType)
+    }
+});
+
 </script>
 
 {%endblock%}

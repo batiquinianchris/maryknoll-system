@@ -290,10 +290,8 @@
   });
   $('#buttSubmit').click(function(){
     $('.modal').modal('hide')
+    setTimeout(function(){ $('.js-student-create-form').submit(); }, 500);
   });
-  $('.modal').on('hidden.bs.modal', function () {
-    $('.js-student-create-form').submit()
-  })
   function fillFields(){
     $('#firstName').html($('#id_first_name').val())
   }
