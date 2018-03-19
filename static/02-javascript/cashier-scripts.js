@@ -6,34 +6,26 @@ var count = 2;  // starting number of next transaction
 var message = "clicked"; //error handling
 
 $('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
-function init(){
-  $('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
-}
 
 ////////////////////////////////////////////////
 //TRANSACTION TOGGLE SCRIPT
 $('#othersBtn').click(function() {
-  showParticularPayment();
-});
-// 3/19/2018 - Added These functions - JIM
-function showParticularPayment(){
+  
   $(this).addClass("active");
   $('#enrollmentBtn').removeClass("active");
   $('.enrollmentPayment, .addPayment, .enrollment-summary, #btn-add').hide();
   $('.othersPayment, #btn-add-particular, #others-summary,.addParticularPayment').show();
-}
-$('#enrollmentBtn').click(function() {
-  showEnrollmentPayment()
 });
-function showEnrollmentPayment(){
+$('#enrollmentBtn').click(function() {
+  
   $('.addParticularPayment').hide();
   $(this).addClass("active");
   $("#othersBtn").removeClass("active");
   $('.othersPayment, #btn-add-particular, #others-summary').hide();
   $('.enrollmentPayment, #btn-add, .enrollment-summary').show();
   $('.othersPaymentRows').hide();
-}
-
+  
+});
     
 ////////////////////////////////////////////////
 // INPUT FUNCTIONS

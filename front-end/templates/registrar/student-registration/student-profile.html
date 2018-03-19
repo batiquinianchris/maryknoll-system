@@ -7,8 +7,7 @@
     </a>
 </li>
 {% endblock %} {%load static%} {% block content %}
-<div class="container-fluid bg-content">
-    <div class="content container">
+
       <div class="seal"></div>
       <div class="row">
         <!--<div class="col-md-6">
@@ -26,8 +25,8 @@
           </nav>
         </div>      
       </div>
-      <div class="card">
-        <div class="card-block">
+      <div class="card container">
+          <div class="card-block inner ">
           <div class="row">
             <div class="col-md-12">
               <div class="row menu-flex">
@@ -171,23 +170,22 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   <!-- CONTENT -->
-  
-  <script type="text/javascript">
-    function deleteRow(obj, num){
-      $(obj).closest('tr').remove();
-      $.ajax({
-        url: '{% url "delete-scholar" %}?scholar='+num,
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-          generateScholarTable();
-        }
-      });
-    }
-  </script>
+ 
+
+<script type="text/javascript">
+  function deleteRow(obj, num){
+    $(obj).closest('tr').remove();
+    $.ajax({
+      url: '{% url "delete-scholar" %}?scholar='+num,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        generateScholarTable();
+      }
+    });
+  }
+</script>
 
 
 {#---------------------------BACKEND SCRIPTS -------------------------------#}
