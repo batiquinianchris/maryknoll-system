@@ -32,5 +32,7 @@ main/forms.pyc
 main/models.pyc
 main/urls.pyc
 main/views.pyc
+main/wsgi.pyc
+main/settings.pyc
 
 db.sqlite3
