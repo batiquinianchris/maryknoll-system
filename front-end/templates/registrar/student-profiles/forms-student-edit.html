@@ -4,7 +4,7 @@
     
         <div class="row">
           <div class="col">
-            <h3 class="link" style="margin-top: 10px;">Student Information</h3>
+            <h3 class="link" style="margin-top: 10px;">Student Profile Edit</h3>
           </div>
         </div>
         <div class="row">
@@ -16,16 +16,6 @@
             <label>Student level:</label><br/><!-- unsure with the term pa-->
             {{form.student_level|add_class:"form-control"}}
           </div>
-        </div>
-        <div class="row">
-          <div class="col-md-10">
-            <label>Student Profile Picture:</label><br>
-            <label class="custom-file profile-picture">
-            <input type="file" id="file" class="custom-file-input">
-            <span class="custom-file-control"></span>
-            </label>
-          </div>
-          
         </div>
         <div class="row">
           <div class="col-md-4{% if form.first_name.errors %} text-danger has-error{% endif %}">

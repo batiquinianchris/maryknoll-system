@@ -15,7 +15,7 @@
             <h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
           </a>
         </div>-->
-        <div class="col-md-6">
+        <div class="col-md-6 no-print">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{%url 'dashboard' %}">Home</a></li>
@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-4 line-break no-print">
                   <a href="javascript:window.print()" class="card-link btn btn-outline-primary line-break-child"><i class="fa fa-print" aria-hidden="true"></i> Print Student Profile</a>
-                  <a href="student-registration-list-add.html" class="btn btn-secondary view-button">Edit</a></td>
+                  <a href="{% url 'student-update' student.student_ID %}" class="btn btn-secondary view-button">Edit</a></td>
                 </div>
               </div>
               <div class="row">
@@ -64,6 +64,7 @@
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#studentRegis">Registration</a>
               </li>
+              {% if records %}
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#studentAcc">Financial Records</a>
               </li>
@@ -76,6 +77,7 @@
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#studentScholarships">Scholarships</a>
               </li>
+              {% endif %}
             </ul>
             <div class="tab-content">
               <!-- STUDENT REGISTRATION -->
