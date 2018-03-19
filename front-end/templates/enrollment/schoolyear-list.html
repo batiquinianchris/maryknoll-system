@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{% block content %}
+    <!-- CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content container">
+        <div class="row records">
+          <div class="col">
+            <h2>Existing School Years</h2>
+          </div>
+          <div class="col">
+            <div class="flex-container no-print">
+              <div class="align-right-item">
+                <a href="{% url 'school-year-create' %}" class="add-button btn btn-primary flex-item">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Create New School Year</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row table-records table-responsive" id="schoolYear-listings">
+          
+        </div>
+      </div>
+    </div>
+    <!-- CONTENT -->
+
+    <!-- JQUERY -->
+
+    <!-- Allows dropdown menu to select child -->
+{# ---------------------------BACKEND SCRIPTS ------------------------------- #}
+<script>
+  $(function() {
+    generateTable();
+  });
+
+  function generateTable(){
+    $.ajax({
+      url: '{% url "school-year-table" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#schoolYear-listings").html(data.html_form);
+      }
+    });
+  }
+</script>
+{% endblock %}

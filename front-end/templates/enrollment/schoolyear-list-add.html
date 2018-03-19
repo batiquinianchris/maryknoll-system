@@ -8,12 +8,21 @@
 {%load static%}
 {% block content %}
     <!-- FORM CONTENT -->
-    
-    
+    <div class="container-fluid bg-content">
+      <div class="content container">
+        <form class="heading-label">
+          <div class="row">
+            <div class="col">
+              <h3 class="link" style="margin-top: 10px;">New School Year</h3>
+              </div>
+          </div>
+            
+      </div>
+    </div>
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "section-create-form" %}',
+        url: '{% url "school-year-create-form" %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -21,16 +30,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".section-create-form", function() {
+  $(".content").on("submit", ".school-year-create-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "section-create-form" %}',
+        url: '{% url "school-year-create-form" %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'section-list' %}"
+                window.location = "{%url 'school-year-list' %}"
             }
             else {
                 console.log(data.form_is_valid);

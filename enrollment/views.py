@@ -382,10 +382,10 @@ def scholarshipList(request):
 def addScholarshipProfile(request):
     return render(request, 'enrollment/scholarship-list-add.html')
 def tableScholarshipList(request):
-    scholarship_list = getScholarshipList(request)
+    schoolyear_list = getScholarshipList(request)
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(scholarship_list, 5)
+    paginator = Paginator(schoolyear_list, 5)
     
     try:
         scholarship = paginator.page(page)
@@ -394,7 +394,7 @@ def tableScholarshipList(request):
     except EmptyPage:
         scholarship = paginator.page(paginator.num_pages)
         
-    context = {'scholarship_list': scholarship}
+    context = {'schoolyear_list': scholarship}
     html_form = render_to_string('enrollment/table-scholarship-list.html',
         context,
         request = request,
@@ -584,6 +584,55 @@ def editSubjectOfferingForm(request, pk='pk'):
         form = SubjectOfferingForms(instance = instance)
     context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance}
     data['html_form'] = render_to_string('enrollment/forms-subject-offering-edit.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+    
+#--------------------------------------SCHOOL YEAR------------------------------------------------
+
+def schoolYearList(request):
+    return render(request,'enrollment/schoolyear-list.html')
+
+def tableSchoolYearList(request):
+    schoolyear_list = School_Year.objects.all()
+    
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(schoolyear_list, 5)
+    
+    try:
+        school_year = paginator.page(page)
+    except PageNotAnInteger:
+        school_year = paginator.page(1)
+    except EmptyPage:
+        school_year = paginator.page(paginator.num_pages)
+        
+    context = {'schoolyear_list': school_year}
+    html_form = render_to_string('enrollment/table-schoolyear-list.html',
+        context,
+        request = request,
+    )
+    return JsonResponse({'html_form' : html_form})
+    
+def createSchoolYear(request):
+    return render(request,'enrollment/schoolyear-list-add.html')
+
+def form_createSchoolYear(request):
+    data = {'form_is_valid' : False }
+    last_schoolYear = getLatest(School_Year, School_Year._meta.pk)
+    
+    if request.method == 'POST':
+        form = School_YearForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = School_YearForm()
+    context = {'forms': form, 'schoolYear':last_schoolYear}
+    data['html_form'] = render_to_string('enrollment/forms-schoolyear-create.html',
         context,
         request=request,
     )
