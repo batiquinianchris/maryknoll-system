@@ -7,6 +7,7 @@ from .forms import *
 from dal import autocomplete
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 # Create your views here.
 from .models import *
 from registration.models import *
@@ -210,9 +211,11 @@ def sectionList(request):
 def addSection(request):
     return render(request, 'enrollment/section-list-add.html')
 
+    
 def sectionTable(request):
     section_list = getSectionList(request)
     print section_list
+    
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(section_list, 3)

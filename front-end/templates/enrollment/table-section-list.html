@@ -9,7 +9,7 @@
                       <a href="{% url 'section-detail' pk=section.section_ID %}"><h3 class="card-title">{{section.section_name}}</h3></a>
                     </div>
                     <div class="col-lg-6">
-                      <h4 class="card-title"><span class="student-count text-warning">42</span>/{{section.section_capacity}}</h4>
+                      <h4 class="card-title"><span class="student-count text-warning">{{section.enrollment_set.all|length}}</span>/{{section.section_capacity}}</h4>
                     </div>
                   </div>
                   <h6 class="card-subtitle mb-2 text-muted">Room:<br/><span class="card-text link">{{section.room}}</span></h6>
