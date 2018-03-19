@@ -30,7 +30,7 @@
     </div>
     <div class="col-md-4">
       <label>Date Enrolled:</label>
-      <p class="form-control-static">{% now "jS F Y H:i" %}</p>
+      <p class="form-control-static">{% now "jS F Y" %}</p>
       <!-- current Date and time?-->
     </div>
   </div>
@@ -46,15 +46,12 @@
       {{form.enrollment_status|add_class:"custom-select btn-block"|attr:"required"}}
     </div>
     <div class="col-md-4">
+        <label>Year Level:</label>
+      {{form.year_level|add_class:"custom-select btn-block"|attr:"required"}}
+    </div>
+    <div class="col-md-4">
       <label>Section: (Optional)</label>
       {{form.section|add_class:"custom-select btn-block"}}
-    </div>
-  </div>
-  <h5 class="sm-headings">Scholarships </h5>
-  <div class="row">
-    <div class="col-md-4">
-      <label>Scholarship Name:</label>    
-      <!-- Generate from Scholarships database-->
     </div>
   </div>
   <div class="btn-forms" style="display: flex; justify-content: flex-end">

@@ -100,7 +100,7 @@ class Enrollment(models.Model):
     # !!! 3/12/2018 -- Jim -- Where do we place the 'Assign scholarships to a student'
     school_year = models.ForeignKey('enrollment.School_Year', on_delete=models.CASCADE, default=0)
     date_enrolled = models.DateField(auto_now_add=True)
-    
+    year_level = models.ForeignKey('enrollment.YearLevel', on_delete=models.CASCADE)
     '''Type enum '''
     TYPE_CHOICES = (
         (PAID,'Paid'),
