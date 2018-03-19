@@ -7,8 +7,7 @@
     </a>
 </li>
 {% endblock %} {%load static%} {% block content %}
-<div class="container-fluid bg-content">
-    <div class="content container">
+
       <div class="seal"></div>
       <div class="row">
         <!--<div class="col-md-6">
@@ -16,7 +15,7 @@
             <h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
           </a>
         </div>-->
-        <div class="col-md-6">
+        <div class="col-md-6 no-print">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{%url 'dashboard' %}">Home</a></li>
@@ -26,8 +25,8 @@
           </nav>
         </div>      
       </div>
-      <div class="card">
-        <div class="card-block">
+      <div class="card container">
+          <div class="card-block inner ">
           <div class="row">
             <div class="col-md-12">
               <div class="row menu-flex">
@@ -36,7 +35,7 @@
                 </div>
                 <div class="col-md-4 line-break no-print">
                   <a href="javascript:window.print()" class="card-link btn btn-outline-primary line-break-child"><i class="fa fa-print" aria-hidden="true"></i> Print Student Profile</a>
-                  <a href="student-registration-list-add.html" class="btn btn-secondary view-button">Edit</a></td>
+                  <a href="{% url 'student-update' student.student_ID %}" class="btn btn-secondary view-button">Edit</a></td>
                 </div>
               </div>
               <div class="row">
@@ -65,6 +64,7 @@
               <li class="nav-item">
                 <a class="nav-link active" data-toggle="tab" href="#studentRegis">Registration</a>
               </li>
+              {% if records %}
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#studentAcc">Financial Records</a>
               </li>
@@ -77,6 +77,7 @@
               <li class="nav-item">
                 <a class="nav-link" data-toggle="tab" href="#studentScholarships">Scholarships</a>
               </li>
+              {% endif %}
             </ul>
             <div class="tab-content">
               <!-- STUDENT REGISTRATION -->
@@ -171,23 +172,22 @@
             </div>
           </div>
         </div>
-      </div>
-    </div>
   <!-- CONTENT -->
-  
-  <script type="text/javascript">
-    function deleteRow(obj, num){
-      $(obj).closest('tr').remove();
-      $.ajax({
-        url: '{% url "delete-scholar" %}?scholar='+num,
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-          generateScholarTable();
-        }
-      });
-    }
-  </script>
+ 
+
+<script type="text/javascript">
+  function deleteRow(obj, num){
+    $(obj).closest('tr').remove();
+    $.ajax({
+      url: '{% url "delete-scholar" %}?scholar='+num,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        generateScholarTable();
+      }
+    });
+  }
+</script>
 
 
 {#---------------------------BACKEND SCRIPTS -------------------------------#}

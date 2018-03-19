@@ -10,12 +10,8 @@
 {%load static%}
 {% block content %}
 <!-- FORM CONTENT -->
-<div class="container-fluid bg-content">
-  <div class="content container">
-    
-  </div>
-</div>
-
+{%endblock%}
+{%block backend_scripts%}
 <script>
 $(document).ready(function(){
     $('[data-toggle="tooltip"]').tooltip();   
@@ -41,8 +37,8 @@ $(function() {
   });
   
 });
-  $(".content").on("submit", ".js-student-create-form", function() {
-    
+$(".content").on("submit", ".js-student-create-form", function() {
+
     var form = $(this);
     $.ajax({
         url: '{% url "student-create" %}',
@@ -62,7 +58,5 @@ $(function() {
     
     return false;
 });
-
-
 </script>
 {%endblock%}
