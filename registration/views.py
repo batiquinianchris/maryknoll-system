@@ -284,6 +284,7 @@ def editEnrollment(request, pk='pk', template = 'registrar/student-registration/
     student = Student.objects.get(student_ID=student_ID)
     context = {'enrollment':registration, 'student':student}
     return render(request, template, context)
+    
 def form_editEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-edit.html'):
     student_ID = request.GET.get('student', None)
     student = Student.objects.get(student_ID=1)
