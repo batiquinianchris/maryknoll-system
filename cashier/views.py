@@ -169,7 +169,22 @@ def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledge
 # TRANSACTIONS #
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     registration = Enrollment.objects.get(enrollment_ID=pk)
-    context = {'registration':registration}
+    months = {
+        'A': 'January' ,
+        'B': 'Febuary' ,
+        'C': 'March' ,
+        'D': 'April' ,
+        'E': 'May' ,
+        'F': 'June' ,
+        'G': 'July' ,
+        'H': 'August' ,
+        'I': 'September' ,
+        'J': 'October' ,
+        'K': 'November' ,
+        'L': 'December' ,
+    }
+    
+    context = {'registration':registration,}
     return render(request,template,context)
 
 def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
