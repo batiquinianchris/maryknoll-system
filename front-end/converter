@@ -1,74 +1,40 @@
-def sectionList(request):
-    return render(request,'enrollment/section-list.html')
-    
-def addSection(request):
-    return render(request, 'enrollment/section-list-add.html')
-
-    
-def sectionTable(request):
-    section_list = getSectionList(request)
-    print section_list
-    
-    #Pagination
-    page = request.GET.get('page', 1)
-    paginator = Paginator(section_list, 3)
-    
-    try:
-        section = paginator.page(page)
-    except PageNotAnInteger:
-        section = paginator.page(1)
-    except EmptyPage:
-        section = paginator.page(paginator.num_pages)
-        
-    context = {'section_list': section}
-    html_form = render_to_string('enrollment/table-section-list.html',
-        context,
-        request = request,
-    )
-    return JsonResponse({'html_form' : html_form})
-
-def generateSectionForm(request):
-    data = {'form_is_valid' : False }
-    try:
-        last_section = Section.objects.latest('section_ID')
-    except:
-        last_section = None
-    if request.method == 'POST':
-        form = SectionForms(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.section_status = 'a'
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = SectionForms()
-    context = {'forms': form, 'section':last_section}
-    print(form.is_valid())
-    print(form.errors)
-    data['html_form'] = render_to_string('enrollment/forms-section-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
-    
-
-def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
-    instance = get_object_or_404(Section, pk=pk)
-    return render(request, template, {'instance': instance})
-    
-def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
-    instance = get_object_or_404(Section, pk=pk)
-    data = {'form_is_valid' : False }
-    last_section = getLatest(Section,'section_ID')
-
-    forms = updateInstance(request, SectionForms, instance)
-
-    if forms.is_valid():
-        data['form_is_valid'] = True
-    else:
-        data['form_is_valid'] = False
-
-    context = {'forms': forms, 'section':last_section, 'instance': instance}
-    return ajaxTable(request,template,context,data)
+<form>
+              <div class="row">
+                <div class="col-md-4">
+                <label>Scholarship ID:</label>
+                  <p class="form-control-static">0002</p><!--incremental-->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Scholarship Name:</label>
+                  {{form.scholarship_name|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
+                    {% if form.scholarship_name.errors %}
+                      <p class="help-block">{{ form.scholarship_name.errors }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-6">
+                  <label>Scholarship Reductions:</label>
+                  {{form.fee_amount|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+                    {% if form.fee_amount.errors %}
+                      <p class="help-block">{{ form.fee_amount.errors }}</p>
+                    {% endif %}
+          </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Scholarship Type:</label>
+                  {{form.scholarship_type|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+                    {% if form.scholarship_type.errors %}
+                      <p class="help-block">{{ form.scholarship_type.errors }}</p>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                  <label>Valid for:</label>
+                  {{form.school_year|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
+                    {% if form.school_year.errors %}
+                      <p class="help-block">{{ form.school_year.errors }}</p>
+                    {% endif %}
+                </div>
+              </form>
