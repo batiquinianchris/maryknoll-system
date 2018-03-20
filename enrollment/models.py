@@ -50,7 +50,7 @@ class Curriculum(models.Model):
     def get_year(self):
         return self.curriculum_year.year
     def __str__(self):
-        return "%s" % (self.curriculum_year)
+        return "%s" % (self.curriculum_year.year)
         
     def get_abosulute_url(self):
 	    return reverse('curriculum-list', kwargs={"id": self.curriculum_ID})
