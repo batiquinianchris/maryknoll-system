@@ -243,9 +243,10 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
     student = get_object_or_404(Student, pk=pk)
     enrollment_list = Enrollment.objects.filter(student = student)
+    scholarship_list = StudentScholar.objects.filter(registration=enrollment_list[0])
     enrollment = paginateThis(request, enrollment_list, 10)
 
-    context = {'enrollment_list': enrollment, 'student':student}
+    context = {'enrollment_list': enrollment, 'student':student, 'scholarship': scholarship_list}
 
     return ajaxTable(request, template, context)
 

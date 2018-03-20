@@ -18,7 +18,12 @@
       <td>{{record.date_enrolled}}</td>
       <td>{{record.get_enrollment_status_display}}</td>
       <!-- If paid, tag as enrolled. Else, pending-->
-      <td class="no-print"><span class="no-print"><i class="fa fa-circle active-status"></i> </span> Active</td>
+      {% if scholarship %}
+        <td class="no-print"><span class="no-print"><i class="fa fa-circle active-status"></i> </span> Active</td>
+      {% else %}
+        <td class="no-print"><span class="no-print"><i class="fa fa-circle inactive-status"></i> </span> Inactive</td>
+      {% endif %}
+
       <td class="no-print text-center">
         <button type="button" class="btn btn-success btn-sm view-button" data-toggle="modal" data-target="#viewModal">View</button>
         <div class="modal fade" id="viewModal" tabindex="-1" role="dialog" aria-labelledby="viewModal" aria-hidden="true">

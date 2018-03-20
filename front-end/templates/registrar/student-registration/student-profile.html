@@ -47,7 +47,7 @@
                   <h6 class="card-subtitle link mb-2 ">Date of Birth: <span class="text-muted">{{student.birthdate}}</span></h6>
                 </div>
                 <div class="col-sm-4 no-print">
-                  <h6 class="card-subtitle link mb-2 ">Sex: <span class="text-muted"> {{student.gender}}</span></h6>
+                  <h6 class="card-subtitle link mb-2 ">Sex: <span class="text-muted"> {{student.get_gender_display}}</span></h6>
                   <h6 class="card-subtitle link mb-2 ">Home Address: <span class="text-muted"> {{student.home_addr}}</span></h6>
                   <h6 class="card-subtitle link mb-2 ">Postal Address: <span class="text-muted"> {{student.postal_addr}}</span></h6>
                 </div>
@@ -416,6 +416,7 @@
       dataType: 'json',
       success: function(data) {
         $(".scholarship-table").html(data.html_form);
+        generateStudentTable();
       }
     });
   }
