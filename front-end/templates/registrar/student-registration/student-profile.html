@@ -290,62 +290,22 @@
                 </div>
               </div>
               <div class="tab-pane container" id="studentLedger">
-                      <div class="row records">
-                        <div class="col-md-8 no-print">
-                          <h2>Payment Logs</h2>
-                        </div>
-                        <div class="col-md-4">
+                  <div class="row records">
+                      <div class="col-md-8 no-print">
+                          <h2>Transaction Logs</h2>
+                      </div>
+                      <div class="col-md-4">
                           <div class="btn-group float-right no-print">
-                            {% if record %}
-                            <a href="{% url 'transaction' record.enrollment_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create New Transaction</a>
-                            {% endif %}
+                              {% if record %}
+                                <a href="{% url 'transaction' record.enrollment_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create New Transaction</a>
+                              {% endif %}
                           </div>
-                        </div>
                       </div>
-                      <div class="row table-records table-responsive">
-                        <table class="table table-bordered bg-nav table-hover ledger">
-                          <thead class="thead-light">
-                            <tr>
-                              <!-- Refer to database for headings -->
-                              <th scope="col">Student ID</th>
-                              <th scope="col">Full Name</th>
-                              <th scope="col">Year/Grade</th>
-                              <th scope="col" class="no-print">Status</th>
-                              <th scope="col" class="no-print">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr>
-                              <td>0001</td>
-                              <td>Brown, Millie-Bobbie</td>
-                              <td>Grade 10</td>
-                              <td class="no-print"><i class="fa fa-circle active-status"></i> Active</td>
-                              <td class="text-center no-print"><a href="student-ledger.html" class="btn btn-secondary btn-sm view-button">View</a></td>
-                            </tr>
-                            <tr>
-                              <td>0002</td>
-                              <td>Dyer, Natalia</td>
-                              <td>Grade 6</td>
-                              <td class="no-print"><i class="fa fa-circle active-status"></i> Active</td>
-                              <td class="text-center no-print"><a href="student-ledger.html" class="btn btn-secondary btn-sm view-button">View</a></td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                      <nav aria-label="Page navigation" class="no-print">
-                        <ul class="pagination pagination-md justify-content-center">
-                          <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
-                          </li>
-                          <li class="page-item"><a class="page-link" href="#">1</a></li>
-                          <li class="page-item"><a class="page-link" href="#">2</a></li>
-                          <li class="page-item"><a class="page-link" href="#">3</a></li>
-                          <li class="page-item">
-                            <a class="page-link" href="#">Next</a>
-                          </li>
-                        </ul>
-                      </nav>
-              </div>
+                      
+                      <div class="row table-records table-responsive ledger-table">
+                      </div>    
+                  </div>
+                </div>
               <div class="tab-pane container" id="studentScholarships">
                 <div class="row records">
                   <div class="col-md-8 no-print">
@@ -394,9 +354,21 @@
     generateStudentTable();
     {% if record %}
       generateScholarTable();
+      generateTransactionTable();
     {% endif %}
     
   });
+
+  function generateTransactionTable(){
+    $.ajax({
+      url: '{% url "student-transaction-log" record.enrollment_ID %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $(".ledger-table").html(data.html_form);
+      }
+    });
+  }
 
   function generateStudentTable(){
     $.ajax({
@@ -408,6 +380,7 @@
       }
     });
   }
+
   {% if record %}
   function generateScholarTable(){
     $.ajax({

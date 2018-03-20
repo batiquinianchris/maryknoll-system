@@ -21,6 +21,7 @@ from django.db import models
 from django.http import StreamingHttpResponse
 from django.views.generic import View
 import csv
+from cashier.models import *
 from django.http import HttpResponseRedirect
 # Global Functions - can be applied anywhere
 # EXPORT TO CSV class is at the bottom-most part of this code
@@ -342,7 +343,15 @@ def StudentScholarFormView(request, pk='pk',template = "registrar/student-regist
     context = {'form':form, 'student':regist.student}
 
     return render(request, template, context)
-        
+
+def tableTransactionLogs(request,pk='pk',template="registrar/student-registration/table-transaction-logs.html"):
+    registration = Enrollment.objects.get(enrollment_ID=pk)
+
+    transaction_list = EnrollmentTransactionsMade.objects.filter(student=registration)
+
+    context = {'transaction_list': transaction_list}
+    return ajaxTable(request,template,context)
+
 ''' EXPORTING TO CSV '''
 #Call the second class.as_view() to generate CSV
 class Echo(object):

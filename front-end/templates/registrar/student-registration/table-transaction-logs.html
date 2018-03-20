@@ -1,0 +1,42 @@
+<table class="table table-bordered bg-nav table-hover">
+        <thead class="thead-light">
+        <tr>
+            <!-- Refer to database for headings -->
+            <th scope="col">Date</th>
+            <th scope="col">Particular Name</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Amount Paid</th>
+            <th scope="col" class="no-print">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for transaction in transaction_list_enrollment %}
+                <tr>
+                    <td>{{transaction.date_paid}}</td>
+                    <td>Enrollment - {{transaction.particular_name}}</td>
+                    <td>{{transaction.payment_method}}</td>
+                    <td><span class="currency"> {{transaction.get_total_sum}}</span></td>
+                    <td class="text-center no-print"><a href="{%url 'student-ledger' %}" class="btn btn-success btn-sm view-button">View</a></td>
+                </tr>
+            {%empty%}
+                <tr>
+                    <td colspan="5" class="text-center">No transactions made yet</td>
+                </tr>
+            {% endfor %}
+            {# Others Transaction #}
+        
+        </tbody>
+    </table>
+    </div>
+    <nav aria-label="Page navigation" class="no-print">
+    <ul class="pagination pagination-md justify-content-center">
+        <li class="page-item disabled">
+        <a class="page-link" href="#" tabindex="-1">Previous</a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <a class="page-link" href="#">Next</a>
+        </li>
+    </ul>
+    </nav>

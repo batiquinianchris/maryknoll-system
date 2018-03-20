@@ -82,7 +82,10 @@ def getTotalpayment(registration):
     for transaction in transacts_list:
         transaction_list = EnrollmentORDetails.objects.filter(ORnumber=transaction)
         transact_total = transaction_list.aggregate(Sum('money_given'))
-        amount += transact_total['money_given__sum']
+        if transact_total['money_given__sum'] == None:
+            amount = 0
+        else:
+            amount += transact_total['money_given__sum']
     return amount
 def getTotalDeductions(registration):
     scholar_list = StudentScholar.objects.filter(registration=registration)
@@ -182,23 +185,70 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
     totalPaymentOfStudent = getTotalpayment(registration)
     if totalPaymentOfStudent == None:
         totalPaymentOfStudent = float(0)
-    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent
+    
     
     deductions = getTotalDeductions(registration)
-    
+    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
     #print account_balance
     context = {'student': registration.student,
         'account_balance':account_balance, 
         'amount_paid': totalPaymentOfStudent,
-        'scholarship_deductions': deductions,    
+        'scholarship_deductions': deductions,
+        'registration':registration 
     }
 
     return ajaxTable(request,template,context)
 @csrf_exempt
 def testView(request,pk='pk', template="test.html"):
+    registration= Enrollment.objects.get(enrollment_ID = pk)
     if request.method == 'POST':
-        selectedpackages = json.loads(request.body)
-        print selectedpackages
-    context = {}
+        try:
+            data = json.loads(request.body)
+            if data['particularType'] == 'EnrollmentFee':
+                # For full payment
+                if data['paymentType'] == 'Full':
+                    if data['payment_method'] != 'Others':
+                        new_transaction = EnrollmentTransactionsMade.objects.create(
+                            student = registration,
+                            # Details
+                            particular_name = 'ENROLLMENT',
+                            # Details
+                            payment_type = 'FULL',
+                            # Details
+                            month = None,
+                            date_paid = datetime.date.today(),
+                            payment_method = data['payment_method'],
+                        )
+                        transaction = EnrollmentTransactionsMade.objects.latest('date_paid')
+                        new_payment = EnrollmentORDetails.objects.create(
+                            ORnumber = new_transaction,
+                            Particular_being_paid = data['particularType'],
+                            money_given = data['payment_amount']
+                        )
+                elif data['paymentType'] == 'Partial':
+                    if data['payment_method'] != 'Others':
+                        new_transaction = EnrollmentTransactionsMade.objects.create(
+                            student = registration,
+                            # Details
+                            particular_name = 'ENROLLMENT',
+                            # Details
+                            payment_type = 'PARTIAL',
+                            # Details
+                            month = None,
+                            date_paid = datetime.date.today(),
+                            payment_method = data['payment_method'],
+                        )
+                        new_payment = EnrollmentORDetails.objects.create(
+                            ORnumber = new_transaction,
+                            Particular_being_paid = data['particularType'],
+                            money_given = data['payment_amount']
+                        )
+
+                        print "%s - %s" % (str(new_transaction), str(new_payment))
+        except Exception as error:
+            print error
+            return HttpResponseRedirect('student-list')        
+        
+    context = {'something':data}
     return ajaxTable(request,template,context)
 # END DAILY CASH #

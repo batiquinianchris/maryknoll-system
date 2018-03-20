@@ -193,7 +193,7 @@ $(function(){
     setTimeout(function(){ init(); }, 50);
 });
 $('.user').click(function(){
-    alert(backEndDataObject.payment_method)
+    console.log(backEndDataObject)
 });
 function generateSummaryCard(){
     $.ajax({
@@ -237,33 +237,33 @@ function clear(){
 $("#particularList").change(function(){
     if ($(this).val() != "None"){
         backEndDataObject.particularType = $(this).val()
-        alert(backEndDataObject.particularType)
+        //alert(backEndDataObject.particularType)
     }
 });
 $("#paymentType").change(function(){
     if ($(this).val() != "None"){
         backEndDataObject.paymentType = $(this).val()
-        alert(backEndDataObject.paymentType)
+        //alert(backEndDataObject.paymentType)
     }
 });
 
 function appendMonth(particularNum){
     if (event.target.value != "None"){
         backEndDataObject.months.push(event.target.value);
-        alert(backEndDataObject.months[toString(particularNum)])
+        //alert(backEndDataObject.months[toString(particularNum)])
         
     }
 }
 function recordTuitionPayment(paymentNum){
     if (event.target.value != 0){
-        backEndDataObject.tuitionAmountpush(event.target.value);
-        alert(backEndDataObject.tuitionAmount[toString(paymentNum)])
+        backEndDataObject.tuitionAmount.push(event.target.value);
+        //alert(backEndDataObject.tuitionAmount[toString(paymentNum)])
     }
 }
 function recordEnrollmentPartial(){
     if (event.target.value != 0){
         backEndDataObject.partialAmount = event.target.value;
-        alert(backEndDataObject.partialAmount)
+        //alert(backEndDataObject.partialAmount)
     }
 }
 

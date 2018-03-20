@@ -24,4 +24,5 @@ urlpatterns = [
         url(r'^scholarship-table/(?P<pk>\d+)$', table_studentScholar, name='student-scholars-table'),
         url(r'^scholarship-delete/$', deleteScholar, name='delete-scholar'),
         url(r'^scholarship-add/(?P<pk>\d+)$', StudentScholarFormView, name='student-scholars-add'),
+        url(r'^transaction-logs/(?P<pk>\d+)$', tableTransactionLogs , name='student-transaction-log'),
     ]

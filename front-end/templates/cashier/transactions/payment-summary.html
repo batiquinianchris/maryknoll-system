@@ -145,6 +145,7 @@ $("#paymentMethod").change(function(){
     
     if($(this).val() != "None"){
         backEndDataObject.payment_method = $(this).val()
+        //alert(backEndDataObject.payment_method)
     }
     if ($(this).val() == "Others"){
         //$('#paymentOthers').append(method);
@@ -168,7 +169,7 @@ $("#paymentMethod").change(function(){
 function sendData(){
     jsonData = JSON.stringify(backEndDataObject)
     $.ajax({
-        url: '{% url "printJson"%}',
+        url: '{% url "printJson" registration.enrollment_ID %}',
         type: 'POST',
         dataType: 'json',
         data: jsonData,
@@ -180,13 +181,13 @@ function sendData(){
 function recordAmount(){
     if (event.target.value != 0){
         backEndDataObject.payment_amount = event.target.value;
-        alert(backEndDataObject.payment_amount)
+        //alert(backEndDataObject.payment_amount)
     }
 }
 function recordORNum(){
     if (event.target.value != 0){
         backEndDataObject.ORNumber = event.target.value;
-        alert(backEndDataObject.ORNumber)
+        //alert(backEndDataObject.ORNumber)
     }
 }
 </script>

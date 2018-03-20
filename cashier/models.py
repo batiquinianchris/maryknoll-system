@@ -20,7 +20,7 @@ class EnrollmentBreakdown(models.Model):
 
     def __str__(self):
         """Unicode representation of EnrollmentBreakdown."""
-        return " %s costs %s " % (self.payable_name, str(self.fee_amount))
+        return " %s" (self.payable_name)
 
 
 class EnrollmentTransactionsMade(models.Model):
@@ -77,18 +77,25 @@ class EnrollmentTransactionsMade(models.Model):
         verbose_name = 'EnrollmentTransactionsMade'
         verbose_name_plural = 'EnrollmentTransactionsMades'
 
+    def get_total_sum(self):
+        #Get list of fees for a grade level
+        fees_list = EnrollmentORDetails.objects.filter(ORNumber=self)
+        #Get total amount of fees
+        amount = fees_list.aggregate(Sum('money_given'))
+        return amount
+
     def __str__(self):
         """Unicode representation of EnrollmentTransactionsMade."""
-        pass
+        return str(self.ORnum)
 
 
 class EnrollmentORDetails(models.Model):
     """Model definition for OR_Details."""
     ORnumber = models.ForeignKey(
-        'EnrollmentTransactionsMade', on_delete=models.CASCADE)
+        EnrollmentTransactionsMade, on_delete=models.CASCADE)
     Particular_being_paid = models.CharField(max_length=50)
     money_given = models.FloatField()
-
+    #remarks
     class Meta:
         """Meta definition for OR_Details."""
 
@@ -97,7 +104,7 @@ class EnrollmentORDetails(models.Model):
 
     def __str__(self):
         """Unicode representation of OR_Details."""
-        pass
+        return "%s - %s" %(self.Particular_being_paid, str(self.money_given))
 
 
 class OthersTransactionsMade(models.Model):
