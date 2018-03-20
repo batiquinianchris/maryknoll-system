@@ -382,7 +382,7 @@ def scholarshipList(request):
 def addScholarshipProfile(request):
     return render(request, 'enrollment/scholarship-list-add.html')
 def tableScholarshipList(request):
-    schoolyear_list = getScholarshipList(request)
+    schoolyear_list = Scholarship.objects.all()
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(schoolyear_list, 5)
@@ -394,7 +394,7 @@ def tableScholarshipList(request):
     except EmptyPage:
         scholarship = paginator.page(paginator.num_pages)
         
-    context = {'schoolyear_list': scholarship}
+    context = {'scholarship_list': scholarship}
     html_form = render_to_string('enrollment/table-scholarship-list.html',
         context,
         request = request,

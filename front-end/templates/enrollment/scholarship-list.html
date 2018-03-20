@@ -8,8 +8,6 @@
 {%load static%}
 {% block content %}
     <!-- CONTENT -->
-    <div class="container-fluid bg-content">
-      <div class="content">
         <h2> Scholarships </h2>
         <div class="row search-bar">
           <div class="col-lg-6">
@@ -45,8 +43,6 @@
           
         </div>
         
-      </div>
-    </div>
     <!-- CONTENT -->
 
     <!-- Allows dropdown menu to select child -->
@@ -66,7 +62,7 @@ var search_data = "None";
     });
   });
 </script>
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{#-- ---------------------------BACKEND SCRIPTS -------------------------------#}
 <script>
 $(function() {
   $.ajax({
