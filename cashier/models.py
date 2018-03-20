@@ -62,8 +62,15 @@ class EnrollmentTransactionsMade(models.Model):
         choices=month_CHOICES,
         null=True, blank=True)
     date_paid = models.DateField()
-    ORnum = models.IntegerField()
-    
+    ORnum = models.IntegerField(blank=True,null=True)
+    method_CHOICES = (
+        ('Cash', 'Cash'),
+        ('Cheque', 'Cheque'),
+        ('Promissory', 'Others'),
+        ('Others', 'Others'),
+    )
+    payment_method = models.CharField(max_length=50,
+    choices=method_CHOICES,)
     class Meta:
         """Meta definition for EnrollmentTransactionsMade."""
 

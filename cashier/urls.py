@@ -16,4 +16,5 @@ urlpatterns += [
     url(r'^transaction/(?P<pk>\d+)$', views.transactionView , name='transaction'),
     url(r'^transaction/payment-summary/(?P<pk>\d+)$', views.summaryView , name='payment-summary'),
     url(r'^transaction/history-table/(?P<pk>\d+)$', views.tableTransactions , name='transaction-history'),
+    url(r'^printJson/$', views.testView , name='printJson'),
 ]

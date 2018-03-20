@@ -392,7 +392,10 @@
 <script>
   $(function() {
     generateStudentTable();
-    generateScholarTable();
+    {% if record %}
+      generateScholarTable();
+    {% endif %}
+    
   });
 
   function generateStudentTable(){
@@ -405,7 +408,7 @@
       }
     });
   }
-
+  {% if record %}
   function generateScholarTable(){
     $.ajax({
       url: '{% url "student-scholars-table" record.enrollment_ID %}',
@@ -416,5 +419,6 @@
       }
     });
   }
+  {%endif%}
 </script>
 {%endblock%}
