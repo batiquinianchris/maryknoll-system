@@ -56,4 +56,9 @@ urlpatterns = [
         url(r'^school-year-list/table$', views.tableSchoolYearList, name = 'school-year-table'),
         url(r'^school-year-list/add$', views.createSchoolYear, name = 'school-year-create'),
         url(r'^school-year-list/add-form$', views.form_createSchoolYear, name = 'school-year-create-form'),
+        
+        url(r'^school-year-list/update/(?P<pk>\d+)$', views.editSchoolYear, name = 'school-year-edit'),
+        url(r'^school-year-list/edit-form/(?P<pk>\d+)$', views.form_editSchoolYear, name = 'school-year-edit-form'),
+        
+        
     ]

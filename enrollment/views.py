@@ -638,3 +638,22 @@ def form_createSchoolYear(request):
         request=request,
     )
     return JsonResponse(data)
+
+def editSchoolYear(request, pk='pk',template = 'enrollment/schoolyear-list-update.html'):
+    instance = get_object_or_404(School_Year, pk=pk)
+    return render(request, template, {'instance': instance})
+    
+def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-schoolyear-edit.html'):
+    instance = get_object_or_404(School_Year, pk=pk)
+    data = {'form_is_valid' : False }
+    last_school_year = getLatest(School_Year, School_Year._meta.pk)
+
+    forms = updateInstance(request, School_YearForm, instance)
+
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
+    return ajaxTable(request,template,context,data)

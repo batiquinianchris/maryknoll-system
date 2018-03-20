@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{%load static%}
+{% block content %}
+    <!-- FORM CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content container">
+        <form class="heading-label">
+          <div class="row">
+            <div class="col">
+              <h3 class="link" style="margin-top: 10px;">New School Year</h3>
+              </div>
+          </div>
+            
+      </div>
+    </div>
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "school-year-edit-form" instance.pk %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".content").html(data.html_form);
+        }
+  });
+  
+  $(".content").on("submit", ".school-year-edit-form", function() {
+    var form = $(this);
+    $.ajax({
+        url: '{% url "school-year-edit-form" instance.pk %}',
+        data: form.serialize(),
+        type: form.attr("method"),
+        dataType: 'json',
+        success: function(data) {
+            if (data.form_is_valid) {
+                window.location = "{%url 'school-year-list' %}"
+            }
+            else {
+                console.log(data.form_is_valid);
+                $(".content").html(data.html_form);
+            }
+        }
+    });
+    return false;
+});
+});
+
+
+</script>
+{%endblock%}

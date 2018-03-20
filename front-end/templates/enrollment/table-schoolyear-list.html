@@ -11,7 +11,7 @@
       {%for sy in schoolyear_list%}
       <td>{{sy.year_name}}</td>
       <td class="text-center">
-        <a href="schoolyear-list-add.html" class="btn btn-secondary btn-sm view-button">Edit</a>
+        <a href="{% url 'school-year-edit' sy.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a>
         <button type="button" onclick="deleteRow(this)" class="btn btn-sm btn-danger view-button">Delete</button></td>
     </tr>
     {% empty %}
