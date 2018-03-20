@@ -8,7 +8,8 @@ from django.db.models import Sum
 # FOR AJAX IMPORTS
 from django.template.loader import render_to_string
 from django.http import JsonResponse
-
+import json
+from django.views.decorators.csrf import csrf_exempt
 # IMPORTED MODELS
 from .models import *
 from registration.models import *
@@ -87,7 +88,7 @@ def getTotalDeductions(registration):
     scholar_list = StudentScholar.objects.filter(registration=registration)
     amount = float(0)
     for scholarship in scholar_list:
-        amount += scholarship.scholar.fee_amount
+        amount += scholarship.scholarship.fee_amount
     return amount
 # Views
 def index(request):
@@ -169,21 +170,6 @@ def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledge
 # TRANSACTIONS #
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     registration = Enrollment.objects.get(enrollment_ID=pk)
-    months = {
-        'A': 'January' ,
-        'B': 'Febuary' ,
-        'C': 'March' ,
-        'D': 'April' ,
-        'E': 'May' ,
-        'F': 'June' ,
-        'G': 'July' ,
-        'H': 'August' ,
-        'I': 'September' ,
-        'J': 'October' ,
-        'K': 'November' ,
-        'L': 'December' ,
-    }
-    
     context = {'registration':registration,}
     return render(request,template,context)
 
@@ -208,5 +194,11 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
     }
 
     return ajaxTable(request,template,context)
-
+@csrf_exempt
+def testView(request,pk='pk', template="test.html"):
+    if request.method == 'POST':
+        selectedpackages = json.loads(request.body)
+        print selectedpackages
+    context = {}
+    return ajaxTable(request,template,context)
 # END DAILY CASH #

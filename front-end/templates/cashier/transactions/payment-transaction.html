@@ -92,7 +92,7 @@
                 <div class="col-md-6">
                 <div class="partial"> 
                     <label class="card-subtitle">Amount:</label>  
-                    <input type="text" class="form-control">
+                    <input onchange="recordEnrollmentPartial();" type="text" class="form-control">
                 </div>
                 </div>
             </div>
@@ -186,12 +186,14 @@
 <script src="{% static '02-javascript/cashier-scripts.js' %}"></script>
 <script>
 $(function(){
+    //Initializes object for serializing
+    clear()
     //Some delay because cannot point to a non existent class(coz ajax has delay lol)
     generateSummaryCard();
     setTimeout(function(){ init(); }, 50);
 });
 $('.user').click(function(){
-    alert(backEndDataObject.months)
+    alert(backEndDataObject.payment_method)
 });
 function generateSummaryCard(){
     $.ajax({
@@ -205,16 +207,33 @@ function generateSummaryCard(){
     
     
 }
-//Sends this to the server through ajax. Data will be appended based on the user activity
 var backEndDataObject = {
     "particularType":"",
     "paymentType" : "",
     "partialAmount" : "",
-    "months" : {},
-    "tuitionAmount" : {},
+    "months" : [],
+    "tuitionAmount" : [],
     "payments": 0,
+    "payment_method":"",
+    "ORNumber":"",
+    "payment_amount":0.0,
 }
-
+var change = 0.0
+//Removes all data gathered
+function clear(){
+    //Sends this to the server through ajax. Data will be appended based on the user activity
+    var backEndDataObject = {
+        "particularType":"",
+        "paymentType" : "",
+        "partialAmount" : "",
+        "months" : {},
+        "tuitionAmount" : {},
+        "payments": 0,
+        "payment_method":"",
+        "ORNumber":"",
+        "payment_amount":0.0,
+    }
+}
 $("#particularList").change(function(){
     if ($(this).val() != "None"){
         backEndDataObject.particularType = $(this).val()
@@ -230,23 +249,23 @@ $("#paymentType").change(function(){
 
 function appendMonth(particularNum){
     if (event.target.value != "None"){
-        backEndDataObject.months[toString(particularNum)] = event.target.value;
+        backEndDataObject.months.push(event.target.value);
         alert(backEndDataObject.months[toString(particularNum)])
         
     }
 }
 function recordTuitionPayment(paymentNum){
     if (event.target.value != 0){
-        backEndDataObject.tuitionAmount[toString(paymentNum)] = event.target.value;
+        backEndDataObject.tuitionAmountpush(event.target.value);
         alert(backEndDataObject.tuitionAmount[toString(paymentNum)])
     }
 }
-$("#paymentType").change(function(){
-    if ($(this).val() != "None"){
-        backEndDataObject.paymentType = $(this).val()
-        alert(backEndDataObject.paymentType)
+function recordEnrollmentPartial(){
+    if (event.target.value != 0){
+        backEndDataObject.partialAmount = event.target.value;
+        alert(backEndDataObject.partialAmount)
     }
-});
+}
 
 </script>
 
