@@ -1,40 +1,22 @@
-<form>
-              <div class="row">
-                <div class="col-md-4">
-                <label>Scholarship ID:</label>
-                  <p class="form-control-static">0002</p><!--incremental-->
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <label>Scholarship Name:</label>
-                  {{form.scholarship_name|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
-                    {% if form.scholarship_name.errors %}
-                      <p class="help-block">{{ form.scholarship_name.errors }}</p>
-                    {% endif %}
-                </div>
-                <div class="col-md-6">
-                  <label>Scholarship Reductions:</label>
-                  {{form.fee_amount|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
-                    {% if form.fee_amount.errors %}
-                      <p class="help-block">{{ form.fee_amount.errors }}</p>
-                    {% endif %}
-          </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-4">
-                  <label>Scholarship Type:</label>
-                  {{form.scholarship_type|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
-                    {% if form.scholarship_type.errors %}
-                      <p class="help-block">{{ form.scholarship_type.errors }}</p>
-                    {% endif %}
-                </div>
-                <div class="col-md-4">
-                  <label>Valid for:</label>
-                  {{form.school_year|add_class:"form-control"|attr:"placeholder = Enter First Name"}}
-                    {% if form.school_year.errors %}
-                      <p class="help-block">{{ form.school_year.errors }}</p>
-                    {% endif %}
-                </div>
-              </form>
+def editSchoolYear(request, pk='pk',template = 'enrollment/school-year-list-edit.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, template, {'instance': instance})
+    
+def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-school-year-edit.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    data = {'form_is_valid' : False }
+    last_school_year = getLatest(Section, Section._meta.pk)
+
+    forms = updateInstance(request, SectionForms, instance)
+
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
+    return ajaxTable(request,template,context,data)
+    
+
+url(r'^school-year-list/update/(?P<pk>\d+)$', views.editSchoolYear, name = 'school-year-edit'),
+url(r'^school-year-list/edit-form/(?P<pk>\d+)$', views.form_editSchoolYear, name = 'school-year-edit-form'),

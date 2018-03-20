@@ -1,0 +1,21 @@
+{% load widget_tweaks %}
+<!-- FORM CONTENT -->
+<form method="POST" action="{% url 'school-year-edit-form' instance.pk %}"class="heading-label school-year-edit-form">
+{% csrf_token %}
+      <!-- Emp First Name -->
+      <div class="row">
+        <div class="col-md-4">
+          <label>School Year:</label>
+          {{forms.year_name|add_class:"form-control"}}
+        </div>
+        <div class="col-sm-4">
+          <label>Curriculum Year:</label>
+          {{forms.curriculum|add_class:"form-control"}}
+        </div>
+      </div>
+    <div class="btn-forms" style="display: flex; justify-content: flex-end">
+    <a href="{% url 'school-year-list' %}" class="btn btn-link">Cancel</a>
+    <input type="submit" class="btn btn-primary" value="Save School Year Details"></input>
+    <!---<a href="#" type="submit" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save School Year Details</a>-->
+  </div>
+</form>
