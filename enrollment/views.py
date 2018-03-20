@@ -382,7 +382,7 @@ def scholarshipList(request):
 def addScholarshipProfile(request):
     return render(request, 'enrollment/scholarship-list-add.html')
 def tableScholarshipList(request):
-    schoolyear_list = Scholarship.objects.all()
+    schoolyear_list = getScholarshipList(request)
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(schoolyear_list, 5)
