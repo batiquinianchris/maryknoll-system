@@ -4,8 +4,6 @@
 </li>
 {% endblock %} {%load static%} {% block content %}
 <!-- CONTENT -->
-<div class="container-fluid bg-content">
-  <div class="content">
     <div class="row records">
       <div class="col">
         <h2> Curriculum List</h2>
@@ -17,6 +15,7 @@
             {% if disabled == True  %}
               <a href="#" class="add-button btn btn-primary flex-item disabled"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
               <!-- BACK END PROCESSES -->
+              
             {% else %}
             <a href="javascript:initCurriculum()" class="add-button btn btn-primary flex-item"><i class="fa fa-plus" aria-hidden="true"></i> Initialize New Curriculum</a>
             <!-- BACK END PROCESSES -->
@@ -44,8 +43,6 @@
         </li>
       </ul>
     </nav>
-  </div>
-</div>
 <!-- CONTENT -->
 
 <!-- JQUERY -->

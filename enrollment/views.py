@@ -496,7 +496,8 @@ def editScholarshipForm(request, pk='pk'):
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 @login_required
 def subjectOfferingList(request, pk='pk'):
-    context = {}
+    school_year = School_Year.objects.get(pk=pk)
+    context = {'school_year': school_year}
     return render(request, 'enrollment/subject-offering.html', context)
 def newSchoolYear(request):
     school_year = School_Year.objects.latest('date_start')

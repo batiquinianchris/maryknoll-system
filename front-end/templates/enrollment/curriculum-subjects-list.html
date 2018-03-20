@@ -1,11 +1,9 @@
 {% extends 'base.html' %} {% block settings %}
 <li class="nav-item active-menu">
-  <a class="nav-link" href="{% url 'admin-settings' %}" style="color: #4688F1;">Settings</a>
+  <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
 </li>
 {% endblock %} {%load static%} {% block content %}
 <!-- CONTENT -->
-<div class="container-fluid bg-content">
-  <div class="content">
     <a href="{%url 'curriculum-list' %}">
       <h4 class="no-print"><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
     </a>
@@ -26,12 +24,11 @@
           </div>
         </div>
         <div class="row table-records table-responsive" id="curriculum-subject-listings">
-          <!--- INSERT TABLE HERE --->
+          
 
         </div>
       </div>
     </div>
-  </div>
 
 </div>
 <!-- CONTENT -->

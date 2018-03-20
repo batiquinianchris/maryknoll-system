@@ -64,10 +64,14 @@
         <br/>
     </div>
     <div class="col-lg-4">
-        <h3 class="link"> Offerings </h3>
-        <a href="#" class="grey">
-            <i class="fa fa-user" aria-hidden="true"></i> View Subject Offerings</a>
-        <br/>
+        
+        {% if school_year %}
+          <h3 class="link"> Offerings </h3>
+            <a href="{% url 'subjectOffering-list' school_year.pk %}" class="grey">
+                <i class="fa fa-user" aria-hidden="true"></i> View Subject Offerings</a>
+            <br/
+        {% endif %}
+        >
     </div>
 </div>
 <!--Administrative-->
