@@ -104,7 +104,7 @@
                 <div class="col-md-6">
                     <label class="card-subtitle">Particular Name:</label>
                     <select class="custom-select btn-block" id="feesParticularList" required>
-                    <option selected>Choose particular:</option>
+                    <option selected value="None">Choose particular:</option>
                     <option value="1">Form 137</option>
                     <option value="2">Diploma</option>
                     <option value="3">Certificate</option>
@@ -266,6 +266,29 @@ function recordEnrollmentPartial(){
         //alert(backEndDataObject.partialAmount)
     }
 }
+var othersData = {
+    'particular_name': "",
+}
+$("#feesParticularList").on("change",function(){
+    /* var selected = '<div class="others">'+
+                   '<label class="card-subtitle">Specify:</label>'+
+                   '<h3 class="link">Level 3 Backpack</h3>'+
+                   '</div>';*/
+                   
+     if ($(this).val() == "others"){
+       $('#othersModal').modal('show');
+       $('.others').show();
+       othersData.particular_name = $(this).val()
+     }else if($(this).val() == "None"){
+         //Do nothing
+     }
+     else{
+       $('.others').hide();
+       othersData.particular_name = $(this).val()
+     }
+   });
+   
+   
 
 </script>
 

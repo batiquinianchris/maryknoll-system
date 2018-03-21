@@ -4,7 +4,6 @@ from .views import *
 
 urlpatterns = [
         url(r'^student-list/$', studentList, name = 'student-list'),
-        url(r'^student-list/download$', Export_Model_To_CSV.as_view(), name = 'student-list-download'), #new feature, delete this line if you have seen this already -aji
         url(r'^student-list/table$', table_StudentList, name = 'student-table'),
         url(r'^student-list/table-active$', table_ActiveList, name = 'student-table-active'),
         url(r'^student-list/table-inactive$', table_InActiveList, name = 'student-table-inactive'),
