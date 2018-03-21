@@ -498,78 +498,98 @@
     $(numid).html(othersData.amount[num])
 
   }
-
-  //ARCHIVE---
-  /*var path_one = 1
-  var path_two = 0
-  var path_three = 0
-  function validation() {
-    //If transaction is enrollment
-    if( backEndDataObject.amount_due >= 0){
-      dontAllow()
-    }else{
-      allowed()
-    }
-    if (path_one == 1) {
-      //If Enrollment
-      if (path_two == 1) {
-        //If Full Payment
-        if (path_three == 1) {
-          //get balance as amount_due
-          amount_due = {{account_balance}}
-          backEndDataObject.amount_due = amount_due
-          $('.summar-value .currency').html(backEndDataObject.amount_due)
-          allowed()
-          //Else if Partial payment
-        } else if (path_three == 2) {
-          backEndDataObject.amount_due = $('[name="amountPartial"]').val()
-          $('.summar-value .currency').html(backEndDataObject.amount_due)
-          allowed()
-        } else {
-          dontAllow()
+</script>
+  
+  <script>
+    //Chynna's Validation
+      $("#cashierTransaction").validate({
+        rules: {
+            particularList: {
+                required: true
+            },
+            amountPartial: {
+              required: true,
+              digits: true
+            },
+            amountTuition: {
+              required: true,
+              digits: true
+            },
+            particularName:{
+              required: true
+            },
+            priceAmount:{
+              required: true,
+              digits: true
+            },
+            particularList:{
+              required:true
+            },
+            paymentType:{
+              required:true
+            },
+            monthTuition:{
+              required:true
+            },
+            feesParticularList:{
+              required:true
+            },
+            paymentMethod:{
+              required:true
+            },
+            ORNumber:{
+              required:true
+            },
+            amountPayment:{
+              required:true,
+              digits:true
+            }
+        },
+        messages: {
+            particularList: {
+                required: "Please enter a particular"
+            },
+            amountPartial: {
+                required: "Please enter an amount",
+                digits: "Only numbers are accepted"
+            },
+            aamountTuition: {
+                required: "Please enter an amount",
+                digits: "Only numbers are accepted"
+            },
+            particularName:{
+              required: "Please enter a particular name"
+            },
+            priceAmount:{
+              required: "Please enter a price amount",
+              digits: "Only numbers are accepted"
+            },
+            particularList:{
+              required:"Please choose a particular"
+            },
+            paymentType:{
+              required:"Please choose a payment type"
+            },
+            monthTuition:{
+              required:"Please enter a month"
+            },
+            feesParticularList:{
+              required:"Please choose a particular"
+            },
+            paymentMethod:{
+              required:"Please enter a payment method"
+            },
+            ORNumber:{
+              required:"Please enter an OR number"
+            },
+            amountPayment:{
+              required:"Please enter a payment amount",
+              digits: "Only numbers are allowed"
+            }
+        },
+        submitHandler: function(form) {
+          form.submit();
         }
-      }
-      //If Tuition
-      else if (path_two == 2) {
-        $('.amountTuition .form-control').each(function () {
-          backEndDataObject.tuitionAmount.push($(this).val())
-        });
-        $('.monthList').each(function () {
-          backEndDataObject.months.push($(this).val())
-        });
-        allowed()
-      } else {
-        dontAllow()
-      }
-      //Else, this is an Others transaction
-    }else if(path_one == 2){
-      //Do the others transaction here
-    }else{
-      dontAllow()
-    }
-  }
-  function allowed(){
-    $('.btn-send').removeAttr("disabled")
-  }
-  function dontAllow(){
-    $('.btn-send').attr("disabled", "disabled")
-  }
-  var trans_one = 0
-  var trans_two = 0
-  var trans_three = 0
-  function validatePayment(){
-    if(trans_one == 1){
-      if (trans_two == 1){
-        if(trans_three == 1){
-          allow()
-        }else{
-          dontAllow()
-        }
-      }else{
-        dontAllow()
-      }
-    }else{
-      dontAllow()
-    }
-  }*/
-</script> {%endblock%}
+    });
+  </script>
+{%endblock%}
