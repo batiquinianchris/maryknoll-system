@@ -212,7 +212,6 @@ def testView(request,pk='pk', template="test.html"):
                             date_paid = datetime.date.today(),
                             payment_method = data['payment_method'],
                         )
-                        transaction = EnrollmentTransactionsMade.objects.latest('date_paid')
                         new_payment = EnrollmentORDetails.objects.create(
                             ORnumber = new_transaction,
                             money_given = data['payment_amount'],
@@ -242,8 +241,26 @@ def testView(request,pk='pk', template="test.html"):
                         )
 
                         print "%s - %s" % (str(new_transaction), str(new_payment))
-            #elif data['particularType'] == 'TuitionFee':
-        
+            elif data['particularType'] == 'TuitionFee':
+                if data['payment_method'] != 'Others':
+                    new_transaction = EnrollmentTransactionsMade.objects.create(
+                         student = registration,
+                         date_paid = datetime.date.today(),
+                         payment_method = data['payment_method'],
+                    )
+                    # zip iterates 2 lists, stops if one is shorter than the other
+                    for month,amount in zip(data['months'], data['tuitionAmount']):
+                        new_payment = EnrollmentORDetails.objects.create(
+                            ORnumber = new_transaction,
+                            money_given = amount,
+                            # Details
+                            particular_name = 'ENROLLMENT',
+                            # Details
+                            payment_type = 'PARTIAL',
+                            # Details
+                            month = month,
+                    )
+                    print "Success!"
         except Exception as error:
             print error
             return HttpResponseRedirect('student-list')        

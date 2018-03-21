@@ -20,7 +20,7 @@ class EnrollmentBreakdown(models.Model):
 
     def __str__(self):
         """Unicode representation of EnrollmentBreakdown."""
-        return " %s" (self.payable_name)
+        return "%s" (self.payable_name)
 
 
 class EnrollmentTransactionsMade(models.Model):
@@ -28,7 +28,7 @@ class EnrollmentTransactionsMade(models.Model):
         'registration.Enrollment', on_delete=models.CASCADE)
     
     date_paid = models.DateField()
-    ORnum = models.IntegerField(blank=True,null=True)
+    ORnum = models.CharField(max_length=100,blank=True,null=True)
     method_CHOICES = (
         ('Cash', 'Cash'),
         ('Cheque', 'Cheque'),
@@ -106,7 +106,7 @@ class EnrollmentORDetails(models.Model):
 
     def __str__(self):
         """Unicode representation of OR_Details."""
-        return "%s - %s" %(self.Particular_being_paid, str(self.money_given))
+        return "%s - %s" %(self.particular_name, str(self.money_given))
 
 
 class OthersTransactionsMade(models.Model):

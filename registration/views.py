@@ -244,7 +244,7 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
     student = get_object_or_404(Student, pk=pk)
     enrollment_list = Enrollment.objects.filter(student=student)
-    curr_enrollment = enrollment_list.latest('enrollment_ID')
+    curr_enrollment = getLatest(enrollment_list,'enrollment_ID')
     scholarship_list = StudentScholar.objects.filter(registration=curr_enrollment)
     enrollment = paginateThis(request, enrollment_list, 10)
     context = {'enrollment_list': enrollment, 'student':student, 'scholarship': scholarship_list}
