@@ -311,8 +311,9 @@ def generateStudentCode(student):
 def table_studentScholar(request,pk='pk',template='registrar/student-registration/scholarships-list.html'):
     registration = Enrollment.objects.get(enrollment_ID=pk)
     scholarship_list = StudentScholar.objects.filter(registration=registration)
-    
-    context = {'scholarship_list':scholarship_list, 'student':registration.student}
+    curr_sy = School_Year.objects.latest('pk')
+    active = registration.school_year == curr_sy
+    context = {'scholarship_list':scholarship_list, 'student':registration.student, 'active':active}
     return ajaxTable(request,template,context)
 
 
