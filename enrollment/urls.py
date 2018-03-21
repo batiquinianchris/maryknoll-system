@@ -66,4 +66,7 @@ urlpatterns = [
         
         url(r'^year-level-list/add$', views.createYearLevel, name = 'year-level-create'),
         url(r'^year-level-list/add-form$', views.form_createYearLevel, name = 'year-level-create-form'),
+        
+        url(r'^year-level-list/update/(?P<pk>\d+)$', views.editYearLevel, name = 'year-level-list-update'),
+        url(r'^year-level-list/edit-form/(?P<pk>\d+)$', views.form_editYearLevel, name = 'year-level-edit-form'),
     ]

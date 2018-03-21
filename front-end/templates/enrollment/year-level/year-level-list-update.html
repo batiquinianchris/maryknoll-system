@@ -13,7 +13,7 @@
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "section-edit-form" instance.pk %}',
+        url: '{% url "year-level-edit-form" instance.pk %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -21,16 +21,16 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".section-edit-form", function() {
+  $(".content").on("submit", ".year-level-edit-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "section-edit-form" instance.pk  %}',
+        url: '{% url "year-level-edit-form" instance.pk %}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'section-list' %}"
+                window.location = "{%url 'year-level-list' %}"
             }
             else {
                 console.log(data.form_is_valid);

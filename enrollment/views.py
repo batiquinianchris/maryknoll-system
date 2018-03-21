@@ -706,4 +706,24 @@ def form_createYearLevel(request):
         request=request,
     )
     return JsonResponse(data)
+    
+def editYearLevel(request, pk='pk',template = 'enrollment/year-level/year-level-list-update.html'):
+    instance = get_object_or_404(YearLevel, pk=pk)
+    return render(request, template, {'instance': instance})
+    
+def form_editYearLevel(request, pk='pk', template = 'enrollment/year-level/forms-year-level-edit.html'):
+    instance = get_object_or_404(YearLevel, pk=pk)
+    data = {'form_is_valid' : False }
+    last_year_level = getLatest(YearLevel, YearLevel._meta.pk)
+
+    forms = updateInstance(request, YearLevelForm, instance)
+
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'forms': forms, 'year_level':last_year_level, 'instance': instance}
+    return ajaxTable(request,template,context,data)
+    
 

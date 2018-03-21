@@ -1,25 +1,18 @@
-def createYearLevel(request):
-    return render(request,'enrollment/year-level-list-add.html')
-
-def form_createYearLevel(request):
-    data = {'form_is_valid' : False }
-    last_schoolYear = getLatest(YearLevel, YearLevel._meta.pk)
+def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    return render(request, template, {'instance': instance})
     
-    if request.method == 'POST':
-        form = YearLevelForm(request.POST)
-        if form.is_valid():
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = YearLevelForm()
-    context = {'forms': form, 'schoolYear':last_schoolYear}
-    data['html_form'] = render_to_string('enrollment/forms-year-level-create.html',
-        context,
-        request=request,
-    )
-    return JsonResponse(data)
+def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
+    instance = get_object_or_404(Section, pk=pk)
+    data = {'form_is_valid' : False }
+    last_section = getLatest(Section,'section_ID')
 
-url(r'^year-level-list/add$', views.createYearLevel, name = 'year-level-create'),
-url(r'^year-level-list/add-form$', views.form_createYearLevel, name = 'year-level-create-form'
+    forms = updateInstance(request, SectionForms, instance)
+
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'forms': forms, 'section':last_section, 'instance': instance}
+    return ajaxTable(request,template,context,data)

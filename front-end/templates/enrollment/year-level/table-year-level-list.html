@@ -11,7 +11,7 @@
               <tr>
                 <td>{{yl.grade_level}}</td>
                 <td class="text-center">
-                  <a href="year-level-list-add.html" class="btn btn-secondary btn-sm view-button">Edit</a>
+                  <a href="{% url 'year-level-list-update' yl.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a>
                   <button type="button" onclick="deleteRow(this)" class="btn btn-sm btn-danger view-button">Delete</button></td>
               </tr>
               {% empty %}
