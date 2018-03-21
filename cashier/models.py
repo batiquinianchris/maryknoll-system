@@ -20,7 +20,7 @@ class EnrollmentBreakdown(models.Model):
 
     def __str__(self):
         """Unicode representation of EnrollmentBreakdown."""
-        return "%s" (self.payable_name)
+        return "%s" % (self.payable_name)
 
 
 class EnrollmentTransactionsMade(models.Model):
@@ -134,6 +134,7 @@ class OthersORDetails(models.Model):
     ORnumber = models.ForeignKey(
         'OthersTransactionsMade', on_delete=models.CASCADE)
     name_of_item = models.CharField(max_length=50)
+    item_price = models.FloatField()
     money_given = models.FloatField()
 
     class Meta:

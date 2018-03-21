@@ -108,18 +108,18 @@ var add = function (){
               '<label class="card-subtitle">Month:</label>'+
               '<select class="custom-select btn-block" id="monthList" onchange="appendMonth('+count+')" required>'+
               '<option selected value="None">Choose payment month:</option>'+
-              '<option selected value="JAN">January</option>'+
-              '<option selected value="FEB">Febuary</option>'+
-              '<option selected value="MAR">March</option>'+
-              '<option selected value="APR">April</option>'+
-              '<option selected value="MAY">May</option>'+
-              '<option selected value="JUN">June</option>'+
-              '<option selected value="JUL">July</option>'+ 
-              '<option selected value="AUG">August</option>'+
-              '<option selected value="SEP">September</option>'+
-              '<option selected value="OCT">October</option>'+
-              '<option selected value="NOV">November</option>'+
-              '<option selected value="DEC">December</option>'+
+              '<option value="JAN">January</option>'+
+              '<option value="FEB">Febuary</option>'+
+              '<option value="MAR">March</option>'+
+              '<option value="APR">April</option>'+
+              '<option value="MAY">May</option>'+
+              '<option value="JUN">June</option>'+
+              '<option value="JUL">July</option>'+ 
+              '<option value="AUG">August</option>'+
+              '<option value="SEP">September</option>'+
+              '<option value="OCT">October</option>'+
+              '<option value="NOV">November</option>'+
+              '<option value="DEC">December</option>'+
               '</select></div>'+
             '</div>'+
           '</div>'+
@@ -195,13 +195,13 @@ var addParticular = function (){
                   '<div class="row">'+
                     '<div class="col">'+
                       '<label>Specific Name:</label>'+
-                      '<input type="text" class="form-control" id="particularName"/>'+
+                      '<input type="text" class="form-control" onchange="recordSpecName(this.value, '+num+')"/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="row">'+
                     '<div class="col">'+
                       '<label>Price Amount:</label>'+
-                      '<input type="text" class="form-control" id="priceAmount"/>'+
+                      '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, '+num+')"/>'+
                     '</div>'+
                   '</div>'+
                 '</div>'+
@@ -230,6 +230,7 @@ var addParticular = function (){
         '</div>'+
       '</div>'+
     '</div>';
+    alert(num)
     $('#paymentsPanel').append(transaction);
     num++;
 };
