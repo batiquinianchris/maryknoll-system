@@ -71,7 +71,6 @@ def getTotalGradeLevelPayment(grade_level_instance):
     fees_list = EnrollmentBreakdown.objects.filter(year_level=grade_level_instance)
     #Get total amount of fees
     amount = fees_list.aggregate(Sum('fee_amount'))
-    
     return amount['fee_amount__sum']
 
 def getTotalpayment(registration):
@@ -180,20 +179,22 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
     
     registration = Enrollment.objects.get(enrollment_ID = pk)
     studentGradeLevelAccount = getTotalGradeLevelPayment(registration.year_level)
+    
     if studentGradeLevelAccount == None:
         studentGradeLevelAccount = float(0)
     totalPaymentOfStudent = getTotalpayment(registration)
     if totalPaymentOfStudent == None:
         totalPaymentOfStudent = float(0)
     deductions = getTotalDeductions(registration)
-    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
-    enrollment_amount_due = account_balance - totalPaymentOfStudent
+    amount_due  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
+    # print studentGradeLevelAccount, totalPaymentOfStudent, deductions
+    # enrollment_amount_due = account_balance - totalPaymentOfStudent
     context = {'student': registration.student,
-        'account_balance':account_balance, 
+        'account_balance':studentGradeLevelAccount, 
         'amount_paid': totalPaymentOfStudent,
         'scholarship_deductions': deductions,
         'registration':registration,
-        #'enrollment_amount_due':enrollment_amount_due,
+        'enrollment_amount_due':amount_due,
     }
 
     return ajaxTable(request,template,context)
