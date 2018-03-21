@@ -240,7 +240,7 @@ def testView(request,pk='pk', template="test.html"):
                         )
                         new_payment = EnrollmentORDetails.objects.create(
                             ORnumber = new_transaction,
-                            money_given = data['payment_amount'],
+                            money_given = data['amount_due'],
                             # Details
                             particular_name = 'ENROLLMENT',
                             # Details
@@ -257,11 +257,9 @@ def testView(request,pk='pk', template="test.html"):
                         )
                         new_payment = EnrollmentORDetails.objects.create(
                             ORnumber = new_transaction,
-                            money_given = data['payment_amount'],
+                            money_given = data['amount_due'],
                             # Details
                             particular_name = 'ENROLLMENT',
-                            # Details
-                            payment_type = 'PARTIAL',
                             # Details
                             month = None,
                         )
@@ -282,11 +280,10 @@ def testView(request,pk='pk', template="test.html"):
                             # Details
                             particular_name = 'ENROLLMENT',
                             # Details
-                            payment_type = 'PARTIAL',
-                            # Details
                             month = month,
                     )
                     print "Success!"
+            
         except Exception as error:
             print error
             return HttpResponseRedirect('student-list')        

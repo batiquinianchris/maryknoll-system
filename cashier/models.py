@@ -27,7 +27,7 @@ class EnrollmentTransactionsMade(models.Model):
     student = models.ForeignKey(
         'registration.Enrollment', on_delete=models.CASCADE)
     
-    date_paid = models.DateField()
+    date_paid = models.DateField(auto_now=True)
     ORnum = models.CharField(max_length=100,blank=True,null=True)
     method_CHOICES = (
         ('Cash', 'Cash'),

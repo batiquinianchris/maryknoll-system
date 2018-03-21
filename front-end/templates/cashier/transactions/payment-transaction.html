@@ -51,7 +51,7 @@
                 <div class="col-md-6">
                   <div class="details">
                     <label class="card-subtitle">Month:</label>
-                    <select class="custom-select btn-block" id="monthList" onchange="appendMonth(1)" required>
+                    <select class="custom-select btn-block monthList" id="monthList" required>
                       <option value="">Choose payment month:</option>
                       <option value="JAN">January</option>
                       <option value="FEB">Febuary</option>
@@ -73,7 +73,7 @@
                 <div class="col-md-6">
                   <div class="tuitionPayment">
                     <label class="card-subtitle">Amount:</label>
-                    <input type="text" name="amountTuition" id="amountTuition" class="form-control">
+                    <input onchange="updateAmountDue();" type="text" name="amountTuition" id="amountTuition" class="form-control">
                   </div>
                 </div>
               </div>
@@ -93,7 +93,7 @@
                 <div class="col-md-6">
                   <div class="partial">
                     <label class="card-subtitle">Amount:</label>
-                    <input type="text" name="amountPartial" id="amountPartial" class="form-control">
+                    <input onchange="recordPartial();" type="text" name="amountPartial" id="amountPartial" class="form-control">
                   </div>
                 </div>
               </div>
@@ -148,7 +148,7 @@
                   <div class="col-md-4">
                     <div class="others">
                       <label class="card-subtitle">Specify:</label>
-                      <h3 class="link">Level 3 Backpack</h3>
+                      <h3 class="link">Item</h3>
                     </div>
                   </div>
                   <div class="col-md-2">
@@ -158,7 +158,7 @@
                 <div class="row">
                   <div class="col-md-6">
                     <label class="card-subtitle">Price Amount:</label>
-                    <h2 class="link">
+                    <h2 class="link amount-due">
                       <span class="currency"> 0.00</span>
                     </h2>
                     <!-- corresponds to the user input
@@ -219,7 +219,7 @@
                   <!-- SUMMATION OF TUITION FEE > AMOUNT AND IF ENROLLMENT FEE > PAYMENT TYPE > FULL PAYMENT THEN AMOUNT DUE == BALANCE
                 IF ENROLLMENT FEE > PAYMENT TYPE > PARTIAL THEN TOTAL AMOUNT DUE == DOWNPAYMENT (DEFINED IN FEES AND ACCOUNTS)-->
                   <div class="summary-title">Total Amount Due:</div>
-                  <div class="summary-value link">
+                  <div class="summary-value link amount-due">
                     <span class="currency"> 0.0 </span>
                   </div>
                 </div>
@@ -229,7 +229,7 @@
               <div class="row margin">
                 <div class="container">
                   <div class="summary-title">Total Amount Due:</div>
-                  <div class="summary-value link">
+                  <div class="summary-value link amount-due">
                     <span class="currency"> 0.00 </span>
                   </div>
                   <!--SUMMATION OF ALL PRICE AMOUNT WITH DISCOUNT -->
@@ -239,7 +239,7 @@
                 <div class="container">
                   <div class="summary-title">Subtotal:</div>
                   <div class="summary-value link">
-                    <span class="currency"> 4,000.00</span>
+                    <span class="currency"> 0.00</span>
                   </div>
                   <!-- SUMMATION OF ALL PRICE AMOUNT *WITHOUT* DISCOUNT -->
                 </div>
@@ -251,14 +251,14 @@
                 THIS CAN ONLY BE APPLIED IF THERE'S A SPECIAL DISCOUNT
                 WHICH I DO NOT KNOW-->
                   <div class="summary-value link">
-                    <span class="currency"> 1,000.00</span>
+                    <span class="currency"> 0.00</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
           <div class="card-footer">
-            <button type="button" class="btn btn-primary" id="createTransactionBtn" data-toggle="modal" data-target="#createTransactionModal">Create Transaction</button>
+            <button onclick="updateFields()" type="button" class="btn btn-primary" id="createTransactionBtn" data-toggle="modal" data-target="#createTransactionModal">Create Transaction</button>
             <!-- TRANSACTION MODAL -->
             <!---->
             <div class="modal fade" id="createTransactionModal" name="createTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -276,7 +276,7 @@
                       <div class="col">
                         <label>Payment Method:</label>
                         <select class="custom-select btn-block" name="paymentMethod" id="paymentMethod" required>
-                          <option selected>Choose payment method:</option>
+                          <option selected value="">Choose payment method:</option>
                           <option value="Cash">Cash</option>
                           <option value="Cheque">Cheque</option>
                           <option value="Promissory">Promissory Note</option>
@@ -299,27 +299,27 @@
                     <div class="row">
                       <div class="col">
                         <label>OR Number:</label>
-                        <input type="text" class="form-control" name="ORNumber" id="ORNumber" />
+                        <input onchange="recordORNum()" type="text" class="form-control" name="ORNumber" id="ORNumber" />
                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
                         <label>Payment Amount:</label>
-                        <input type="text" class="form-control" name="amountPayment" id="paymentAmount" />
+                        <input onchange="updateChange()" type="text" class="form-control" name="amountPayment" id="paymentAmount" />
                       </div>
                     </div>
                     <div class="row">
                       <div class="col">
                         <label>Change:</label>
                         <h2 id="change" class="link">
-                          <span class="currency">900.00</span>
+                          <span class="currency">0.00</span>
                         </h2>
                       </div>
                     </div>
                   </div>
                   <div class="modal-footer">
                     <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
-                    <button onClick="sendData()" type="button" class="btn btn-primary">Create Transaction</button>
+                    <button onclick="sendData()" type="button" class="btn btn-primary btn-send">Create Transaction</button>
                   </div>
                 </div>
               </div>
@@ -330,11 +330,25 @@
     </div>
   </form>
 </div>
-
-{%endblock%} {%block backend_scripts%} {# BACKEND SCRIPTS #}
-{% load static %}
+{%endblock%} {%block backend_scripts%} {# BACKEND SCRIPTS #} {% load static %}
 <script src="{% static '02-javascript/cashier-scripts.js' %}"></script>
 <script>
+  //Initializer
+  $(function () {
+    //Some delay because cannot point to a non existent class(coz ajax has delay lol)
+    setTimeout(function () { init(); }, 50);
+  });
+  //Variables
+  var change = 0.0
+  var backEndDataObject = {
+    "particularType": "",
+    "paymentType": "",
+    "amount_due": "",
+    "months": [],
+    "tuitionAmount": [],
+    "payment_method": "",
+    "ORNumber": "",
+  }
   Number.prototype.formatMoney = function (c, d, t) {
     var n = this,
       c = isNaN(c = Math.abs(c)) ? 2 : c,
@@ -345,63 +359,18 @@
       j = (j = i.length) > 3 ? j % 3 : 0;
     return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
   };
-  function updateAmountDue() {
-    var total = 0
-    $(".tuitionAmount").each(function () {
-      curr = $(this).val()
-      total = total + parseInt(curr)
-    });
-    $('#enrollmentAmount .currency').html(total.formatMoney(2, '.', ','))
-  }
-  $(function () {
-    //Initializes object for serializing
-    clear()
-    //Some delay because cannot point to a non existent class(coz ajax has delay lol)
-    generateSummaryCard();
-    setTimeout(function () { init(); }, 50);
-  });
+  //$('[name="ElementNameHere"]')
+  //Listeners
   $('.user').click(function () {
-    console.log(backEndDataObject, othersData)
+    console.log(backEndDataObject)
   });
-  function generateSummaryCard() {
-    $.ajax({
-      url: '{% url "payment-summary" registration.enrollment_ID %}',
-      type: 'get',
-      dataType: 'json',
-      success: function (data) {
-        $(".payment-summary").html(data.html_form);
-      }
-    });
 
-
-  }
-  var backEndDataObject = {
-    "particularType": "",
-    "paymentType": "",
-    "partialAmount": "",
-    "months": [],
-    "tuitionAmount": [],
-    "payments": 0,
-    "payment_method": "",
-    "ORNumber": "",
-    "payment_amount": 0.0,
-  }
-  var change = 0.0
-  //Removes all data gathered
-  function clear() {
-    //Sends this to the server through ajax. Data will be appended based on the user activity
-    var backEndDataObject = {
-      "particularType": "",
-      "paymentType": "",
-      "partialAmount": "",
-      "months": [],
-      "tuitionAmount": [],
-      "payments": 0,
-      "payment_method": "",
-      "ORNumber": "",
-      "payment_amount": 0.0,
+  $("#paymentType").change(function () {
+    if ($(this).val() == "Full") {
+      changeAmountDue({{ account_balance }})
+  backEndDataObject.amount_due = {{ account_balance }}
     }
-  }
+  });
   $("#particularList").change(function () {
     if ($(this).val() != "") {
       backEndDataObject.particularType = $(this).val()
@@ -413,7 +382,92 @@
       backEndDataObject.paymentType = $(this).val()
     }
   });
-  
+  $('[name="paymentMethod"]').change(function () {
+    if ($(this).val() != "") {
+      backEndDataObject.payment_method = $(this).val()
+      trans_one = 1
+    }
+    if ($(this).val() == "Others") {
+      //$('#paymentOthers').append(method);
+      $('.method').show();
+      $("#paymentAmount").removeAttr('disabled');
+      $("#ORNumber").removeAttr('disabled');
+    }
+    else if ($(this).val() == "Promissory") {
+      $(".method").hide();
+      $('#paymentAmount').prop("disabled", true);
+      $('#ORNumber').prop("disabled", true);
+    }
+    else {
+
+      $(".method").hide();
+      $("#paymentAmount").removeAttr('disabled');
+      $("#ORNumber").removeAttr('disabled');
+    }
+  });
+  //Custom Functions
+  function sendData() {
+    backEndDataObject.payment_method = $('[name="paymentMethod"]').val()
+    backEndDataObject.ORNumber = $('[name="ORNumber"]').val()
+    var total = 0.0
+
+
+    jsonData = JSON.stringify(backEndDataObject)
+    $.ajax({
+      url: '{% url "printJson" registration.enrollment_ID %}',
+      type: 'POST',
+      dataType: 'json',
+      data: jsonData,
+      success: function (data) {
+        location.reload()
+      }
+    });
+  }
+
+  function updateFields() {
+    backEndDataObject.months = []
+    backEndDataObject.tuitionAmount = []
+    $('.monthList').each(function () {
+      backEndDataObject.months.push($(this).val())
+    });
+    $('[name="amountTuition"]').each(function () {
+      backEndDataObject.tuitionAmount.push($(this).val())
+    });
+  }
+
+  function updateChange() {
+    payment = $('#paymentAmount').val()
+    amount_due = backEndDataObject.amount_due
+    change = payment - amount_due;
+    $('#change .currency').html(change)
+  }
+  function recordORNum() {
+    if (event.target.value != 0) {
+      backEndDataObject.ORNumber = event.target.value;
+    }
+  }
+
+  function recordPartial() {
+    if (event.target.value != 0) {
+      total = parseFloat(event.target.value)
+      backEndDataObject.amount_due = total
+      changeAmountDue(total)
+    }
+  }
+  function changeAmountDue(input) {
+    $('.amount-due .currency').html(input.formatMoney(2, '.', ','))
+  }
+  function updateAmountDue() {
+    var total = 0.0
+    $('[name="amountTuition"]').each(function () {
+      curr = $(this).val()
+      total = total + parseFloat(curr)
+    });
+    backEndDataObject.amount_due = total
+    //total += parseFloat($(".").val())
+    changeAmountDue(total)
+    //$('. .currency').html(total.formatMoney(2, '.', ','))
+  }
   function recordEnrollmentPartial() {
     if (event.target.value != 0) {
       backEndDataObject.partialAmount = event.target.value;
@@ -445,71 +499,77 @@
 
   }
 
-
-  var num = 1;
-  function addParticular() {
-    if (num >= 100) return;
-    var transaction = '<div class="addParticularPayment">' +
-      '<div class="row">' +
-      '<div class="col-md-6">' +
-      '<label class="card-subtitle">Particular Name:</label>' +
-      '<select onchange="particular(value)" class="custom-select btn-block" id="feesParticularList" required>' +
-      {% for others in others_list %}
-  '<option value="{{ others.pk }}">{{ others.payable_name }}</option>' +
-    {% endfor %}
-  '<option value="others">Others</option>' +
-    '</select>' +
-    '<div class="modal" tabindex="-1" role="dialog" id="othersModal">' +
-    '<div class="modal-dialog modal-sm" role="document">' +
-    '<div class="modal-content">' +
-    '<div class="modal-header">' +
-    '<h5 class="modal-title">Item details</h5>' +
-    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
-    '<span aria-hidden="true">&times;</span>' +
-    '</button>' +
-    '</div>' +
-    '<div class="modal-body">' +
-    '<div class="row">' +
-    '<div class="col">' +
-    '<label>Specific Name:</label>' +
-    '<input type="text" class="form-control" onchange="recordSpecName(this.value, ' + num.toString() + ')"/>' +
-    '</div>' +
-    '</div>' +
-    '<div class="row">' +
-    '<div class="col">' +
-    '<label>Price Amount:</label>' +
-    '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, ' + num.toString() + ')"/>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '<div class="modal-footer">' +
-    '<button type="button" id="transferButton" onclick="transferData(' + num.toString() + ')"class="btn btn-primary">Save Item</button>' +
-    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col-md-4">' +
-    '<div class="others" id="specify">' +
-    '<label class="card-subtitle">Specify:</label>' +
-    '<h3 class="link" id="item-' + num.toString() + '"></h3>' +
-    '</div>' +
-    '</div>' +
-    '<div class="col-md-2">' +
-    '<button type="button" class="btn btn-danger btn-sm" onclick="deleteParticularRow(this)">Remove</button>' +
-    '</div>' +
-    '</div>' +
-    '<div class="row">' +
-    '<div class="col-md-6">' +
-    '<label class="card-subtitle">Price Amount:</label>' +
-    '<h2 class="link" "><span class="currency" id="amount-' + num.toString() + '> </span></h2>' +
-    '</div>' +
-    '</div>' +
-    '</div>';
-  num++
-  console.log(transaction)
-  $('#paymentsPanel').append(transaction);
-};
-
+  //ARCHIVE---
+  /*var path_one = 1
+  var path_two = 0
+  var path_three = 0
+  function validation() {
+    //If transaction is enrollment
+    if( backEndDataObject.amount_due >= 0){
+      dontAllow()
+    }else{
+      allowed()
+    }
+    if (path_one == 1) {
+      //If Enrollment
+      if (path_two == 1) {
+        //If Full Payment
+        if (path_three == 1) {
+          //get balance as amount_due
+          amount_due = {{account_balance}}
+          backEndDataObject.amount_due = amount_due
+          $('.summar-value .currency').html(backEndDataObject.amount_due)
+          allowed()
+          //Else if Partial payment
+        } else if (path_three == 2) {
+          backEndDataObject.amount_due = $('[name="amountPartial"]').val()
+          $('.summar-value .currency').html(backEndDataObject.amount_due)
+          allowed()
+        } else {
+          dontAllow()
+        }
+      }
+      //If Tuition
+      else if (path_two == 2) {
+        $('.amountTuition .form-control').each(function () {
+          backEndDataObject.tuitionAmount.push($(this).val())
+        });
+        $('.monthList').each(function () {
+          backEndDataObject.months.push($(this).val())
+        });
+        allowed()
+      } else {
+        dontAllow()
+      }
+      //Else, this is an Others transaction
+    }else if(path_one == 2){
+      //Do the others transaction here
+    }else{
+      dontAllow()
+    }
+  }
+  function allowed(){
+    $('.btn-send').removeAttr("disabled")
+  }
+  function dontAllow(){
+    $('.btn-send').attr("disabled", "disabled")
+  }
+  var trans_one = 0
+  var trans_two = 0
+  var trans_three = 0
+  function validatePayment(){
+    if(trans_one == 1){
+      if (trans_two == 1){
+        if(trans_three == 1){
+          allow()
+        }else{
+          dontAllow()
+        }
+      }else{
+        dontAllow()
+      }
+    }else{
+      dontAllow()
+    }
+  }*/
 </script> {%endblock%}

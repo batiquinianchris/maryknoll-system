@@ -4,9 +4,9 @@
 //GLOBAL DECLARATIONS
 var count = 2;  // starting number of next transaction
 var message = "clicked"; //error handling
-
+function init(){
 $('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
-
+}
 ////////////////////////////////////////////////
 //TRANSACTION TOGGLE SCRIPT
 $('#othersBtn').click(function() {
@@ -74,6 +74,7 @@ $("#paymentType").change(function(){
     $( ".partial" ).show();
   }
   else{
+    
     $( ".partial" ).hide();
   }
 });
