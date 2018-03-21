@@ -41,7 +41,7 @@
                 <div class="col-md-6">
                 <label class="card-subtitle">Particular:</label>
                 <select class="custom-select btn-block" id="particularList" required>
-                    <option selected value="None">Choose particular:</option>
+                    <option selected value="">Choose particular:</option>
                     <option value="EnrollmentFee">Enrollment Fee</option>
                     <option value="TuitionFee">Tuition Fee</option>
                 </select>
@@ -50,20 +50,19 @@
                 <div class="details">
                     <label class="card-subtitle">Month:</label>  
                     <select class="custom-select btn-block" id="monthList" onchange="appendMonth(1)" required>  
-                        <option selected value="None">Choose payment month:</option>
-                        <option selected value="JAN">January</option>
-                        <option selected value="FEB">Febuary</option>
-                        <option selected value="MAR">March</option>
-                        <option selected value="APR">April</option>
-                        <option selected value="MAY">May</option>
-                        <option selected value="JUN">June</option>
-                        <option selected value="JUL">July</option>  
-                        <option selected value="AUG">August</option>
-                        <option selected value="SEP">September</option>
-                        <option selected value="OCT">October</option>
-                        <option selected value="NOV">November</option>
-                        <option selected value="DEC">December</option>
-                        
+                        <option value="">Choose payment month:</option>
+                        <option value="JAN">January</option>
+                        <option value="FEB">Febuary</option>
+                        <option value="MAR">March</option>
+                        <option value="APR">April</option>
+                        <option value="MAY">May</option>
+                        <option value="JUN">June</option>
+                        <option value="JUL">July</option>  
+                        <option value="AUG">August</option>
+                        <option value="SEP">September</option>
+                        <option value="OCT">October</option>
+                        <option value="NOV">November</option>
+                        <option value="DEC">December</option>
                     </select>
                 </div>
                 </div>
@@ -81,7 +80,7 @@
                 <div id="paymentTypeInput">
                     <label class="card-subtitle">Payment Type:</label>
                     <select class="custom-select btn-block" id="paymentType" required>
-                        <option value="None" selected>Choose payment type:</option>
+                        <option value="" selected>Choose payment type:</option>
                         <option value="Full">Full Payment</option>
                         <option value="Partial">Partial Payment</option>
                         <!-- `Full` here refers to paying the whole SY's balance.
@@ -104,8 +103,7 @@
                 <div class="col-md-6">
                     <label class="card-subtitle">Particular Name:</label>
                     <select class="custom-select btn-block" id="feesParticularList" onchange="" name="payment0" required>
-                    <option selected value="None">Choose particular:</option>
-                    <option value="">Choose a particular: </option>
+                    <option selected value="">Choose particular:</option>
                     {% for others in others_list %}
                         <option value="{{ others.pk }}">{{ others.payable_name }}</option>
                     {% endfor %}
@@ -138,7 +136,7 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" onclick="transferData(0)" data-dismiss="modal" class="btn btn-primary" >Save Item</button>
+                            <button type="button" id="transferButton" onclick="transferData(0)" data-dismiss="modal" class="btn btn-primary" >Save Item</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                         </div>
@@ -250,20 +248,20 @@ function clear(){
     }
 }
 $("#particularList").change(function(){
-    if ($(this).val() != "None"){
+    if ($(this).val() != ""){
         backEndDataObject.particularType = $(this).val()
         //alert(backEndDataObject.particularType)
     }
 });
 $("#paymentType").change(function(){
-    if ($(this).val() != "None"){
+    if ($(this).val() != ""){
         backEndDataObject.paymentType = $(this).val()
         //alert(backEndDataObject.paymentType)
     }
 });
 
 function appendMonth(particularNum){
-    if (event.target.value != "None"){
+    if (event.target.value != ""){
         backEndDataObject.months.push(event.target.value);
         //alert(backEndDataObject.months[toString(particularNum)])
         
@@ -298,7 +296,7 @@ function recordSpecAmount(money, num){
 }
 
 function transferData(num){
-    alert(num)
+    alert(num.toString())
     id = '#item-'+num
     numid = '#amount-'+num
     $(id).html(othersData.name[num])
@@ -308,22 +306,16 @@ function transferData(num){
 
 
 var num = 1;
-var addParticular = function (){
-    
+function addParticular(){
     if(num >=100) return;
   var transaction = '<div class="addParticularPayment">'+
       '<div class="row">'+
         '<div class="col-md-6">'+
           '<label class="card-subtitle">Particular Name:</label>'+
           '<select onchange="particular(value)" class="custom-select btn-block" id="feesParticularList" required>'+
-            '<option selected>Choose particular:</option>'+
-            '<option value="1">Form 137</option>'+
-            '<option value="2">Diploma</option>'+
-            '<option value="3">Certificate</option>'+
-            '<option value="4">Entrance Test</option>'+
-            '<option value="5">Identification Card</option>'+
-            '<option value="6">Uniform</option>'+
-            '<option value="7">Books</option>'+
+                {% for others in others_list %}
+                    '<option value="{{ others.pk }}">{{ others.payable_name }}</option>'+
+                {% endfor %}
             '<option value="others">Others</option>'+
           '</select>'+
           '<div class="modal" tabindex="-1" role="dialog" id="othersModal">'+
@@ -339,18 +331,18 @@ var addParticular = function (){
                   '<div class="row">'+
                     '<div class="col">'+
                       '<label>Specific Name:</label>'+
-                      '<input type="text" class="form-control" onchange="recordSpecName(this.value, '+num+')"/>'+
+                      '<input type="text" class="form-control" onchange="recordSpecName(this.value, '+num.toString()+')"/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="row">'+
                     '<div class="col">'+
                       '<label>Price Amount:</label>'+
-                      '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, '+num+')"/>'+
+                      '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, '+num.toString()+')"/>'+
                     '</div>'+
                   '</div>'+
                 '</div>'+
                 '<div class="modal-footer">'+
-                  '<button type="button" onclick="transferData(1)"class="btn btn-primary">Save Item</button>'+
+                  '<button type="button" id="transferButton" onclick="transferData('+num.toString()+')"class="btn btn-primary">Save Item</button>'+
                   '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
                 '</div>'+
               '</div>'+
@@ -360,7 +352,7 @@ var addParticular = function (){
         '<div class="col-md-4">'+
           '<div class="others" id="specify">'+
             '<label class="card-subtitle">Specify:</label>'+
-            '<h3 class="link" id="item-'+num+'"></h3>'+
+            '<h3 class="link" id="item-'+num.toString()+'"></h3>'+
            '</div>'+
         '</div>'+
         '<div class="col-md-2">'+
@@ -370,13 +362,13 @@ var addParticular = function (){
       '<div class="row">'+
         '<div class="col-md-6">'+
           '<label class="card-subtitle">Price Amount:</label>'+
-          '<h2 class="link" "><span class="currency" id="amount-'+num+'> </span></h2>'+
+          '<h2 class="link" "><span class="currency" id="amount-'+num.toString()+'> </span></h2>'+
         '</div>'+
       '</div>'+
     '</div>';
     num++
+    console.log(transaction)
     $('#paymentsPanel').append(transaction);
-    alert(num)
 };
 
 </script>
