@@ -127,7 +127,7 @@ var add = function (){
             '<div class="col-md-6">'+
               '<div class="tuitionPayment">'+
                '<label class="card-subtitle">Amount:</label>'+
-               '<input onchange="recordTuitionPayment('+count+');" type="text" class="form-control">'+
+               '<input id="" onchange="recordTuitionPayment('+count+');" type="text" class="form-control tuitionAmount">'+
               '</div>'+
             '</div>'+
           '</div>'+

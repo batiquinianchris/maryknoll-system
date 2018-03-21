@@ -186,17 +186,24 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
     if totalPaymentOfStudent == None:
         totalPaymentOfStudent = float(0)
     deductions = getTotalDeductions(registration)
-    amount_due  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
+    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
     # print studentGradeLevelAccount, totalPaymentOfStudent, deductions
     # enrollment_amount_due = account_balance - totalPaymentOfStudent
     context = {'student': registration.student,
-        'account_balance':studentGradeLevelAccount, 
+        'account_balance':account_balance, 
         'amount_paid': totalPaymentOfStudent,
         'scholarship_deductions': deductions,
         'registration':registration,
-        'enrollment_amount_due':amount_due,
+        'enrollment_amount_due': 0,
     }
 
+    return ajaxTable(request,template,context)
+
+def table_financialRecordsView(request, pk='pk',template="cashier/table-financial-records.html"):
+    registration = Enrollment.objects.get(enrollment_ID = pk)
+    payment_list = fees_list = EnrollmentBreakdown.objects.filter(year_level=registration.year_level)
+    balance = getTotalGradeLevelPayment(registration.year_level)
+    context = {'balance': balance, 'payment_list': payment_list}
     return ajaxTable(request,template,context)
 @csrf_exempt
 def testView(request,pk='pk', template="test.html"):

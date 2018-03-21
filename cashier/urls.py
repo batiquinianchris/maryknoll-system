@@ -18,3 +18,8 @@ urlpatterns += [
     url(r'^transaction/history-table/(?P<pk>\d+)$', views.tableTransactions , name='transaction-history'),
     url(r'^printJson/(?P<pk>\d+)$', views.testView , name='printJson'),
 ]
+
+# Financial Records
+urlpatterns += [
+    url(r'^financial-records/(?P<pk>\d+)$', views.table_financialRecordsView , name='financial-records'),
+]

@@ -10,18 +10,18 @@
         </tr>
     </thead>
     <tbody>
-
+        {% load humanize %}
         {% for transaction in transaction_list %}
         <tr>
             <td>{{transaction.ORnumber.date_paid}}/td>
             <td>{{transaction.ORnumber.ORnum}}</td>
             <td>{{transaction.name_of_item}}</td>
-            <td>₱ {{transaction.money_given}}</td>
+            <td>₱ {{transaction.money_given|floatformat:2|intcomma}}</td>
             <td> </td>
         </tr>
         {%empty%}
         <tr>
-            <td colspan="5" class="text-center">No Transaactions Made</td>
+            <td colspan="5" class="text-center">No Transactions Made</td>
         </tr>
         {% endfor %}
 

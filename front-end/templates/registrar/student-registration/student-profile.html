@@ -35,7 +35,7 @@
                 </div>
                 <div class="col-md-4 line-break no-print">
                   <a href="javascript:window.print()" class="card-link btn btn-outline-primary line-break-child"><i class="fa fa-print" aria-hidden="true"></i> Print Student Profile</a>
-                  <a href="{% url 'student-update' student.student_ID %}" class="btn btn-secondary view-button">Edit</a></td>
+                  <!--a href="{% url 'student-update' student.student_ID %}" class="btn btn-secondary view-button">Edit</a></td-->
                 </div>
               </div>
               <div class="row">
@@ -98,146 +98,8 @@
               </div>
               <!-- STUDENT REGISTRATION -->
               <!-- FINANCIAL RECORDS -->
-              <div class="tab-pane container" id="studentAcc">
-                  <div class="row records">
-                      <div class="col-md-8">
-                        <h2 >Financial Records</h2>
-                      </div>
-                      <div class="row table-records table-responsive" style="padding-right: 15px;">
-                          <table class="table bg-nav table-hover">
-                            <tbody>
-                              <tr>
-                                <td><h6>Tuition Fee:</h6></td>
-                                <td>₱ 10,580.00</td>
-                                <td><h6>Total(Current)+Old Account</h6></td>
-                                <td>₱ 13,580.00</td>
-                              </tr>
-                              <tr>
-                                <td><h6>Miscellaneous Fee:</h6></td>
-                                <td>₱ 3,000.00</td>
-                                <td><h6>Less Scholarship:</h6></td>
-                                <td>₱ 5,000.00</td>
-                              </tr>
-                              <tr>
-                                <td><h6>Total(Current):</h6></td>
-                                <td>₱ 13,580.00</td>
-                                <td><h6>Total Adjustment:</h6></td>
-                                <td>₱ 0.00</td>
-                              </tr>
-                              <tr>
-                                <td><h6> Old Account: </h6></td>
-                                <td>₱ 0.00</td>
-                                <td><h6> Total Due Payment: <h6></td>
-                                <td>₱ 8,580.00</td>
-                              </tr>
-                              <tr>
-                                <td> </td>
-                                <td> </td>
-                                <td><h3 style="color: red"> Balance: </h3></td>
-                                <td><h3 style="color: red"> ₱ 0.00 </h3></td>
-                              </tr>
-                          </table>
-                        <hr>
-                        <div class="col-md-8">
-                          <h2 style="padding: 10px 10px 10px 0">Payment History for Current School Year</h2>
-                        </div>
-                          <div class="col">
-                            <div class="row">
-                              <div class="col-sm-9"> 
-                          <table class="table table-bordered bg-nav table-hover">
-                            <thead class="thead-light">
-                              <tr>
-                                <th>SCHEDULE</th>
-                                <th>DUE AMOUNT</th>
-                                <th>PAYMENTS</th>
-                                <th>BALANCE (OVERPAYMENT)</th>
-                                <th> DATE PAID </th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr>
-                                <td>DOWNPAYMENT</td>
-                                <td>₱ 1,580.00</td>
-                                <td>₱ 580.00</td>
-                                <td>- ₱ 1,000.00</td>
-                                <td> 05/23/2017 </td>
-                              </tr>
-                              <tr>
-                                <td>1ST GRADING -PRELIM</td>
-                                <td>₱ 2,000.00</td>
-                                <td>₱ 1,500.00</td>
-                                <td>- ₱ 500.00</td>
-                                <td> 06/13/2017 </td>
-                              </tr>
-                              <tr>
-                                <td>1ST GRADING -PERIODICAL</td>
-                                <td>₱ 1,500.00</td>
-                                <td>₱ 1,500.00</td>
-                                <td>₱ 0.00</td>
-                                <td> 07/08/2017 </td>
-                              </tr>
-                               <tr>
-                                <td>2ND GRADING -PRELIM</td>
-                                <td>₱ 1,000.00</td>
-                                <td>₱ 1,500.00</td>
-                                <td>₱ 500.00</td>
-                                <td> 08/14/2017 </td>
-                              </tr>
-                              <tr>
-                                <td>2ND GRADING -PERIODICAL</td>
-                                <td>₱ 500.00</td>
-                                <td>₱ 500.00</td> 
-                                <td>₱ 0.00</td>
-                                <td> 09/20/2017 </td>
-                              </tr>
-                               <tr>
-                                <td>3RD GRADING -PRELIM</td>
-                                <td>₱ 1,000.00</td>
-                                <td>₱ 1,000.00</td>
-                                <td>₱ 0.00</td>
-                                <td> 11/23/2017 </td>
-                              </tr>
-                              <tr>
-                                <td>3RD GRADING -PERIODICAL</td>
-                                <td>₱ 1,000.00</td>
-                                <td>₱ 500.00</td>
-                                <td>- ₱ 500.00</td>
-                                <td> 12/15/2017 </td>
-                              </tr>
-                              <tr>
-                                <td>4TH GRADING -PRELIM</td>
-                                <td>₱ 1,500.00</td>
-                                <td>₱ 2,000.00</td>
-                                <td>₱ 500.00</td>
-                                <td> 02/05/2018 </td>
-                              </tr>
-                              <tr>
-                                <td>4TH GRADING -PERIODICAL</td>
-                                <td>₱ 500.00</td>
-                                <td>₱ 500.00</td>
-                                <td>₱ 0.00</td>
-                                <td> 03/14/2018 </td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                        <div class="col-sm-3 no-print">
-                          <div class="card">
-                            <div class="card-body">
-                              <h6> Other Payment History </h6>
-                              <ul>
-                                <li><a href="#"> 2015-2016 </a></li>
-                                <li><a href="#"> 2016-2017 </a></li>
-                                <li><a href="#"> 2017-2018 </a></li>
-                                <li><a href="#"> 2018-2019 </a></li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+              <div class="tab-pane container financial-table" id="studentAcc">
+                  
               </div>
               <!-- FINANCIAL RECORDS -->
               <!-- SUBJECTS TAKEN -->
@@ -355,6 +217,7 @@
     {% if record %}
       generateScholarTable();
       generateTransactionTable();
+      generateFinancialRecords()
     {% endif %}
     
   });
@@ -391,6 +254,19 @@
       dataType: 'json',
       success: function(data) {
         $(".scholarship-table").html(data.html_form);
+        generateStudentTable();
+      }
+    });
+  }
+  {%endif%}
+  {% if record %}
+  function generateFinancialRecords(){
+    $.ajax({
+      url: '{% url "financial-records" record.enrollment_ID %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $(".financial-table").html(data.html_form);
         generateStudentTable();
       }
     });

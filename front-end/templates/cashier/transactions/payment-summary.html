@@ -1,3 +1,4 @@
+{% load humanize %}
 <div class="card">
 <div class="card-header link">Payment Summary</div>
 <div class="card-body">
@@ -17,21 +18,21 @@
     <div class="row margin">
         <div class="container">
         <div class="summary-title">Account Balance:</div>
-        <div class="summary-value link"><span class="currency"> {{account_balance}}</span></div>
+        <div class="summary-value link"><span class="currency"> {{account_balance|floatformat:2|intcomma}}</span></div>
         </div>
     </div>
     <div class="row margin">
         <div class="container">
         <div class="summary-title">Total Amount Paid:</div>
         <!-- IF TUITION, SUMMATION OF ALL STUDENT TRANSACTION-->
-        <div class="summary-value link"><span class="currency"> {{amount_paid}}</span></div>
+        <div class="summary-value link"><span class="currency"> {{amount_paid|floatformat:2|intcomma}}</span></div>
         </div>
     </div>
     <div class="row margin">
         <div class="container">
         <div class="summary-title">Scholarship Deductions:</div>
         <!--REFER TO RELATIONSHIP BETWEEN STUDENT AND SCHOLARSHIP -->
-        <div class="summary-value link"><span class="currency"> {{scholarship_deductions}}</span></div>
+        <div class="summary-value link"><span class="currency"> {{scholarship_deductions|floatformat:2|intcomma}}</span></div>
         </div>
     </div>
     <div class="row margin">
@@ -137,6 +138,7 @@
 </div>
 
 <script>
+
 $("#paymentMethod").change(function(){
     /*var method = '<div class="method">'+
                     '<label class="card-subtitle">Specify:</label>'+

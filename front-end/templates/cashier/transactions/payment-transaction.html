@@ -72,7 +72,7 @@
                 <div class="col-md-6">
                 <div class="tuitionPayment">
                     <label class="card-subtitle">Amount:</label>  
-                    <input onchange="recordTuitionPayment(1);" type="text" id="tuitionAmount" class="form-control">
+                    <input onchange="recordTuitionPayment(1);" type="text" id="tuitionAmount" class="form-control tuitionAmount">
                 </div>
                 </div>
             </div>
@@ -185,6 +185,24 @@
 {# BACKEND SCRIPTS #}
 <script src="{% static '02-javascript/cashier-scripts.js' %}"></script>
 <script>
+Number.prototype.formatMoney = function(c, d, t){
+    var n = this, 
+        c = isNaN(c = Math.abs(c)) ? 2 : c, 
+        d = d == undefined ? "." : d, 
+        t = t == undefined ? "," : t, 
+        s = n < 0 ? "-" : "", 
+        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
+        j = (j = i.length) > 3 ? j % 3 : 0;
+        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+        };
+function updateAmountDue(){
+    var total = 0
+    $(".tuitionAmount").each(function(){
+        curr = $(this).val()
+        total = total + parseInt(curr)
+    });
+    $('#enrollmentAmount .currency').html(total.formatMoney(2, '.', ','))
+}
 $(function(){
     //Initializes object for serializing
     clear()
@@ -257,7 +275,7 @@ function appendMonth(particularNum){
 function recordTuitionPayment(paymentNum){
     if (event.target.value != 0){
         backEndDataObject.tuitionAmount.push(event.target.value);
-        //alert(backEndDataObject.tuitionAmount[toString(paymentNum)])
+        updateAmountDue()
     }
 }
 function recordEnrollmentPartial(){
@@ -279,6 +297,7 @@ function recordSpecName(name, num){
 
 function recordSpecAmount(money, num){
     othersData.amount.push(money)
+    
 }
 
 function transferData(num){
