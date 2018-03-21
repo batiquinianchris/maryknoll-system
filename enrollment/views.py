@@ -659,6 +659,12 @@ def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-schoolyea
     context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
     return ajaxTable(request,template,context,data)
 
+def delete_schoolYear(request, pk='pk'):
+    instance = get_object_or_404(School_Year, pk=pk)
+    instance.delete()
+    message.success(request, "Deleted!")
+    return redirect('enrollment:schoolyear-list')
+
 #--------------------------------------SCHOOL YEAR------------------------------------------------
 
 def yearLevelList(request):
@@ -727,11 +733,11 @@ def form_editYearLevel(request, pk='pk', template = 'enrollment/year-level/forms
     context = {'forms': forms, 'year_level':last_year_level, 'instance': instance}
     return ajaxTable(request,template,context,data)
 
-'''def delete_yearLevel(request, pk='pk'):
+def delete_yearLevel(request, pk='pk'):
     instance = get_object_or_404(YearLevel, pk=pk)
     instance.delete()
     message.success(request, "Deleted!")
-    return redirect(instance.get_absolute_url)'''
+    return redirect('enrollment:year-level-list')
     
     
 
