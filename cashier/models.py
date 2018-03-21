@@ -50,7 +50,10 @@ class EnrollmentTransactionsMade(models.Model):
         amount = fees_list.aggregate(Sum('money_given'))
         # amount['money_given__sum']
         return amount['money_given__sum']
-
+    def get_particular_name(self):
+        item = EnrollmentORDetails.objects.get(ORnumber=self)
+        name = item.particular_name
+        return name
     def __str__(self):
         """Unicode representation of EnrollmentTransactionsMade."""
         return str(self.ORnum)

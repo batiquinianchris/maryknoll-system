@@ -159,9 +159,10 @@ def formFeeAccountEdit(request, pk='pk', template='cashier/fees-and-accounts/for
 
 
 def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledger.html'):
-    registration = Enrollment.objects.get(pk='pk')
-    transaction_list = EnrollmentORDetails.objects.filter(registration=registration)
-    context = {'transaction_list':transaction_list}
+    registration = Enrollment.objects.get(enrollment_ID=pk)
+    transactions = EnrollmentTransactionsMade.objects.filter(student=registration)
+    transaction_list = EnrollmentORDetails.objects.filter(ORnumber=transactions)
+    context = {'transaction_list':transactions, 'items_list':transaction_list}
     return ajaxTable(request,template,context)
 
 # END PARTICULARS #

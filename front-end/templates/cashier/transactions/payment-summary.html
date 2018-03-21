@@ -117,7 +117,7 @@
             <div class="row">
             <div class="col">
                 <label>Payment Amount:</label>
-                <input onchange="recordAmount();"type="text" class="form-control" id="paymentAmount"/>
+                <input onchange="updateChange(self);"type="text" class="form-control" id="paymentAmount"/>
             </div>
             </div>
             <div class="row">
@@ -180,11 +180,15 @@ function sendData(){
         }
     });
 }
-function recordAmount(){
-    if (event.target.value != 0){
-        backEndDataObject.payment_amount = event.target.value;
-        //alert(backEndDataObject.payment_amount)
-    }
+function updateChange(){
+    payment = $('#paymentAmount').val()
+    amount_due = 0.0
+    $('.tuitionAmount').each(function(){
+        amount_due = amount_due + parseInt($(this).val())
+        console.log(amount_due)
+    });
+    change = payment - amount_due;
+    $('#change .currency').html(change)
 }
 function recordORNum(){
     if (event.target.value != 0){

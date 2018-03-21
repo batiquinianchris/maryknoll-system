@@ -2,21 +2,23 @@
     <thead class="thead-light">
         <tr>
             <!-- Refer to database for headings -->
-            <th scope="col">Date Paid</th>
-            <th scope="col">OR Number</th>
-            <th scope="col">Particular</th>
-            <th scope="col">Amount</th>
-            <th scope="col">Remarks</th>
+            <th scope="col">Date</th>
+            <th scope="col">Particular Name</th>
+            <th scope="col">Payment Method</th>
+            <th scope="col">Amount Paid</th>
+            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
         {% load humanize %}
         {% for transaction in transaction_list %}
         <tr>
-            <td>{{transaction.ORnumber.date_paid}}/td>
-            <td>{{transaction.ORnumber.ORnum}}</td>
-            <td>{{transaction.name_of_item}}</td>
-            <td>₱ {{transaction.money_given|floatformat:2|intcomma}}</td>
+            <td>{{transaction.date_paid}}</td>
+            <td>{% for item in items_list  %}
+              {{item.particular_name}}
+            {% endfor %}</td>
+            <td>{{transaction.get_payment_method_display}}</td>
+            <td>₱ {{transaction.get_total_sum|floatformat:2|intcomma}}</td>
             <td> </td>
         </tr>
         {%empty%}

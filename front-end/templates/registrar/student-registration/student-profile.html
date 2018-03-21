@@ -224,7 +224,7 @@
   {% if record %}
     function generateTransactionTable(){
       $.ajax({
-        url: '{% url "student-transaction-log" record.enrollment_ID %}',
+        url: '{% url "transaction-history" record.enrollment_ID %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
