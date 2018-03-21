@@ -9,7 +9,7 @@
           <div class="row">
             <div class="col-md-4">
             <label>Offering ID:</label>
-              <p class="form-control-static">0003</p><!--incremental-->
+              <p class="form-control-static">{{subjectOffering.pk|add:"1"}}</p><!--incremental-->
             </div>
             <div class="col-md-4">
             <label>Curriculum Year:</label>
@@ -17,14 +17,14 @@
             </div>
             <div class="col-md-4">
             <label>School Year:</label>
-              <p class="form-control-static">2017-2018</p><!--incremental-->
+              <p class="form-control-static">{{school_year}}</p><!--incremental-->
             </div>
           </div>
           <h5 class="sm-headings">Subject Details </h5>
           <div class="row">
             <div class="col-md-6">
                 <label>Subject Name:</label><!-- List makes it searchable-->
-                  {{form.subject|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+                  {{form.subject|add_class:"form-control"|attr:"placeholder = Name"}}
                   {% if form.subject.errors %}
                     <p class="help-block">{{ form.subject.errors }}</p>
                   {% endif %}
@@ -34,7 +34,7 @@
               Database values of SubjectName using SubjectID -->
             <div class="col-md-6">
               <label>Teacher Assigned:</label>
-              {{form.teacher|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+              {{form.teacher|add_class:"form-control"|attr:"placeholder = Teacher"}}
             {% if form.teacher.errors %}
               <p class="help-block">{{ form.teacher.errors }}</p>
             {% endif %}
@@ -46,14 +46,14 @@
           <div class="row">
             <div class="col-md-4">
               <label>Year Level:</label>
-              {{form.year_level|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+              {{form.year_level|add_class:"form-control"|attr:"placeholder = Year Level"}}
             {% if form.year_level.errors %}
               <p class="help-block">{{ form.year_level.errors }}</p>
             {% endif %}
             </div>
             <div class="col-md-4">
               <label>Section Assigned:</label>
-              {{form.section|add_class:"form-control"|attr:"placeholder = Scholarship Type"}}
+              {{form.section|add_class:"form-control"|attr:"placeholder = Section"}}
             {% if form.section.errors %}
               <p class="help-block">{{ form.section.errors }}</p>
             {% endif %}

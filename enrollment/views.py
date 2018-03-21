@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.utils import timezone
 from datetime import datetime
@@ -436,7 +436,7 @@ def getScholarshipList(request):
             query = Scholarship.objects.filter(scholarship_type__icontains=search)
         else:
             print "wala"
-            query = Scholarship.objects.all() 
+            query = Scholarship.objects.all()
             
     else:
         return []
@@ -540,6 +540,7 @@ def createSubjectOfferingProfile(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.school_year = curr_sy
+            post.save()
             data['form_is_valid'] = True
         else:
             data['form_is_valid'] = False
@@ -725,5 +726,12 @@ def form_editYearLevel(request, pk='pk', template = 'enrollment/year-level/forms
 
     context = {'forms': forms, 'year_level':last_year_level, 'instance': instance}
     return ajaxTable(request,template,context,data)
+
+'''def delete_yearLevel(request, pk='pk'):
+    instance = get_object_or_404(YearLevel, pk=pk)
+    instance.delete()
+    message.success(request, "Deleted!")
+    return redirect(instance.get_absolute_url)'''
+    
     
 

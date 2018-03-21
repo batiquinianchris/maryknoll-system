@@ -4,7 +4,7 @@
       <!-- Refer to database for headings -->
       <th scope="col">Curriculum</th>
       <th scope="col">Subject Name</th>
-      <th scope="col">Subject Description</th>
+      <th scope="col">Grade Level</th>
       <th scope="col">Credit Units</th>
       <th scope="col">Actions</th>
     </tr>
@@ -14,7 +14,7 @@
       {%for subj in subject_list%}
       <td>{{subj.curriculum}}</td>
       <td>{{subj.subject_name}}</td>
-      <td>{{subj.pk}}, {{curriculum.pk}}</td>
+      <td>{{subj.year}}</td>
       <td>{{subj.units}}/3</td>
       <td class="text-center"><a href="{%url 'subject-edit' subj.pk %}?curriculum={{curriculum.pk}}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
     </tr>

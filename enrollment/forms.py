@@ -3,6 +3,8 @@ from .models import *
 from registration.models import *
 from enrollment.models import *
 
+from administrative.models import *
+
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import datetime
@@ -17,6 +19,9 @@ STATUS_CHOICES = (
     (INACTIVE, 'Inactive'),
 )
 class SectionForms(forms.ModelForm):
+    teachers = Employee.objects.filter(emp_type__contains="t")
+    adviser = Section.objects.filter(adviser = teachers)
+    
     class Meta:
         model = Section
         exclude = ('section_ID', 'section_status',)
@@ -51,6 +56,10 @@ class School_YearForm(forms.ModelForm):
         exclude = ('date_start',)
 
 class YearLevelForm(forms.ModelForm):
+    """Form definition for School_Year."""
+
     class Meta:
+        """Meta definition for School_Yearform."""
+
         model = YearLevel
         exclude = ('pk',)
