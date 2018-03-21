@@ -5,9 +5,8 @@
 var count = 2;  // starting number of next transaction
 var message = "clicked"; //error handling
 
-function init(){
-  $('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
-}
+$('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
+
 ////////////////////////////////////////////////
 //TRANSACTION TOGGLE SCRIPT
 $('#othersBtn').click(function() {
@@ -106,28 +105,18 @@ var add = function (){
           '<div class="col-md-6">'+
             '<div class="details">'+
               '<label class="card-subtitle">Month:</label>'+
-              '<select class="custom-select btn-block" id="monthList" onchange="appendMonth('+count+')" required>'+
-              '<option selected value="None">Choose payment month:</option>'+
-              '<option value="JAN">January</option>'+
-              '<option value="FEB">Febuary</option>'+
-              '<option value="MAR">March</option>'+
-              '<option value="APR">April</option>'+
-              '<option value="MAY">May</option>'+
-              '<option value="JUN">June</option>'+
-              '<option value="JUL">July</option>'+ 
-              '<option value="AUG">August</option>'+
-              '<option value="SEP">September</option>'+
-              '<option value="OCT">October</option>'+
-              '<option value="NOV">November</option>'+
-              '<option value="DEC">December</option>'+
-              '</select></div>'+
+              '<select class="custom-select btn-block" required>'+
+              '<option selected>Choose payment month:</option>'+
+              '<option value="January">January</option>'+
+              '<option value="February">February</option>'+
+              '<option value="March">March</option></select></div>'+
             '</div>'+
           '</div>'+
           '<div class="row">'+
             '<div class="col-md-6">'+
               '<div class="tuitionPayment">'+
                '<label class="card-subtitle">Amount:</label>'+
-               '<input id="" onchange="recordTuitionPayment('+count+');" type="text" class="form-control tuitionAmount">'+
+               '<input type="text" class="form-control">'+
               '</div>'+
             '</div>'+
           '</div>'+
@@ -195,13 +184,13 @@ var addParticular = function (){
                   '<div class="row">'+
                     '<div class="col">'+
                       '<label>Specific Name:</label>'+
-                      '<input type="text" class="form-control" onchange="recordSpecName(this.value, '+num+')"/>'+
+                      '<input type="text" class="form-control" id="particularName"/>'+
                     '</div>'+
                   '</div>'+
                   '<div class="row">'+
                     '<div class="col">'+
                       '<label>Price Amount:</label>'+
-                      '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, '+num+')"/>'+
+                      '<input type="text" class="form-control" id="priceAmount"/>'+
                     '</div>'+
                   '</div>'+
                 '</div>'+
@@ -230,7 +219,6 @@ var addParticular = function (){
         '</div>'+
       '</div>'+
     '</div>';
-    alert(num)
     $('#paymentsPanel').append(transaction);
     num++;
 };

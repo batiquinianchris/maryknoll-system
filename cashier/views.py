@@ -174,7 +174,22 @@ def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledge
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     registration = Enrollment.objects.get(enrollment_ID=pk)
     others_list = EnrollmentBreakdown.objects.filter(year_level__isnull=True)
-    context = {'registration':registration,'others_list':others_list}
+    studentGradeLevelAccount = getTotalGradeLevelPayment(registration.year_level)
+    
+    if studentGradeLevelAccount == None:
+        studentGradeLevelAccount = float(0)
+    totalPaymentOfStudent = getTotalpayment(registration)
+    if totalPaymentOfStudent == None:
+        totalPaymentOfStudent = float(0)
+    deductions = getTotalDeductions(registration)
+    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
+    context = {'registration':registration,
+        'others_list':others_list,
+        'student': registration.student,
+        'account_balance':account_balance, 
+        'amount_paid': totalPaymentOfStudent,
+        'scholarship_deductions': deductions,
+        'enrollment_amount_due': 0,}
     return render(request,template,context)
 
 def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
@@ -219,6 +234,7 @@ def testView(request,pk='pk', template="test.html"):
                     if data['payment_method'] != 'Others':
                         new_transaction = EnrollmentTransactionsMade.objects.create(
                             student = registration,
+                            ORnum = data['ORNumber'],
                             date_paid = datetime.date.today(),
                             payment_method = data['payment_method'],
                         )

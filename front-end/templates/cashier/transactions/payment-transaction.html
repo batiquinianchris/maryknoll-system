@@ -1,376 +1,515 @@
 {% extends 'base.html' %} {% block settings %}
 <li class="nav-item active">
-    <a class="nav-link" href="{% url 'settings' %}">Settings</a>
-    <span class="sr-only">(current)</span>
+  <a class="nav-link" href="{% url 'settings' %}">Settings</a>
+  <span class="sr-only">(current)</span>
 </li>
-{% endblock %}
-{%block title%} Cashier Transaction {%endblock%}
-{%load static%} {% block content %}
+{% endblock %} {%block title%} Cashier Transaction {%endblock%} {%load static%} {% block content %}
 <div class="content-heading margin">
-<form action="" class="heading-label">
+  <form action="" id="cashierTransaction" class="heading-label">
     <div class="row">
-    <div class="col-md-8">
+      <div class="col-md-8">
         <div class="card">
-        <div class="card-header link">
+          <div class="card-header link">
             Payment Details
-        </div>
-        <div class="card-body" id="paymentsPanel">
+          </div>
+          <div class="card-body" id="paymentsPanel">
             <div class="row margin">
-            <div class="col-md-8">
+              <div class="col-md-8">
                 <div class="heading">
-                <label>Choose transaction:</label>
+                  <label>Choose transaction:</label>
                 </div>
                 <div class="btn-group btn-group-sm transactions" role="group" aria-label="Choose Transaction">
-                <button type="button" class="btn btn-secondary active" id="enrollmentBtn">Enrollment</button>
-                <button type="button" class="btn btn-secondary" id="othersBtn">Others</button>
+                  <button type="button" class="btn btn-secondary active" id="enrollmentBtn">Enrollment</button>
+                  <button type="button" class="btn btn-secondary" id="othersBtn">Others</button>
                 </div>
-            </div>
-            <div class="col-md-2">
-                <button type="button" id="btn-add" onclick="add()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
-                <button type="button" id="btn-add-particular" onclick="addParticular()" class="btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i> Add Item</button>
-            </div>
+              </div>
+              <div class="col-md-2">
+                <button type="button" id="btn-add" onclick="add()" class="btn btn-primary">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Add Payment</button>
+                <button type="button" id="btn-add-particular" onclick="addParticular()" class="btn btn-primary">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Add Item</button>
+              </div>
             </div>
             <!-- ENROLLMENT -->
             <div class="enrollmentPayment">
-            <div class="row payment">
+              <div class="row payment">
                 <div class="col">
-                <h5 class="payment-heading">Payment Details #<span class="count">1</span></h5>
+                  <h5 class="payment-heading">Payment Details #
+                    <span class="count">1</span>
+                  </h5>
                 </div>
-            </div>
-            <div class="row">
+              </div>
+              <div class="row">
                 <div class="col-md-6">
-                <label class="card-subtitle">Particular:</label>
-                <select class="custom-select btn-block" id="particularList" required>
-                    <option selected value="">Choose particular:</option>
+                  <label class="card-subtitle">Particular:</label>
+                  <select class="custom-select btn-block" name="particularList" id="particularList" required>
+                    <option selected>Choose particular:</option>
                     <option value="EnrollmentFee">Enrollment Fee</option>
                     <option value="TuitionFee">Tuition Fee</option>
-                </select>
+                  </select>
                 </div>
                 <div class="col-md-6">
-                <div class="details">
-                    <label class="card-subtitle">Month:</label>  
-                    <select class="custom-select btn-block" id="monthList" onchange="appendMonth(1)" required>  
-                        <option value="">Choose payment month:</option>
-                        <option value="JAN">January</option>
-                        <option value="FEB">Febuary</option>
-                        <option value="MAR">March</option>
-                        <option value="APR">April</option>
-                        <option value="MAY">May</option>
-                        <option value="JUN">June</option>
-                        <option value="JUL">July</option>  
-                        <option value="AUG">August</option>
-                        <option value="SEP">September</option>
-                        <option value="OCT">October</option>
-                        <option value="NOV">November</option>
-                        <option value="DEC">December</option>
+                  <div class="details">
+                    <label class="card-subtitle">Month:</label>
+                    <select class="custom-select btn-block" id="monthList" onchange="appendMonth(1)" required>
+                      <option value="">Choose payment month:</option>
+                      <option value="JAN">January</option>
+                      <option value="FEB">Febuary</option>
+                      <option value="MAR">March</option>
+                      <option value="APR">April</option>
+                      <option value="MAY">May</option>
+                      <option value="JUN">June</option>
+                      <option value="JUL">July</option>
+                      <option value="AUG">August</option>
+                      <option value="SEP">September</option>
+                      <option value="OCT">October</option>
+                      <option value="NOV">November</option>
+                      <option value="DEC">December</option>
                     </select>
+                  </div>
                 </div>
-                </div>
-            </div>
-            <div class="row">
+              </div>
+              <div class="row">
                 <div class="col-md-6">
-                <div class="tuitionPayment">
-                    <label class="card-subtitle">Amount:</label>  
-                    <input onchange="recordTuitionPayment(1);" type="text" id="tuitionAmount" class="form-control tuitionAmount">
+                  <div class="tuitionPayment">
+                    <label class="card-subtitle">Amount:</label>
+                    <input type="text" name="amountTuition" id="amountTuition" class="form-control">
+                  </div>
                 </div>
-                </div>
-            </div>
-            <div class="row" id="paymentTypeRow">
+              </div>
+              <div class="row" id="paymentTypeRow">
                 <div class="col-md-6">
-                <div id="paymentTypeInput">
+                  <div id="paymentTypeInput">
                     <label class="card-subtitle">Payment Type:</label>
-                    <select class="custom-select btn-block" id="paymentType" required>
-                        <option value="" selected>Choose payment type:</option>
-                        <option value="Full">Full Payment</option>
-                        <option value="Partial">Partial Payment</option>
-                        <!-- `Full` here refers to paying the whole SY's balance.
-                            while `partial` refers to downpayment -->
+                    <select class="custom-select btn-block" name="paymentType" id="paymentType" required>
+                      <option selected>Choose payment type:</option>
+                      <option value="Full">Full Payment</option>
+                      <option value="Partial">Partial Payment</option>
+                      <!-- `Full` here refers to paying the whole SY's balance.
+                                while `partial` refers to downpayment -->
                     </select>
-                </div> 
+                  </div>
                 </div>
                 <div class="col-md-6">
-                <div class="partial"> 
-                    <label class="card-subtitle">Amount:</label>  
-                    <input onchange="recordEnrollmentPartial();" type="text" class="form-control">
+                  <div class="partial">
+                    <label class="card-subtitle">Amount:</label>
+                    <input type="text" name="amountPartial" id="amountPartial" class="form-control">
+                  </div>
                 </div>
-                </div>
-            </div>
+              </div>
             </div>
             <!-- OTHERS -->
             <div class="othersPayment">
-            <div class="addParticularPayment">
+              <div class="addParticularPayment">
                 <div class="row">
-                <div class="col-md-6">
+                  <div class="col-md-6">
                     <label class="card-subtitle">Particular Name:</label>
-                    <select class="custom-select btn-block" id="feesParticularList" onchange="" name="payment0" required>
-                    <option selected value="">Choose particular:</option>
-                    {% for others in others_list %}
-                        <option value="{{ others.pk }}">{{ others.payable_name }}</option>
-                    {% endfor %}
-                    <option value="others">Others</option>
+                    <select class="custom-select btn-block" name="feesParticularList" id="feesParticularList" required>
+                      <option selected value="">Choose particular:</option>
+                      {% for others in others_list %}
+                      <option value="{{ others.pk }}">{{ others.payable_name }}</option>
+                      {% endfor %}
+                      <option value="others">Others</option>
                     </select>
                     <!-- is only saved in the student's payment transaction logs, but object is not saved in the database-->
                     <!-- DATA GENERATED FROM FEES AND ACCOUNTS TABLE VALUES -->
                     <!-- MODAL appears if others is selected -->
                     <div class="modal" tabindex="-1" role="dialog" id="othersModal">
-                    <div class="modal-dialog modal-sm" role="document">
+                      <div class="modal-dialog modal-sm" role="document">
                         <div class="modal-content">
-                        <div class="modal-header">
+                          <div class="modal-header">
                             <h5 class="modal-title">Item details</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
+                              <span aria-hidden="true">&times;</span>
                             </button>
-                        </div>
-                        <div class="modal-body">
+                          </div>
+                          <div class="modal-body">
                             <div class="row">
-                            <div class="col">
+                              <div class="col">
                                 <label>Specific Name:</label>
-                                <input type="text" class="form-control" onchange="recordSpecName(this.value, 0)"/>
-                            </div>
+                                <input type="text" class="form-control" name="particularName" id="particularName" />
+                              </div>
                             </div>
                             <div class="row">
-                            <div class="col">
+                              <div class="col">
                                 <label>Price Amount:</label>
-                                <input type="text" class="form-control" onchange="recordSpecAmount(this.value, 0)"/>
+                                <input type="text" class="form-control" name="priceAmount" id="priceAmount" />
+                              </div>
                             </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" id="transferButton" onclick="transferData(0)" data-dismiss="modal" class="btn btn-primary" >Save Item</button>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary">Save Item</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                          </div>
                         </div>
-                        </div>
+                      </div>
                     </div>
-                    </div>
-                </div>
-                <div class="col-md-4">
+                  </div>
+                  <div class="col-md-4">
                     <div class="others">
-                    <label class="card-subtitle">Specify:</label>  
-                    <h3 class="link" id="item-0">Level 3 Backpack</h3>  
+                      <label class="card-subtitle">Specify:</label>
+                      <h3 class="link">Level 3 Backpack</h3>
                     </div>
-                </div>
-                <div class="col-md-2">
+                  </div>
+                  <div class="col-md-2">
                     <button type="button" class="btn btn-danger btn-sm" onclick="deleteParticularRow(this)">Remove</button>
-                </div>
+                  </div>
                 </div>
                 <div class="row">
-                <div class="col-md-6">
+                  <div class="col-md-6">
                     <label class="card-subtitle">Price Amount:</label>
-                    <h2 class="link" ><span class="currency" id="amount-0"> 0.00</span></h2>
+                    <h2 class="link">
+                      <span class="currency"> 0.00</span>
+                    </h2>
                     <!-- corresponds to the user input
-                        and/or the undocumented particular (others) -->
+                            and/or the undocumented particular (others) -->
+                  </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 payment-summary">
+        {% load humanize %}
+        <div class="card">
+          <div class="card-header link">Payment Summary</div>
+          <div class="card-body">
+            <div class="row margin">
+              <div class="container">
+                <div class="summary-title">Student ID:</div>
+                <div class="link">{{student.student_ID}}</div>
+              </div>
+            </div>
+            <div class="row margin">
+              <div class="container">
+                <div class="summary-title">Student Name:</div>
+                <div class="link">{{student.last_name}}, {{student.first_name}}-{{student.middle_name}}</div>
+              </div>
+            </div>
+            <div class="enrollment-summary">
+              <div class="row margin">
+                <div class="container">
+                  <div class="summary-title">Account Balance:</div>
+                  <div class="summary-value link">
+                    <span class="currency"> {{account_balance|floatformat:2|intcomma}}</span>
+                  </div>
                 </div>
+              </div>
+              <div class="row margin">
+                <div class="container">
+                  <div class="summary-title">Total Amount Paid:</div>
+                  <!-- IF TUITION, SUMMATION OF ALL STUDENT TRANSACTION-->
+                  <div class="summary-value link">
+                    <span class="currency"> {{amount_paid|floatformat:2|intcomma}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="container">
+                  <div class="summary-title">Scholarship Deductions:</div>
+                  <!--REFER TO RELATIONSHIP BETWEEN STUDENT AND SCHOLARSHIP -->
+                  <div class="summary-value link">
+                    <span class="currency"> {{scholarship_deductions|floatformat:2|intcomma}}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="container">
+                  <!-- SUMMATION OF TUITION FEE > AMOUNT AND IF ENROLLMENT FEE > PAYMENT TYPE > FULL PAYMENT THEN AMOUNT DUE == BALANCE
+                IF ENROLLMENT FEE > PAYMENT TYPE > PARTIAL THEN TOTAL AMOUNT DUE == DOWNPAYMENT (DEFINED IN FEES AND ACCOUNTS)-->
+                  <div class="summary-title">Total Amount Due:</div>
+                  <div class="summary-value link">
+                    <span class="currency"> 0.0 </span>
+                  </div>
+                </div>
+              </div>
             </div>
+            <div id="others-summary">
+              <div class="row margin">
+                <div class="container">
+                  <div class="summary-title">Total Amount Due:</div>
+                  <div class="summary-value link">
+                    <span class="currency"> 0.00 </span>
+                  </div>
+                  <!--SUMMATION OF ALL PRICE AMOUNT WITH DISCOUNT -->
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="container">
+                  <div class="summary-title">Subtotal:</div>
+                  <div class="summary-value link">
+                    <span class="currency"> 4,000.00</span>
+                  </div>
+                  <!-- SUMMATION OF ALL PRICE AMOUNT *WITHOUT* DISCOUNT -->
+                </div>
+              </div>
+              <div class="row margin">
+                <div class="container">
+                  <div class="summary-title">Discount:</div>
+                  <!--SINCE IT'S NOT A PART OF ANY STUDENT SCHOLARSHIPS,
+                THIS CAN ONLY BE APPLIED IF THERE'S A SPECIAL DISCOUNT
+                WHICH I DO NOT KNOW-->
+                  <div class="summary-value link">
+                    <span class="currency"> 1,000.00</span>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="card-footer">
+            <button type="button" class="btn btn-primary" id="createTransactionBtn" data-toggle="modal" data-target="#createTransactionModal">Create Transaction</button>
+            <!-- TRANSACTION MODAL -->
+            <!---->
+            <div class="modal fade" id="createTransactionModal" name="createTransactionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog modal-sm" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Transaction Details</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col">
+                        <label>Payment Method:</label>
+                        <select class="custom-select btn-block" name="paymentMethod" id="paymentMethod" required>
+                          <option selected>Choose payment method:</option>
+                          <option value="Cash">Cash</option>
+                          <option value="Cheque">Cheque</option>
+                          <option value="Promissory">Promissory Note</option>
+                          <option value="Others">Others</option>
+                          <!-- `Others` like cows, lots, etc.
+                          IF promissory, leave amount blank -->
+                        </select>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <div id="paymentOthers">
+                          <div class="method">
+                            <label class="card-subtitle">Specify:</label>
+                            <input type="text" name="specify" class="form-control">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <label>OR Number:</label>
+                        <input type="text" class="form-control" name="ORNumber" id="ORNumber" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <label>Payment Amount:</label>
+                        <input type="text" class="form-control" name="amountPayment" id="paymentAmount" />
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col">
+                        <label>Change:</label>
+                        <h2 id="change" class="link">
+                          <span class="currency">900.00</span>
+                        </h2>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-link" data-dismiss="modal">Cancel</button>
+                    <button onClick="sendData()" type="button" class="btn btn-primary">Create Transaction</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        </div>
+      </div>
     </div>
-    <div class="col-md-4 payment-summary">
-            
-    </div>
-    </div>
-</form>
+  </form>
 </div>
 
-{%endblock%}
-
-{%block backend_scripts%}
-
-{# BACKEND SCRIPTS #}
+{%endblock%} {%block backend_scripts%} {# BACKEND SCRIPTS #}
+{% load static %}
 <script src="{% static '02-javascript/cashier-scripts.js' %}"></script>
 <script>
-Number.prototype.formatMoney = function(c, d, t){
-    var n = this, 
-        c = isNaN(c = Math.abs(c)) ? 2 : c, 
-        d = d == undefined ? "." : d, 
-        t = t == undefined ? "," : t, 
-        s = n < 0 ? "-" : "", 
-        i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))), 
-        j = (j = i.length) > 3 ? j % 3 : 0;
-        return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
-        };
-function updateAmountDue(){
+  Number.prototype.formatMoney = function (c, d, t) {
+    var n = this,
+      c = isNaN(c = Math.abs(c)) ? 2 : c,
+      d = d == undefined ? "." : d,
+      t = t == undefined ? "," : t,
+      s = n < 0 ? "-" : "",
+      i = String(parseInt(n = Math.abs(Number(n) || 0).toFixed(c))),
+      j = (j = i.length) > 3 ? j % 3 : 0;
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
+  };
+  function updateAmountDue() {
     var total = 0
-    $(".tuitionAmount").each(function(){
-        curr = $(this).val()
-        total = total + parseInt(curr)
+    $(".tuitionAmount").each(function () {
+      curr = $(this).val()
+      total = total + parseInt(curr)
     });
     $('#enrollmentAmount .currency').html(total.formatMoney(2, '.', ','))
-}
-$(function(){
+  }
+  $(function () {
     //Initializes object for serializing
     clear()
     //Some delay because cannot point to a non existent class(coz ajax has delay lol)
     generateSummaryCard();
-    setTimeout(function(){ init(); }, 50);
-});
-$('.user').click(function(){
+    setTimeout(function () { init(); }, 50);
+  });
+  $('.user').click(function () {
     console.log(backEndDataObject, othersData)
-});
-function generateSummaryCard(){
+  });
+  function generateSummaryCard() {
     $.ajax({
-        url: '{% url "payment-summary" registration.enrollment_ID %}',
-        type: 'get',
-        dataType: 'json',
-        success: function (data) {
-          $(".payment-summary").html(data.html_form);
-        }
+      url: '{% url "payment-summary" registration.enrollment_ID %}',
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        $(".payment-summary").html(data.html_form);
+      }
     });
-    
-    
-}
-var backEndDataObject = {
-    "particularType":"",
-    "paymentType" : "",
-    "partialAmount" : "",
-    "months" : [],
-    "tuitionAmount" : [],
+
+
+  }
+  var backEndDataObject = {
+    "particularType": "",
+    "paymentType": "",
+    "partialAmount": "",
+    "months": [],
+    "tuitionAmount": [],
     "payments": 0,
-    "payment_method":"",
-    "ORNumber":"",
-    "payment_amount":0.0,
-}
-var change = 0.0
-//Removes all data gathered
-function clear(){
+    "payment_method": "",
+    "ORNumber": "",
+    "payment_amount": 0.0,
+  }
+  var change = 0.0
+  //Removes all data gathered
+  function clear() {
     //Sends this to the server through ajax. Data will be appended based on the user activity
     var backEndDataObject = {
-        "particularType":"",
-        "paymentType" : "",
-        "partialAmount" : "",
-        "months" : {},
-        "tuitionAmount" : {},
-        "payments": 0,
-        "payment_method":"",
-        "ORNumber":"",
-        "payment_amount":0.0,
+      "particularType": "",
+      "paymentType": "",
+      "partialAmount": "",
+      "months": [],
+      "tuitionAmount": [],
+      "payments": 0,
+      "payment_method": "",
+      "ORNumber": "",
+      "payment_amount": 0.0,
     }
-}
-$("#particularList").change(function(){
-    if ($(this).val() != ""){
-        backEndDataObject.particularType = $(this).val()
-        //alert(backEndDataObject.particularType)
+  }
+  $("#particularList").change(function () {
+    if ($(this).val() != "") {
+      backEndDataObject.particularType = $(this).val()
+      //alert(backEndDataObject.particularType)
     }
-});
-$("#paymentType").change(function(){
-    if ($(this).val() != ""){
-        backEndDataObject.paymentType = $(this).val()
-        //alert(backEndDataObject.paymentType)
+  });
+  $("#paymentType").change(function () {
+    if ($(this).val() != "") {
+      backEndDataObject.paymentType = $(this).val()
     }
-});
-
-function appendMonth(particularNum){
-    if (event.target.value != ""){
-        backEndDataObject.months.push(event.target.value);
-        //alert(backEndDataObject.months[toString(particularNum)])
-        
+  });
+  
+  function recordEnrollmentPartial() {
+    if (event.target.value != 0) {
+      backEndDataObject.partialAmount = event.target.value;
+      //alert(backEndDataObject.partialAmount)
     }
-}
-function recordTuitionPayment(paymentNum){
-    if (event.target.value != 0){
-        backEndDataObject.tuitionAmount.push(event.target.value);
-        updateAmountDue()
-    }
-}
-function recordEnrollmentPartial(){
-    if (event.target.value != 0){
-        backEndDataObject.partialAmount = event.target.value;
-        //alert(backEndDataObject.partialAmount)
-    }
-}
-var othersData = {
-    "type" : 'others',
+  }
+  var othersData = {
+    "type": 'others',
     "name": [],
-    "amount" : []
+    "amount": []
 
-}
-function recordSpecName(name, num){
+  }
+  function recordSpecName(name, num) {
     othersData.name.push(name)
-    
-}
 
-function recordSpecAmount(money, num){
+  }
+
+  function recordSpecAmount(money, num) {
     othersData.amount.push(money)
-    
-}
 
-function transferData(num){
+  }
+
+  function transferData(num) {
     alert(num.toString())
-    id = '#item-'+num
-    numid = '#amount-'+num
+    id = '#item-' + num
+    numid = '#amount-' + num
     $(id).html(othersData.name[num])
     $(numid).html(othersData.amount[num])
-    
-}
+
+  }
 
 
-var num = 1;
-function addParticular(){
-    if(num >=100) return;
-  var transaction = '<div class="addParticularPayment">'+
-      '<div class="row">'+
-        '<div class="col-md-6">'+
-          '<label class="card-subtitle">Particular Name:</label>'+
-          '<select onchange="particular(value)" class="custom-select btn-block" id="feesParticularList" required>'+
-                {% for others in others_list %}
-                    '<option value="{{ others.pk }}">{{ others.payable_name }}</option>'+
-                {% endfor %}
-            '<option value="others">Others</option>'+
-          '</select>'+
-          '<div class="modal" tabindex="-1" role="dialog" id="othersModal">'+
-            '<div class="modal-dialog modal-sm" role="document">'+
-              '<div class="modal-content">'+
-                '<div class="modal-header">'+
-                  '<h5 class="modal-title">Item details</h5>'+
-                  '<button type="button" class="close" data-dismiss="modal" aria-label="Close">'+
-                    '<span aria-hidden="true">&times;</span>'+
-                  '</button>'+
-                '</div>'+
-                '<div class="modal-body">'+
-                  '<div class="row">'+
-                    '<div class="col">'+
-                      '<label>Specific Name:</label>'+
-                      '<input type="text" class="form-control" onchange="recordSpecName(this.value, '+num.toString()+')"/>'+
-                    '</div>'+
-                  '</div>'+
-                  '<div class="row">'+
-                    '<div class="col">'+
-                      '<label>Price Amount:</label>'+
-                      '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, '+num.toString()+')"/>'+
-                    '</div>'+
-                  '</div>'+
-                '</div>'+
-                '<div class="modal-footer">'+
-                  '<button type="button" id="transferButton" onclick="transferData('+num.toString()+')"class="btn btn-primary">Save Item</button>'+
-                  '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>'+
-                '</div>'+
-              '</div>'+
-            '</div>'+
-          '</div>'+
-        '</div>'+
-        '<div class="col-md-4">'+
-          '<div class="others" id="specify">'+
-            '<label class="card-subtitle">Specify:</label>'+
-            '<h3 class="link" id="item-'+num.toString()+'"></h3>'+
-           '</div>'+
-        '</div>'+
-        '<div class="col-md-2">'+
-          '<button type="button" class="btn btn-danger btn-sm" onclick="deleteParticularRow(this)">Remove</button>'+
-        '</div>'+
-      '</div>'+
-      '<div class="row">'+
-        '<div class="col-md-6">'+
-          '<label class="card-subtitle">Price Amount:</label>'+
-          '<h2 class="link" "><span class="currency" id="amount-'+num.toString()+'> </span></h2>'+
-        '</div>'+
-      '</div>'+
+  var num = 1;
+  function addParticular() {
+    if (num >= 100) return;
+    var transaction = '<div class="addParticularPayment">' +
+      '<div class="row">' +
+      '<div class="col-md-6">' +
+      '<label class="card-subtitle">Particular Name:</label>' +
+      '<select onchange="particular(value)" class="custom-select btn-block" id="feesParticularList" required>' +
+      {% for others in others_list %}
+  '<option value="{{ others.pk }}">{{ others.payable_name }}</option>' +
+    {% endfor %}
+  '<option value="others">Others</option>' +
+    '</select>' +
+    '<div class="modal" tabindex="-1" role="dialog" id="othersModal">' +
+    '<div class="modal-dialog modal-sm" role="document">' +
+    '<div class="modal-content">' +
+    '<div class="modal-header">' +
+    '<h5 class="modal-title">Item details</h5>' +
+    '<button type="button" class="close" data-dismiss="modal" aria-label="Close">' +
+    '<span aria-hidden="true">&times;</span>' +
+    '</button>' +
+    '</div>' +
+    '<div class="modal-body">' +
+    '<div class="row">' +
+    '<div class="col">' +
+    '<label>Specific Name:</label>' +
+    '<input type="text" class="form-control" onchange="recordSpecName(this.value, ' + num.toString() + ')"/>' +
+    '</div>' +
+    '</div>' +
+    '<div class="row">' +
+    '<div class="col">' +
+    '<label>Price Amount:</label>' +
+    '<input type="text" class="form-control" onchange="recordSpecAmount(this.value, ' + num.toString() + ')"/>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '<div class="modal-footer">' +
+    '<button type="button" id="transferButton" onclick="transferData(' + num.toString() + ')"class="btn btn-primary">Save Item</button>' +
+    '<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '</div>' +
+    '<div class="col-md-4">' +
+    '<div class="others" id="specify">' +
+    '<label class="card-subtitle">Specify:</label>' +
+    '<h3 class="link" id="item-' + num.toString() + '"></h3>' +
+    '</div>' +
+    '</div>' +
+    '<div class="col-md-2">' +
+    '<button type="button" class="btn btn-danger btn-sm" onclick="deleteParticularRow(this)">Remove</button>' +
+    '</div>' +
+    '</div>' +
+    '<div class="row">' +
+    '<div class="col-md-6">' +
+    '<label class="card-subtitle">Price Amount:</label>' +
+    '<h2 class="link" "><span class="currency" id="amount-' + num.toString() + '> </span></h2>' +
+    '</div>' +
+    '</div>' +
     '</div>';
-    num++
-    console.log(transaction)
-    $('#paymentsPanel').append(transaction);
+  num++
+  console.log(transaction)
+  $('#paymentsPanel').append(transaction);
 };
 
-</script>
-
-{%endblock%}
+</script> {%endblock%}
