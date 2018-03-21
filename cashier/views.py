@@ -172,7 +172,8 @@ def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledge
 # TRANSACTIONS #
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     registration = Enrollment.objects.get(enrollment_ID=pk)
-    context = {'registration':registration,}
+    others_list = EnrollmentBreakdown.objects.filter(year_level__isnull=True)
+    context = {'registration':registration,'others_list':others_list}
     return render(request,template,context)
 
 def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
@@ -276,3 +277,8 @@ def testView(request,pk='pk', template="test.html"):
     context = {'something':data}
     return ajaxTable(request,template,context)
 # END DAILY CASH #
+
+def loadOthersList(request,template="/cashier/transactions/others_dropdown.html"):
+    others_list = EnrollmentBreakdown.objects.get(year_level__isnull=True)
+    context = { 'others_list' : others_list}
+    return render(request,template,context)

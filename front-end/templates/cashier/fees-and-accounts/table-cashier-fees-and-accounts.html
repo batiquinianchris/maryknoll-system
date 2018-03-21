@@ -9,10 +9,11 @@
     </tr>
   </thead>
   <tbody>
+      {% load humanize %}
     {%for parts in particulars%}
     <tr>
-      <td> {{parts.payable_name}} </td>
-      <td> {{parts.fee_amount}} </td>
+      <td> <span class="currency">{{parts.payable_name}}</span> </td>
+      <td> {{parts.fee_amount|floatformat:2|intcomma}} </td>
       <td> {{parts.year_level }}</td> </td>
       <td class="text-center">
         <a href="{%url 'fees-and-accounts-edit' pk=parts.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>

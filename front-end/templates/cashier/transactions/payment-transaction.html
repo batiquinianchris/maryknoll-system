@@ -105,13 +105,10 @@
                     <label class="card-subtitle">Particular Name:</label>
                     <select class="custom-select btn-block" id="feesParticularList" onchange="" name="payment0" required>
                     <option selected value="None">Choose particular:</option>
-                    <option value="1">Form 137</option>
-                    <option value="2">Diploma</option>
-                    <option value="3">Certificate</option>
-                    <option value="4">Entrance Test</option>
-                    <option value="5">Identification Card</option>
-                    <option value="6">Uniform</option>
-                    <option value="7">Books</option>
+                    <option value="">Choose a particular: </option>
+                    {% for others in others_list %}
+                        <option value="{{ others.pk }}">{{ others.payable_name }}</option>
+                    {% endfor %}
                     <option value="others">Others</option>
                     </select>
                     <!-- is only saved in the student's payment transaction logs, but object is not saved in the database-->
