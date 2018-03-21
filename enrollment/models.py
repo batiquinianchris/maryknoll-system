@@ -105,7 +105,7 @@ class Section(models.Model):
     section_ID = models.AutoField(primary_key=True)
     section_name = models.CharField(max_length=50)
     section_capacity = models.IntegerField()
-    adviser = models.ForeignKey(TeacherDetails, on_delete = models.CASCADE)
+    adviser = models.ForeignKey('administrative.Employee', on_delete = models.CASCADE)
     curriculum = models.ForeignKey(Curriculum, on_delete = models.SET_NULL, null = True)
     room = models.CharField(max_length=50)
     #Section status
@@ -131,7 +131,7 @@ class Section(models.Model):
 class Offering(models.Model):
 	offering_ID = models.AutoField(primary_key=True)
 	subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, default=0)
-	teacher = models.ForeignKey(TeacherDetails, on_delete=models.CASCADE, default=0)
+	teacher = models.ForeignKey('administrative.Employee', on_delete=models.CASCADE, default=0)
 	school_year = models.ForeignKey(School_Year, on_delete=models.CASCADE, default=0)
 	year_level = models.ForeignKey(YearLevel, on_delete=models.CASCADE, null = True)
 	section = models.ForeignKey(Section, on_delete=models.CASCADE, null = True)
