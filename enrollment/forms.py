@@ -49,3 +49,8 @@ class School_YearForm(forms.ModelForm):
 
         model = School_Year
         exclude = ('date_start',)
+
+class YearLevelForm(forms.ModelForm):
+    class Meta:
+        model = YearLevel
+        exclude = ('pk',)

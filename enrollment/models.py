@@ -28,7 +28,6 @@ class TeacherDetails(models.Model):
 
 class YearLevel(models.Model):
     grade_level = models.CharField(max_length=200)
-    
     def __str__(self):
         return self.grade_level
 
