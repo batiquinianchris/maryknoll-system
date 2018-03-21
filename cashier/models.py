@@ -1,5 +1,5 @@
 from __future__ import unicode_literals
-
+from django.db.models import Sum
 from django.db import models
 
 #SIGNALS = TRIGGERS
@@ -26,6 +26,42 @@ class EnrollmentBreakdown(models.Model):
 class EnrollmentTransactionsMade(models.Model):
     student = models.ForeignKey(
         'registration.Enrollment', on_delete=models.CASCADE)
+    
+    date_paid = models.DateField()
+    ORnum = models.IntegerField(blank=True,null=True)
+    method_CHOICES = (
+        ('Cash', 'Cash'),
+        ('Cheque', 'Cheque'),
+        ('Promissory', 'Others'),
+        ('Others', 'Others'),
+    )
+    payment_method = models.CharField(max_length=50,
+    choices=method_CHOICES,)
+    class Meta:
+        """Meta definition for EnrollmentTransactionsMade."""
+
+        verbose_name = 'EnrollmentTransactionsMade'
+        verbose_name_plural = 'EnrollmentTransactionsMades'
+
+    def get_total_sum(self):
+        #Get list of fees for a grade level
+        fees_list = EnrollmentORDetails.objects.filter(ORnumber=self)
+        #Get total amount of fees
+        amount = fees_list.aggregate(Sum('money_given'))
+        # amount['money_given__sum']
+        return amount['money_given__sum']
+
+    def __str__(self):
+        """Unicode representation of EnrollmentTransactionsMade."""
+        return str(self.ORnum)
+
+
+class EnrollmentORDetails(models.Model):
+    """Model definition for OR_Details."""
+    ORnumber = models.ForeignKey(
+        EnrollmentTransactionsMade, on_delete=models.CASCADE)
+    money_given = models.FloatField()
+    
     name_CHOICES = (
         ('ENROLLMENT', 'Enrollment Fee'),
         ('TUITION', 'Tuition Fee'),
@@ -61,40 +97,6 @@ class EnrollmentTransactionsMade(models.Model):
     month = models.CharField(max_length=50,
         choices=month_CHOICES,
         null=True, blank=True)
-    date_paid = models.DateField()
-    ORnum = models.IntegerField(blank=True,null=True)
-    method_CHOICES = (
-        ('Cash', 'Cash'),
-        ('Cheque', 'Cheque'),
-        ('Promissory', 'Others'),
-        ('Others', 'Others'),
-    )
-    payment_method = models.CharField(max_length=50,
-    choices=method_CHOICES,)
-    class Meta:
-        """Meta definition for EnrollmentTransactionsMade."""
-
-        verbose_name = 'EnrollmentTransactionsMade'
-        verbose_name_plural = 'EnrollmentTransactionsMades'
-
-    def get_total_sum(self):
-        #Get list of fees for a grade level
-        fees_list = EnrollmentORDetails.objects.filter(ORNumber=self)
-        #Get total amount of fees
-        amount = fees_list.aggregate(Sum('money_given'))
-        return amount
-
-    def __str__(self):
-        """Unicode representation of EnrollmentTransactionsMade."""
-        return str(self.ORnum)
-
-
-class EnrollmentORDetails(models.Model):
-    """Model definition for OR_Details."""
-    ORnumber = models.ForeignKey(
-        EnrollmentTransactionsMade, on_delete=models.CASCADE)
-    Particular_being_paid = models.CharField(max_length=50)
-    money_given = models.FloatField()
     #remarks
     class Meta:
         """Meta definition for OR_Details."""

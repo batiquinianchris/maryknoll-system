@@ -243,10 +243,10 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
     return render(request, template, {'student': current_student, 'record':last_record})
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
     student = get_object_or_404(Student, pk=pk)
-    enrollment_list = Enrollment.objects.filter(student = student)
-    scholarship_list = StudentScholar.objects.filter(registration=enrollment_list[0])
+    enrollment_list = Enrollment.objects.filter(student=student)
+    curr_enrollment = enrollment_list.latest('enrollment_ID')
+    scholarship_list = StudentScholar.objects.filter(registration=curr_enrollment)
     enrollment = paginateThis(request, enrollment_list, 10)
-
     context = {'enrollment_list': enrollment, 'student':student, 'scholarship': scholarship_list}
 
     return ajaxTable(request, template, context)
@@ -313,7 +313,6 @@ def table_studentScholar(request,pk='pk',template='registrar/student-registratio
     scholarship_list = StudentScholar.objects.filter(registration=registration)
     
     context = {'scholarship_list':scholarship_list, 'student':registration.student}
-    print context
     return ajaxTable(request,template,context)
 
 
@@ -349,7 +348,7 @@ def tableTransactionLogs(request,pk='pk',template="registrar/student-registratio
 
     transaction_list = EnrollmentTransactionsMade.objects.filter(student=registration)
 
-    context = {'transaction_list': transaction_list}
+    context = {'transaction_list_enrollment': transaction_list, 'registration':registration}
     return ajaxTable(request,template,context)
 
 ''' EXPORTING TO CSV '''

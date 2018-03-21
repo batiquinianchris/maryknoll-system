@@ -358,17 +358,19 @@
     {% endif %}
     
   });
-
-  function generateTransactionTable(){
-    $.ajax({
-      url: '{% url "student-transaction-log" record.enrollment_ID %}',
-      type: 'get',
-      dataType: 'json',
-      success: function(data) {
-        $(".ledger-table").html(data.html_form);
-      }
-    });
-  }
+  {% if record %}
+    function generateTransactionTable(){
+      $.ajax({
+        url: '{% url "student-transaction-log" record.enrollment_ID %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+          $(".ledger-table").html(data.html_form);
+        }
+      });
+    }
+  {% endif %}
+  
 
   function generateStudentTable(){
     $.ajax({

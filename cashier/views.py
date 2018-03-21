@@ -185,16 +185,15 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
     totalPaymentOfStudent = getTotalpayment(registration)
     if totalPaymentOfStudent == None:
         totalPaymentOfStudent = float(0)
-    
-    
     deductions = getTotalDeductions(registration)
     account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
-    #print account_balance
+    enrollment_amount_due = account_balance - totalPaymentOfStudent
     context = {'student': registration.student,
         'account_balance':account_balance, 
         'amount_paid': totalPaymentOfStudent,
         'scholarship_deductions': deductions,
-        'registration':registration 
+        'registration':registration,
+        #'enrollment_amount_due':enrollment_amount_due,
     }
 
     return ajaxTable(request,template,context)
@@ -210,41 +209,41 @@ def testView(request,pk='pk', template="test.html"):
                     if data['payment_method'] != 'Others':
                         new_transaction = EnrollmentTransactionsMade.objects.create(
                             student = registration,
-                            # Details
-                            particular_name = 'ENROLLMENT',
-                            # Details
-                            payment_type = 'FULL',
-                            # Details
-                            month = None,
                             date_paid = datetime.date.today(),
                             payment_method = data['payment_method'],
                         )
                         transaction = EnrollmentTransactionsMade.objects.latest('date_paid')
                         new_payment = EnrollmentORDetails.objects.create(
                             ORnumber = new_transaction,
-                            Particular_being_paid = data['particularType'],
-                            money_given = data['payment_amount']
+                            money_given = data['payment_amount'],
+                            # Details
+                            particular_name = 'ENROLLMENT',
+                            # Details
+                            payment_type = 'FULL',
+                            # Details
+                            month = None,
                         )
                 elif data['paymentType'] == 'Partial':
                     if data['payment_method'] != 'Others':
                         new_transaction = EnrollmentTransactionsMade.objects.create(
                             student = registration,
+                            date_paid = datetime.date.today(),
+                            payment_method = data['payment_method'],
+                        )
+                        new_payment = EnrollmentORDetails.objects.create(
+                            ORnumber = new_transaction,
+                            money_given = data['payment_amount'],
                             # Details
                             particular_name = 'ENROLLMENT',
                             # Details
                             payment_type = 'PARTIAL',
                             # Details
                             month = None,
-                            date_paid = datetime.date.today(),
-                            payment_method = data['payment_method'],
-                        )
-                        new_payment = EnrollmentORDetails.objects.create(
-                            ORnumber = new_transaction,
-                            Particular_being_paid = data['particularType'],
-                            money_given = data['payment_amount']
                         )
 
                         print "%s - %s" % (str(new_transaction), str(new_payment))
+            #elif data['particularType'] == 'TuitionFee':
+        
         except Exception as error:
             print error
             return HttpResponseRedirect('student-list')        
