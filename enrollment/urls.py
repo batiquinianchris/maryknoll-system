@@ -73,3 +73,7 @@ urlpatterns = [
         
         url(r'^year-level-list/delete/(?P<pk>\d+)$', views.delete_yearLevel, name = 'year-level-delete'),
     ]
+
+urlpatterns += [
+    url(r'^subject/delete$', views.deleteSubj, name = 'delete-subject'),
+]

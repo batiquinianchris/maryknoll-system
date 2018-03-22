@@ -740,4 +740,9 @@ def delete_yearLevel(request, pk='pk'):
     return redirect('enrollment:year-level-list')
     
     
-
+def deleteSubj(request):
+    subject =int(request.GET.get('subject'))
+    subj = Subjects.objects.get(subject_ID = int(subject))
+    subj.delete()
+    data = {}
+    return JsonResponse(data)

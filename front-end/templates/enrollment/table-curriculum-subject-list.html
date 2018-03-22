@@ -14,8 +14,11 @@
       <td>{{subj.year}}</td>
       <td>{{subj.subject_name}}</td>
       <td>{{subj.units}}</td>
-      <td class="text-center"><a href="{%url 'subject-edit' subj.pk %}?curriculum={{curriculum.pk}}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
-      <button type="button" onclick="deleteRow(this)" class="btn btn-sm btn-danger view-button">Delete</button>  
+      <td class="text-center">
+        <a href="{%url 'subject-edit' subj.pk %}?curriculum={{curriculum.pk}}" class="btn btn-secondary btn-sm view-button">Edit</a>
+        <button type="button" onclick="deleteRow(this, {{subj.pk}})" class="btn btn-sm btn-danger view-button">Delete</button> 
+      </td>
+       
     </tr>
       <!-- For its edit function,redirect pa rin sa add page nya but remove the "add additional subjects below it"-->
       {% empty %}
@@ -58,7 +61,17 @@
 {% endif %}
 
 <script>
-  function deleteRow(obj){
+  function deleteRow(obj, num){
     $(obj).closest('tr').remove();
+
+    $.ajax({
+      url: '{% url "delete-subject" %}?subject='+num,
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        generateSubjList();
+      }
+    });
+
   }
 </script>

@@ -20,7 +20,7 @@
               <div class="align-right-item">
                 <a href="javascript:window.print()" class="card-link  print flex-item btn btn-outline-primary">
                   <i class="fa fa-print" aria-hidden="true"></i> Print Records</a>
-                <a href="curriculum-subjects-list-add.html" class="add-button btn btn-primary ">
+                <a href="{% url 'subject-add' curriculum.pk %}" class="add-button btn btn-primary ">
                   <i class="fa fa-plus" aria-hidden="true"></i> Add New Subjects</a>
               </div>
             </div>
@@ -42,9 +42,12 @@
   };
 </script>
 
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{# ---------------------------BACKEND SCRIPTS -------------------------------#}
 <script>
   $(function() {
+    generateSubjList()
+  });
+  function generateSubjList(){
     $.ajax({
       url: '{% url "subject-table" curriculum.curriculum_ID %}',
       type: 'get',
@@ -53,7 +56,9 @@
         $("#curriculum-subject-listings").html(data.html_form);
       }
     });
-  });
+  }
+
+  
 </script>
 
 {%endblock%}
