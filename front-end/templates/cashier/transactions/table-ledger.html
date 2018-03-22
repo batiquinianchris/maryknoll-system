@@ -6,7 +6,6 @@
             <th scope="col">Particular Name</th>
             <th scope="col">Payment Method</th>
             <th scope="col">Amount Paid</th>
-            <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -17,11 +16,10 @@
             <td>{{transaction.get_particular_name}}</td>
             <td>{{transaction.get_payment_method_display}}</td>
             <td>₱ {{transaction.get_total_sum|floatformat:2|intcomma}}</td>
-            <td> </td>
         </tr>
         {%empty%}
         <tr>
-            <td colspan="5" class="text-center">No Transactions Made</td>
+            <td colspan="4" class="text-center">No Transactions Made</td>
         </tr>
         {% endfor %}
 
