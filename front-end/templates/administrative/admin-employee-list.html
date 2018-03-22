@@ -1,57 +1,52 @@
-{% extends 'base.html' %}
-{% block settings %}
+{% extends 'base.html' %} {% block settings %}
 <li class="nav-item active-menu">
   <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
 </li>
-{% endblock %}
-
-{%load static%}
-{% block content %}
+{% endblock %} {%load static%} {% block content %}
 <!-- CONTENT -->
-<div class="container-fluid bg-content">
-      <div class="content">
-        <div class="seal"></div>
-        <h2> Employee Profiles </h2>
-        <div class="menu-flex search-bar no-print">
-          <div class="flex-search">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Category
-                </button>
-                <!-- Supply dropdown menu categories, refer to database -->
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">All categories</a>
-                  <a class="dropdown-item" href="#">Full Name</a>
-                  <a class="dropdown-item" href="#">Employee Type</a>
-                  <a class="dropdown-item" href="#">Work Type</a>
-                </div>
-              </div>
-              <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-primary">Search</button>
-              </span>
-            </div>
-          </div>
-          <div class="flex-print">
-            <a href="javascript:window.print()" class="card-link btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Employee Records</a>
-            <a href="{%url 'employee-add' %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create Employee Profile</a>
-          </div>
+<div class="seal"></div>
+<h2> Employee Profiles </h2>
+<div class="menu-flex search-bar no-print">
+  <div class="flex-search">
+    <div class="input-group">
+      <div class="input-group-btn">
+        <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Category
+        </button>
+        <!-- Supply dropdown menu categories, refer to database -->
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">All categories</a>
+          <a class="dropdown-item" href="#">Full Name</a>
+          <a class="dropdown-item" href="#">Employee Type</a>
+          <a class="dropdown-item" href="#">Work Type</a>
         </div>
-    <div class="row table-records table-responsive" id="employee-listings">
-      <!-- INSERT TABLE HERE -->
-      
+      </div>
+      <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-primary">Search</button>
+      </span>
     </div>
   </div>
+  <div class="flex-print">
+    <a href="javascript:window.print()" class="card-link btn btn-outline-primary">
+      <i class="fa fa-print no-print" aria-hidden="true"></i> Print Employee Records</a>
+    <a href="{%url 'employee-add' %}" class="add-button btn btn-primary ">
+      <i class="fa fa-plus no-print" aria-hidden="true"></i> Create Employee Profile</a>
+  </div>
+</div>
+<div class="row table-records table-responsive" id="employee-listings">
+  <!-- INSERT TABLE HERE -->
+
 </div>
 <!-- CONTENT -->
 
 <!-- Allows dropdown menu to select child -->
 <script>
-var selected = "None";
-var search_data = "None";
-  $(function() {
-    $(".dropdown-menu a").click(function() {
+  var selected = "None";
+  var search_data = "None";
+  $(function () {
+    $(".dropdown-menu a").click(function () {
       $("#selected:first-child").text($(this).text());
       $("#selected:first-child").val($(this).text());
       selected = $("#selected:first-child").val();
@@ -65,21 +60,21 @@ var search_data = "None";
 </script>
 <!-- ---------------------------BACKEND SCRIPTS ------------------------------->
 <script>
-$(function() {
-  $.ajax({
-        url: '{% url "employee-table" %}',
-        type: 'get',
-        dataType: 'json',
-        success: function(data) {
-            $("#employee-listings").html(data.html_form);
-        }
+  $(function () {
+    $.ajax({
+      url: '{% url "employee-table" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function (data) {
+        $("#employee-listings").html(data.html_form);
+      }
     });
-});
+  });
 
-function generatePage(pageNum){
-    if(search_data == "None" || selected == "None"){
+  function generatePage(pageNum) {
+    if (search_data == "None" || selected == "None") {
       generatePages(pageNum)
-    }else{
+    } else {
       generatePages2(pageNum)
     }
   }
@@ -88,41 +83,39 @@ function generatePage(pageNum){
       url: '{% url "employee-table" %}?page=' + pageNum,
       type: 'get',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         $("#employee-listings").html(data.html_form);
       }
     });
   }
-  
+
   function generatePages2(pageNum) {
     $.ajax({
-      url: '{% url "employee-table" %}?page=' + pageNum + '&search='+search_data+"&genre="+selected,
+      url: '{% url "employee-table" %}?page=' + pageNum + '&search=' + search_data + "&genre=" + selected,
       type: 'get',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         $("#employee-listings").html(data.html_form);
       }
     });
   }
-  
- $('.search').click(function() {
+
+  $('.search').click(function () {
     search_data = $('.search-input').val();
-    if(search_data == ""){
+    if (search_data == "") {
       search_data = "None"
     }
     generateSearch();
   });
-  
+
   function generateSearch() {
     $.ajax({
-      url: '{% url "employee-table" %}?search='+search_data+"&genre="+selected,
+      url: '{% url "employee-table" %}?search=' + search_data + "&genre=" + selected,
       type: 'GET',
       dataType: 'json',
-      success: function(data) {
+      success: function (data) {
         $("#employee-listings").html(data.html_form);
       }
     });
   }
-</script>
-
-{%endblock%}
+</script> {%endblock%}

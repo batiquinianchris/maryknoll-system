@@ -257,8 +257,6 @@ def testView(request,pk='pk', template="test.html"):
                             # Details
                             particular_name = 'ENROLLMENT',
                             # Details
-                            payment_type = 'FULL',
-                            # Details
                             month = None,
                         )
                 elif data['paymentType'] == 'Partial':
