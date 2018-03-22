@@ -71,7 +71,6 @@ def getTotalGradeLevelPayment(grade_level_instance):
     fees_list = EnrollmentBreakdown.objects.filter(year_level=grade_level_instance)
     #Get total amount of fees
     amount = fees_list.aggregate(Sum('fee_amount'))
-    
     return amount['fee_amount__sum']
 
 def getTotalpayment(registration):
@@ -160,9 +159,10 @@ def formFeeAccountEdit(request, pk='pk', template='cashier/fees-and-accounts/for
 
 
 def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledger.html'):
-    registration = Enrollment.objects.get(pk='pk')
-    transaction_list = EnrollmentORDetails.objects.filter(registration=registration)
-    context = {'transaction_list':transaction_list}
+    registration = Enrollment.objects.get(enrollment_ID=pk)
+    transactions = EnrollmentTransactionsMade.objects.filter(student=registration)
+    transaction_list = EnrollmentORDetails.objects.filter(ORnumber=transactions)
+    context = {'transaction_list':transactions, 'items_list':transaction_list}
     return ajaxTable(request,template,context)
 
 # END PARTICULARS #
@@ -173,13 +173,9 @@ def tableTransactions(request,pk='pk',template='cashier/transactions/table-ledge
 # TRANSACTIONS #
 def transactionView(request,pk='pk',template='cashier/transactions/payment-transaction.html'):
     registration = Enrollment.objects.get(enrollment_ID=pk)
-    context = {'registration':registration,}
-    return render(request,template,context)
-
-def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
-    
-    registration = Enrollment.objects.get(enrollment_ID = pk)
+    others_list = EnrollmentBreakdown.objects.filter(year_level__isnull=True)
     studentGradeLevelAccount = getTotalGradeLevelPayment(registration.year_level)
+    
     if studentGradeLevelAccount == None:
         studentGradeLevelAccount = float(0)
     totalPaymentOfStudent = getTotalpayment(registration)
@@ -187,15 +183,44 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
         totalPaymentOfStudent = float(0)
     deductions = getTotalDeductions(registration)
     account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
-    enrollment_amount_due = account_balance - totalPaymentOfStudent
+    context = {'registration':registration,
+        'others_list':others_list,
+        'student': registration.student,
+        'account_balance':account_balance, 
+        'amount_paid': totalPaymentOfStudent,
+        'scholarship_deductions': deductions,
+        'enrollment_amount_due': 0,}
+    return render(request,template,context)
+
+def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.html"):
+    
+    registration = Enrollment.objects.get(enrollment_ID = pk)
+    studentGradeLevelAccount = getTotalGradeLevelPayment(registration.year_level)
+    
+    if studentGradeLevelAccount == None:
+        studentGradeLevelAccount = float(0)
+    totalPaymentOfStudent = getTotalpayment(registration)
+    if totalPaymentOfStudent == None:
+        totalPaymentOfStudent = float(0)
+    deductions = getTotalDeductions(registration)
+    account_balance  = studentGradeLevelAccount - totalPaymentOfStudent - deductions
+    # print studentGradeLevelAccount, totalPaymentOfStudent, deductions
+    # enrollment_amount_due = account_balance - totalPaymentOfStudent
     context = {'student': registration.student,
         'account_balance':account_balance, 
         'amount_paid': totalPaymentOfStudent,
         'scholarship_deductions': deductions,
         'registration':registration,
-        #'enrollment_amount_due':enrollment_amount_due,
+        'enrollment_amount_due': 0,
     }
 
+    return ajaxTable(request,template,context)
+
+def table_financialRecordsView(request, pk='pk',template="cashier/table-financial-records.html"):
+    registration = Enrollment.objects.get(enrollment_ID = pk)
+    payment_list = fees_list = EnrollmentBreakdown.objects.filter(year_level=registration.year_level)
+    balance = getTotalGradeLevelPayment(registration.year_level)
+    context = {'balance': balance, 'payment_list': payment_list}
     return ajaxTable(request,template,context)
 @csrf_exempt
 def testView(request,pk='pk', template="test.html"):
@@ -209,12 +234,13 @@ def testView(request,pk='pk', template="test.html"):
                     if data['payment_method'] != 'Others':
                         new_transaction = EnrollmentTransactionsMade.objects.create(
                             student = registration,
+                            ORnum = data['ORNumber'],
                             date_paid = datetime.date.today(),
                             payment_method = data['payment_method'],
                         )
                         new_payment = EnrollmentORDetails.objects.create(
                             ORnumber = new_transaction,
-                            money_given = data['payment_amount'],
+                            money_given = data['amount_due'],
                             # Details
                             particular_name = 'ENROLLMENT',
                             # Details
@@ -231,11 +257,9 @@ def testView(request,pk='pk', template="test.html"):
                         )
                         new_payment = EnrollmentORDetails.objects.create(
                             ORnumber = new_transaction,
-                            money_given = data['payment_amount'],
+                            money_given = data['amount_due'],
                             # Details
                             particular_name = 'ENROLLMENT',
-                            # Details
-                            payment_type = 'PARTIAL',
                             # Details
                             month = None,
                         )
@@ -256,11 +280,10 @@ def testView(request,pk='pk', template="test.html"):
                             # Details
                             particular_name = 'ENROLLMENT',
                             # Details
-                            payment_type = 'PARTIAL',
-                            # Details
                             month = month,
                     )
                     print "Success!"
+            
         except Exception as error:
             print error
             return HttpResponseRedirect('student-list')        
@@ -268,3 +291,8 @@ def testView(request,pk='pk', template="test.html"):
     context = {'something':data}
     return ajaxTable(request,template,context)
 # END DAILY CASH #
+
+def loadOthersList(request,template="/cashier/transactions/others_dropdown.html"):
+    others_list = EnrollmentBreakdown.objects.get(year_level__isnull=True)
+    context = { 'others_list' : others_list}
+    return render(request,template,context)

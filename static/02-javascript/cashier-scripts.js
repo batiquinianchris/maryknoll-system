@@ -4,9 +4,8 @@
 //GLOBAL DECLARATIONS
 var count = 2;  // starting number of next transaction
 var message = "clicked"; //error handling
-
 function init(){
-  $('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
+$('.othersPayment, #btn-add-particular, #others-summary, .method, .partial, .others, .details, .tuitionPayment').hide();
 }
 ////////////////////////////////////////////////
 //TRANSACTION TOGGLE SCRIPT
@@ -75,6 +74,7 @@ $("#paymentType").change(function(){
     $( ".partial" ).show();
   }
   else{
+    
     $( ".partial" ).hide();
   }
 });
@@ -106,28 +106,18 @@ var add = function (){
           '<div class="col-md-6">'+
             '<div class="details">'+
               '<label class="card-subtitle">Month:</label>'+
-              '<select class="custom-select btn-block" id="monthList" onchange="appendMonth('+count+')" required>'+
-              '<option selected value="None">Choose payment month:</option>'+
-              '<option selected value="JAN">January</option>'+
-              '<option selected value="FEB">Febuary</option>'+
-              '<option selected value="MAR">March</option>'+
-              '<option selected value="APR">April</option>'+
-              '<option selected value="MAY">May</option>'+
-              '<option selected value="JUN">June</option>'+
-              '<option selected value="JUL">July</option>'+ 
-              '<option selected value="AUG">August</option>'+
-              '<option selected value="SEP">September</option>'+
-              '<option selected value="OCT">October</option>'+
-              '<option selected value="NOV">November</option>'+
-              '<option selected value="DEC">December</option>'+
-              '</select></div>'+
+              '<select class="custom-select btn-block" required>'+
+              '<option selected>Choose payment month:</option>'+
+              '<option value="January">January</option>'+
+              '<option value="February">February</option>'+
+              '<option value="March">March</option></select></div>'+
             '</div>'+
           '</div>'+
           '<div class="row">'+
             '<div class="col-md-6">'+
               '<div class="tuitionPayment">'+
                '<label class="card-subtitle">Amount:</label>'+
-               '<input onchange="recordTuitionPayment('+count+');" type="text" class="form-control">'+
+               '<input type="text" class="form-control">'+
               '</div>'+
             '</div>'+
           '</div>'+

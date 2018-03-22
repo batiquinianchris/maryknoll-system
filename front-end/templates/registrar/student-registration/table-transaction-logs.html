@@ -9,13 +9,13 @@
             <th scope="col" class="no-print">Actions</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody>{% load humanize %}
             {% for transaction in transaction_list_enrollment %}
                 <tr>
                     <td>{{transaction.date_paid}}</td>
                     <td>Enrollment - {{transaction.particular_name}}</td>
                     <td>{{transaction.payment_method}}</td>
-                    <td><span class="currency"> {{transaction.get_total_sum}}</span></td>
+                    <td><span class="currency"> {{transaction.get_total_sum|floatformat:2|intcomma}}</span></td>
                     <td class="text-center no-print"><a href="{#url 'student-ledger' registration.enrollment_ID #}" class="btn btn-success btn-sm view-button">View</a></td>
                 </tr>
             {%empty%}

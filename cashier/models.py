@@ -20,14 +20,14 @@ class EnrollmentBreakdown(models.Model):
 
     def __str__(self):
         """Unicode representation of EnrollmentBreakdown."""
-        return "%s" (self.payable_name)
+        return "%s" % (self.payable_name)
 
 
 class EnrollmentTransactionsMade(models.Model):
     student = models.ForeignKey(
         'registration.Enrollment', on_delete=models.CASCADE)
     
-    date_paid = models.DateField()
+    date_paid = models.DateField(auto_now=True)
     ORnum = models.CharField(max_length=100,blank=True,null=True)
     method_CHOICES = (
         ('Cash', 'Cash'),
@@ -50,7 +50,11 @@ class EnrollmentTransactionsMade(models.Model):
         amount = fees_list.aggregate(Sum('money_given'))
         # amount['money_given__sum']
         return amount['money_given__sum']
-
+    def get_particular_name(self):
+        items = EnrollmentORDetails.objects.filter(ORnumber=self)
+        for item in items:
+            name = name + ", " + item.particular_name
+        return name
     def __str__(self):
         """Unicode representation of EnrollmentTransactionsMade."""
         return str(self.ORnum)
@@ -74,11 +78,6 @@ class EnrollmentORDetails(models.Model):
         ('FULL', 'Full Payment'),
         ('PART', 'Partial Payment'),
     )
-    payment_type = models.CharField(max_length=50,
-        choices=type_CHOICES,
-        null=True,
-        blank=True,
-        )
     
     month_CHOICES = (
         ('JAN', 'January'),
@@ -134,6 +133,7 @@ class OthersORDetails(models.Model):
     ORnumber = models.ForeignKey(
         'OthersTransactionsMade', on_delete=models.CASCADE)
     name_of_item = models.CharField(max_length=50)
+    item_price = models.FloatField()
     money_given = models.FloatField()
 
     class Meta:
