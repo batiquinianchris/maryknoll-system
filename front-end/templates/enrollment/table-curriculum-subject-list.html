@@ -15,9 +15,11 @@
       <td>{{subj.subject_name}}</td>
       <td>{{subj.units}}</td>
       <td class="text-center"><a href="{%url 'subject-edit' subj.pk %}?curriculum={{curriculum.pk}}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+      <button type="button" onclick="deleteRow(this)" class="btn btn-sm btn-danger view-button">Delete</button>  
     </tr>
-    {% empty %}
-    <tr>
+      <!-- For its edit function,redirect pa rin sa add page nya but remove the "add additional subjects below it"-->
+      {% empty %}
+      <tr>
       <td colspan="6" class="text-center">No Subjects</td>
     </tr>
     {%endfor%}
@@ -54,3 +56,9 @@
   </ul>
 </nav>
 {% endif %}
+
+<script>
+  function deleteRow(obj){
+    $(obj).closest('tr').remove();
+  }
+</script>
