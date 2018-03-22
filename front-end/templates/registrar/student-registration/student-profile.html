@@ -110,45 +110,12 @@
                   </div>
                   <div class="col-md-4">
                     <div class="btn-group float-right no-print">
-                      <a href="schoolyear-list-2.html" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> View Offerings</a>
+                      <a href="{% url 'subjectOffering-list' record.school_year.pk %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> View Offerings</a>
                     </div>
                   </div>
                 </div>
-                <div class="row table-records table-responsive">
-                  <table class="table table-bordered bg-nav table-hover">
-                    <thead class="thead-light">
-                      <tr>
-                        <!-- Refer to database for headings -->
-                        <th scope="col">Offering Code</th>
-                        <th scope="col">Subject Name</th>
-                        <th scope="col">Teacher Assigned</th>
-                        <th scope="col">Schedule</th>
-                        <th scope="col">Room</th>
-                        <th scope="col" class="no-print">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>10-300</td>
-                        <td>Marxism IV</td>
-                        <td>Boop, Mr. Boop of Commie Land</td>
-                        <td>8:00-9:00 AM</td>
-                        <td>F900</td>
-                        <td class="no-print text-center delete-btn">
-                          <button type="button" class="btn btn-danger" onclick="deleteRow(this)">Drop</button>
-                      </tr>
-                      <tr>
-                        <td>10-308</td>
-                        <td>Communism IV</td>
-                        <td>Zedong, Chairman Mao</td>
-                        <td>1:00-8:00 PM</td>
-                        <td>C704</td>
-                        <td class="text-center no-print delete-btn">
-                          <button type="button" class="btn btn-danger" onclick="deleteRow(this)">Drop</button>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="row table-records table-responsive subjects-table">
+                  
                 </div>
               </div>
               <div class="tab-pane container" id="studentLedger">
@@ -217,11 +184,25 @@
     {% if record %}
       generateScholarTable();
       generateTransactionTable();
-      generateFinancialRecords()
+      generateFinancialRecords();
+      generateSubjectsTable();
     {% endif %}
     
   });
   {% if record %}
+    {% if record.section %}
+    function generateSubjectsTable(){
+      $.ajax({
+        url: '{% url "subjects-table" record.section.section_ID %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+          $(".subjects-table").html(data.html_form);
+        }
+      });
+    {% endif %}
+    
+    }
     function generateTransactionTable(){
       $.ajax({
         url: '{% url "transaction-history" record.enrollment_ID %}',

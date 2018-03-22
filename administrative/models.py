@@ -66,7 +66,7 @@ class Employee(models.Model):
 		verbose_name = "Employee"
 		
 	def __str__(self):
-		return self.first_name
+		return "%s, %s" % (self.last_name, self.first_name)
 		
 	def get_abosulute_url(self):
 	    return reverse('employee-list', kwargs={"id": self.id})

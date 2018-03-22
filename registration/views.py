@@ -353,3 +353,8 @@ def tableTransactionLogs(request,pk='pk',template="registrar/student-registratio
     return ajaxTable(request,template,context)
 
         
+def subjectsView(request, pk='pk', template='registrar/student-registration/table-student-subjects.html'):
+    section = Section.objects.get(pk=pk)
+    offerings_list = Offering.objects.filter(section=section)
+    context = {'offering_list':offerings_list, 'section':section}
+    return ajaxTable(request,template,context)

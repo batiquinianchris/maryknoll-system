@@ -1,0 +1,27 @@
+<table class="table table-bordered bg-nav table-hover">
+    <thead class="thead-light">
+        <tr>
+        <!-- Refer to database for headings -->
+        <th scope="col">Offering Code</th>
+        <th scope="col">Subject Name</th>
+        <th scope="col">Teacher Assigned</th>
+        <th scope="col">Schedule</th>
+        <th scope="col">Room</th>
+        <!--th scope="col" class="no-print">Actions</th-->
+        </tr>
+    </thead>
+    <tbody>
+        {% for offering in offering_list %}
+            <tr>
+            <td>{{offering.pk}}</td>
+            <td>{{offering.subject}}</td>
+            <td>{{offering.teacher}}</td>
+            <td>No Scheduling System</td>
+            <td>{{section.room}}</td>
+            <!--td class="no-print text-center delete-btn">
+                <button type="button" class="btn btn-danger" onclick="deleteRow(this)" >Drop</button>
+            </tr-->
+        {% endfor %}
+        
+    </tbody>
+    </table>
