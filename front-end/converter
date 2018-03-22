@@ -1,18 +1,42 @@
-def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
-    instance = get_object_or_404(Section, pk=pk)
-    return render(request, template, {'instance': instance})
-    
-def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
-    instance = get_object_or_404(Section, pk=pk)
-    data = {'form_is_valid' : False }
-    last_section = getLatest(Section,'section_ID')
-
-    forms = updateInstance(request, SectionForms, instance)
-
-    if forms.is_valid():
-        data['form_is_valid'] = True
+def getOfferingList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Section.objects.filter(
+                Q(offering_ID__contains=search)|
+                Q(subject_subject_name__icontains=search)|
+                Q(teacher_first_name__icontains==search)|
+                Q(teacher_last_name__icontains==search)|
+                Q(section_section_name__icontains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Section.objects.filter(
+                Q(offering_ID__contains=search)|
+                Q(subject_subject_name__icontains=search)|
+                Q(teacher_first_name__icontains==search)|
+                Q(teacher_last_name__icontains==search)|
+                Q(section_section_name__icontains=search)
+            )
+        elif(genre == "Offering ID"):
+            print "id"
+            query = Section.objects.filter(offering_ID__contains=search)
+        elif(genre == "Subject Description"):
+            query = Section.objects.filter(subject_subject_name__icontains=search))
+        elif(genre == "Teacher Assigned"):
+            query = Section.objects.filter( Q(teacher_first_name__icontains==search)|
+                Q(teacher_last_name__icontains==search))
+        elif(genre == "Section Assigned"):
+            query = Section.objects.filter(section_section_name__icontains=search)
+        else:
+            print "wala"
+            query = Section.objects.all() 
+            
     else:
-        data['form_is_valid'] = False
-
-    context = {'forms': forms, 'section':last_section, 'instance': instance}
-    return ajaxTable(request,template,context,data)
+        return []
+    return query

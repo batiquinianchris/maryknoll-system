@@ -2,10 +2,9 @@
   <thead class="thead-light">
     <tr>
       <!-- Refer to database for headings -->
-      <th scope="col">Last Name <i class="fa fa-sort" aria-hidden="true"></th>
+      <th scope="col">Last Name</th>
       <th scope="col">First Name</th>
       <th scope="col">Middle Name</th>
-      <th scope="col">Actions <i class="fa fa-sort" aria-hidden="true"></th>
     </tr>
   </thead>
   <tbody>
@@ -13,9 +12,9 @@
       {%for student in section_enrollee_list%}
       <td>{{student.student.last_name}}</td>
       <td>{{student.student.first_name}}</td>
-      <td>{{student.student.middle_name}}</td>
-      <td class="text-center"><a href="#" class="btn btn-success btn-sm view-button">View</a><!--Makita student profile nila-->
-      <a href="#" class="btn btn-danger btn-sm view-button">Remove</a></td>
+      <td>{{student.student.middle_name}}</td><!--
+      <td class="text-center no-print"><a href="#" class="btn btn-success btn-sm view-button">View</a><!--Makita student profile nila-->
+     <!-- <a href="#" class="btn btn-danger btn-sm view-button">Remove</a></td>-->
     </tr>
     {% empty %}
     <tr>

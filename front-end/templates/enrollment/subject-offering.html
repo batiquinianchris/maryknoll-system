@@ -56,9 +56,9 @@
               <a class="dropdown-item" href="#">Section Assigned</a>
             </div>
           </div>
-          <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+          <input type="text" class="changeIfStatus form-control search-input" placeholder="Search records..." aria-label="Search records...">
           <span class="input-group-btn">
-                <button type="button" class="btn btn-primary">Search</button>
+                <button type="button" class="btn btn-primary search">Search</button>
               </span>
         </div>
       </div>
@@ -81,22 +81,22 @@
 
 <!-- Allows dropdown menu to select child -->
 <script>
-  $(function() {
-    $(".dropdown-menu a").click(function() {
-
+  var selected = "None";
+  var search_data = "None";
+  $(function () {
+    $(".dropdown-menu a").click(function () {
       $("#selected:first-child").text($(this).text());
       $("#selected:first-child").val($(this).text());
-      if ($("#selected:first-child").val() == "Status") {
-        $(".changeIfStatus").replaceWith("<h1> test </h1>"); // must change into dropdown
+      selected = $("#selected:first-child").val();
+      if ($("#selected:first-child").val() == "All categories") {
+        generatePage(1)
       }
       else {
-
       }
-
     });
-
   });
 </script>
+
 {# ---------------------------BACKEND SCRIPTS ------------------------------- #}
 <script>
   $(function() {
@@ -109,6 +109,25 @@
       }
     });
   });
+  
+  $('.search').click(function () {
+    search_data = $('.search-input').val();
+    if (search_data == "") {
+      search_data = "None"
+    }
+    generateSearch();
+  });
+
+  function generateSearch() {
+    $.ajax({
+      url: '{% url "subjectOffering-table" school_year.id %}?search=' + search_data + "&genre=" + selected,
+      type: 'GET',
+      dataType: 'json',
+      success: function (data) {
+        $("#subjectOffering-listings").html(data.html_form);
+      }
+    });
+  }
 </script>
 
 {%endblock%}

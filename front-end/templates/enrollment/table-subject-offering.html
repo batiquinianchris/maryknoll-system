@@ -2,7 +2,6 @@
     <thead class="thead-light">
       <tr>
         <!-- Refer to database for headings -->
-        <th scope="col">Offering ID </th>
         <th scope="col">Subject Name</th>
         <th scope="col">Teacher Assigned</th>
         <th scope="col">Schedule</th>
@@ -14,7 +13,6 @@
     <tbody>
       <tr>
          {%for subjOff in subjectOffering_list%}
-        <td>{{subjOff.pk}}</td>
         <td>{{subjOff.subject}}</td>
         <td>{{subjOff.teacher}}</td>
         <td>No Scheduling System</td>
