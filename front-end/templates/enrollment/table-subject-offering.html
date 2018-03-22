@@ -6,6 +6,7 @@
         <th scope="col">Subject Name</th>
         <th scope="col">Teacher Assigned</th>
         <th scope="col">Schedule</th>
+        <th scope="col">Units</th>
         <th scope="col">Section Assigned</th>
         <th scope="col">Actions</th>
       </tr>
@@ -17,6 +18,7 @@
         <td>{{subjOff.subject}}</td>
         <td>{{subjOff.teacher}}</td>
         <td>No Scheduling System</td>
+        <td>{{subjOff.subject.units}}/3</td>
         <td>{{subjOff.section}}</td>
         <td class="text-center"><a href="{{ subjOff.get_absolute_url  }}" class="btn btn-success btn-sm view-button">View</a><a href="{% url 'subjectOffering-update' pk=subjOff.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
       </tr>

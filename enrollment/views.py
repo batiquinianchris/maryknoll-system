@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views import generic
 from django.utils import timezone
 from datetime import datetime
@@ -381,6 +381,7 @@ def scholarshipList(request):
 
 def addScholarshipProfile(request):
     return render(request, 'enrollment/scholarship-list-add.html')
+    
 def tableScholarshipList(request):
     schoolyear_list = getScholarshipList(request)
     #Pagination
@@ -435,7 +436,7 @@ def getScholarshipList(request):
             query = Scholarship.objects.filter(scholarship_type__icontains=search)
         else:
             print "wala"
-            query = Scholarship.objects.all() 
+            query = Scholarship.objects.all()
             
     else:
         return []
@@ -539,6 +540,7 @@ def createSubjectOfferingProfile(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.school_year = curr_sy
+            post.save()
             data['form_is_valid'] = True
         else:
             data['form_is_valid'] = False
@@ -564,7 +566,6 @@ def subjectOfferingDetail(request, pk='pk'):
 def updateSubjectOffering(request, pk='pk'):
     instance = get_object_or_404(Offering, pk=pk)
     return render(request, 'enrollment/subject-offering-update.html', {'instance': instance})
-
 
 def editSubjectOfferingForm(request, pk='pk'):
     instance = get_object_or_404(Offering, pk=pk)
@@ -657,3 +658,86 @@ def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-schoolyea
 
     context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
     return ajaxTable(request,template,context,data)
+
+def delete_schoolYear(request, pk='pk'):
+    instance = get_object_or_404(School_Year, pk=pk)
+    instance.delete()
+    message.success(request, "Deleted!")
+    return redirect('enrollment:schoolyear-list')
+
+#--------------------------------------SCHOOL YEAR------------------------------------------------
+
+def yearLevelList(request):
+    return render(request,'enrollment/year-level/year-level-list.html')
+
+def tableYearLevelList(request):
+    yearlevel_list = YearLevel.objects.all()
+    
+    #Pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(yearlevel_list, 10)
+    
+    try:
+        year_level = paginator.page(page)
+    except PageNotAnInteger:
+        year_level = paginator.page(1)
+    except EmptyPage:
+        year_level = paginator.page(paginator.num_pages)
+        
+    context = {'yearlevel_list': year_level}
+    html_form = render_to_string('enrollment/year-level/table-year-level-list.html',
+        context,
+        request = request,
+    )
+    return JsonResponse({'html_form' : html_form})
+
+def createYearLevel(request):
+    return render(request,'enrollment/year-level/year-level-list-add.html')
+
+def form_createYearLevel(request):
+    data = {'form_is_valid' : False }
+    last_schoolYear = getLatest(YearLevel, YearLevel._meta.pk)
+    
+    if request.method == 'POST':
+        form = YearLevelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
+    else:
+        form = YearLevelForm()
+    context = {'forms': form, 'schoolYear':last_schoolYear}
+    data['html_form'] = render_to_string('enrollment/year-level/forms-year-level-create.html',
+        context,
+        request=request,
+    )
+    return JsonResponse(data)
+    
+def editYearLevel(request, pk='pk',template = 'enrollment/year-level/year-level-list-update.html'):
+    instance = get_object_or_404(YearLevel, pk=pk)
+    return render(request, template, {'instance': instance})
+    
+def form_editYearLevel(request, pk='pk', template = 'enrollment/year-level/forms-year-level-edit.html'):
+    instance = get_object_or_404(YearLevel, pk=pk)
+    data = {'form_is_valid' : False }
+    last_year_level = getLatest(YearLevel, YearLevel._meta.pk)
+
+    forms = updateInstance(request, YearLevelForm, instance)
+
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+
+    context = {'forms': forms, 'year_level':last_year_level, 'instance': instance}
+    return ajaxTable(request,template,context,data)
+
+def delete_yearLevel(request, pk='pk'):
+    instance = get_object_or_404(YearLevel, pk=pk)
+    instance.delete()
+    message.success(request, "Deleted!")
+    return redirect('enrollment:year-level-list')
+    
+    
+

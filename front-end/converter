@@ -1,11 +1,11 @@
-def editSchoolYear(request, pk='pk',template = 'enrollment/school-year-list-edit.html'):
+def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
     instance = get_object_or_404(Section, pk=pk)
     return render(request, template, {'instance': instance})
     
-def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-school-year-edit.html'):
+def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
     instance = get_object_or_404(Section, pk=pk)
     data = {'form_is_valid' : False }
-    last_school_year = getLatest(Section, Section._meta.pk)
+    last_section = getLatest(Section,'section_ID')
 
     forms = updateInstance(request, SectionForms, instance)
 
@@ -14,9 +14,5 @@ def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-school-ye
     else:
         data['form_is_valid'] = False
 
-    context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
+    context = {'forms': forms, 'section':last_section, 'instance': instance}
     return ajaxTable(request,template,context,data)
-    
-
-url(r'^school-year-list/update/(?P<pk>\d+)$', views.editSchoolYear, name = 'school-year-edit'),
-url(r'^school-year-list/edit-form/(?P<pk>\d+)$', views.form_editSchoolYear, name = 'school-year-edit-form'),

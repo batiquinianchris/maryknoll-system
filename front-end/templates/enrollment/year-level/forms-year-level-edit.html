@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+<form action="{% url 'year-level-edit-form' instance.pk %}" method="POST" class="year-level-edit-form">
+{% csrf_token %}
+  <div class="row">
+    <div class="col">
+      <h3 class="link">Create Year Level</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Year Level Name:</label>
+      {{forms.grade_level|add_class:"form-control"|attr:"placeholder = Year Name"}}
+      {% if form.grade_level.errors %}
+        <p class="help-block">{{ form.grade_level.errors }}</p>
+      {% endif %}
+    </div>
+  </div>
+  <div class="btn-forms" style="display: flex; justify-content: flex-end">
+    
+      <a href="{% url 'year-level-list' %}" class="btn btn-link">Cancel</a>
+    <!--<button href="{% url 'year-level-list' %}" type="button" class="btn btn-link">Cancel</button>-->
+    <input type="submit" class="btn btn-primary" value="Save Curriculum Details"></input>
+    <!--Go back to records
+    <a href="#" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Year Level</a>-->
+  </div>
+</form>

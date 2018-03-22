@@ -2,43 +2,48 @@
   <form action="{% url 'scholarship-edit-form' pk=instance.pk %}" method="POST" class="heading-label js-scholarship-edit-form">
 {% csrf_token %}
     <div class="row">
-      <div class="col">
-        <h3 class="link" style="margin-top: 10px;">Scholarship Details</h3>
-          </div>
-      </div>
-        <div class="row">
-          <div class="col-md-4">
-          <label>Scholarship ID:</label>
-            <p class="form-control-static">0002</p><!--incremental-->
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <label>Scholarship Name:</label>
-            {{form.scholarship_name|add_class:"form-control"|attr:"placeholder:Enter First Name"}}
+            <div class="col">
+              <h3 class="link">Scholarship Details</h3>
+                </div>
+            </div>
+              <div class="row">
+                <div class="col-md-4">
+                <label>Scholarship ID:</label>
+                  <p class="form-control-static">{{instance.pk}}</p><!--incremental-->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label>Scholarship Name:</label>
+                  {{form.scholarship_name|add_class:"form-control"|attr:"placeholder:Name"}}
                     {% if form.scholarship_name.errors %}
                       <p class="help-block">{{ form.scholarship_name.errors }}</p>
                     {% endif %}
-          </div>
-          
-        </div>
-        <div class="row">
-          <div class="col-md-4">
-            <label>Scholarship Type:</label>
-            {{form.scholarship_type|add_class:"form-control"|attr:"placeholder:Scholarship Type"}}
+                </div>
+                <div class="col-md-6">
+                  <label>Scholarship Reductions:</label>
+                  {{form.fee_amount|add_class:"form-control"|attr:"placeholder:Amount in Peso"}}
+                    {% if form.scholarship_name.errors %}
+                      <p class="help-block">{{ form.scholarship_name.errors }}</p>
+                    {% endif %}<!--Used text to allow commas-->
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <label>Scholarship Type:</label>
+                   {{form.scholarship_type|add_class:"form-control"|attr:"placeholder:Scholarship Type"}}
                     {% if form.scholarship_type.errors %}
                       <p class="help-block">{{ form.scholarship_type.errors }}</p>
                     {% endif %}
-          </div>
-          <div class="col-md-4">
-            <label>Valid for:</label>
-            {{form.school_year|add_class:"form-control"|attr:"placeholder:Enter First Name"}}
+                </div>
+                <div class="col-md-4">
+                  <label>Valid for:</label>
+                  {{form.school_year|add_class:"form-control"|attr:"placeholder:School Year"}}
                     {% if form.school_year.errors %}
                       <p class="help-block">{{ form.school_year.errors }}</p>
                     {% endif %}
-          </div>
-        
-      </div>
+                </div>
+            </div>
     <div class="btn-forms" style="display: flex; justify-content: flex-end">
       <a href="{% url 'scholarship-list' %}" class="btn btn-link">Cancel</a>
      <input type="submit" class="btn btn-primary" value="Save Scholarship Details"></input>

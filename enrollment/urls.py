@@ -51,7 +51,7 @@ urlpatterns = [
         
         url(r'^subjectOffering-list/update/(?P<pk>\d+)$', views.updateSubjectOffering, name = 'subjectOffering-update'),
         url(r'^subjectOffering-list/edit-form/(?P<pk>\d+)$', views.editSubjectOfferingForm, name = 'subjectOffering-edit-form'),
-        
+        #-----------------------SCHOOL YEAR----------------------------------------------------
         url(r'^school-year-list$', views.schoolYearList, name = 'school-year-list'),
         url(r'^school-year-list/table$', views.tableSchoolYearList, name = 'school-year-table'),
         url(r'^school-year-list/add$', views.createSchoolYear, name = 'school-year-create'),
@@ -60,5 +60,16 @@ urlpatterns = [
         url(r'^school-year-list/update/(?P<pk>\d+)$', views.editSchoolYear, name = 'school-year-edit'),
         url(r'^school-year-list/edit-form/(?P<pk>\d+)$', views.form_editSchoolYear, name = 'school-year-edit-form'),
         
+        url(r'^school-year-list/delete/(?P<pk>\d+)$', views.delete_schoolYear, name = 'school-year-delete'),
+        #-----------------------YEAR LEVEL----------------------------------------------------
+        url(r'^year-level-list$', views.yearLevelList, name = 'year-level-list'),
+        url(r'^year-level-list/table$', views.tableYearLevelList, name = 'year-level-table'),
         
+        url(r'^year-level-list/add$', views.createYearLevel, name = 'year-level-create'),
+        url(r'^year-level-list/add-form$', views.form_createYearLevel, name = 'year-level-create-form'),
+        
+        url(r'^year-level-list/update/(?P<pk>\d+)$', views.editYearLevel, name = 'year-level-list-update'),
+        url(r'^year-level-list/edit-form/(?P<pk>\d+)$', views.form_editYearLevel, name = 'year-level-edit-form'),
+        
+        url(r'^year-level-list/delete/(?P<pk>\d+)$', views.delete_yearLevel, name = 'year-level-delete'),
     ]

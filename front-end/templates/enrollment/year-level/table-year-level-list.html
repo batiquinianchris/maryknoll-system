@@ -1,0 +1,23 @@
+<table class="table table-bordered bg-nav table-hover">
+            <thead class="thead-light">
+              <tr>
+                <!-- Refer to database for headings -->
+                <th scope="col">Year Level </th>
+                <th scope="col" class="text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {%for yl in yearlevel_list %}
+              <tr>
+                <td>{{yl.grade_level}}</td>
+                <td class="text-center">
+                  <a href="{% url 'year-level-list-update' yl.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a>
+                  <button type="button" onclick="location.href='{% url 'year-level-delete' yl.pk %}'" class="btn btn-sm btn-danger view-button">Delete</button></td>
+              </tr>
+              {% empty %}
+              <tr>
+                <td colspan="5" class="text-center">No Year Level</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>

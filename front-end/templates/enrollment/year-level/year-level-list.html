@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %}
+
+{% block content %}
+    <!-- CONTENT -->
+    <div class="container-fluid bg-content">
+      <div class="content container">
+        <div class="row records">
+          <div class="col">
+            <h2>Existing Year Levels</h2>
+          </div>
+          <div class="col">
+            <div class="flex-container no-print">
+              <div class="align-right-item">
+                <a href="{% url 'year-level-create' %}" class="add-button btn btn-primary flex-item">
+                  <i class="fa fa-plus" aria-hidden="true"></i> Create Year Level</a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row table-records table-responsive" id="year-level-listings">
+           <!-- INSERT TABLE HERE -->
+        </div>
+      </div>
+    </div>
+    <!-- CONTENT -->
+
+
+    
+<script>
+  function deleteRow(obj){
+    $(obj).closest('tr').remove();
+  }
+</script>
+{# ---------------------------BACKEND SCRIPTS------------------------------- #}
+<script>
+  $(function() {
+    generateTable();
+  });
+  
+
+  function generateTable(){
+    $.ajax({
+      url: '{% url "year-level-table" %}',
+      type: 'get',
+      dataType: 'json',
+      success: function(data) {
+        $("#year-level-listings").html(data.html_form);
+      }
+    });
+  }
+</script>
+{% endblock %}
