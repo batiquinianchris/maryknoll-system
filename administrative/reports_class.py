@@ -1,6 +1,30 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
+from django.shortcuts import render, get_object_or_404
+from django.views import generic
 
+from django.utils import timezone
+
+from datetime import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from django.db.models import Q
+
+from .models import *
+from .forms import *
+
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+
+from django.db import models
+from django.http import StreamingHttpResponse
+from django.views.generic import View
+import csv
+from cashier.models import *
+from django.http import HttpResponseRedirect
 from django.utils import timezone
 import csv
 from datetime import datetime
@@ -22,8 +46,8 @@ class Echo(object):
 # LIST OF ENROLLED STUDENTS (WITH OLD STUDENTS)
 class Enrolled_List_Report(View):
     def get(self, request, *args, **kwargs):
-        query = Enrollment.objects.filter(~Q(enrollment_status = 'd'))
-        file_name = 'Enrolled_List'+ datetime.date.today() + '.csv'
+        query = Enrollment.objects.filter(~Q(get_enrollment_status_display = 'Dropped out'))
+        file_name = 'Enrolled_List'+ str(str(datetime.date.today())) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers
@@ -71,7 +95,7 @@ class Scholars_List_Report(View):
         #Get list of students from the list of IDs collected
         scholars = Student.objects.filter(student_ID__in=list_of_ids)
         query = scholars
-        file_name = 'Scholars_List'+ datetime.date.today() + '.csv'
+        file_name = 'Scholars_List'+ str(str(datetime.date.today())) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers
@@ -106,7 +130,7 @@ class Scholars_List_Report(View):
 class cash_reports(View):
     def get(self, request, *args, **kwargs):
         query = EnrollmentORDetails.objects.all()
-        file_name = 'Cash_Reports_'+ datetime.date.today() + '.csv'
+        file_name = 'Cash_Reports_'+ str(str(datetime.date.today())) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers
@@ -142,7 +166,7 @@ class cash_reports(View):
 class Curriculum_Subject_List(View):
     def get(self, request, *args, **kwargs):
         query = Curriculum_Subject_List.objects.all()
-        file_name = 'Curriculum_Subject_List'+ datetime.date.today() + '.csv'
+        file_name = 'Curriculum_Subject_List'+ str(datetime.date.today()) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers
