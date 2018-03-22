@@ -34,7 +34,7 @@ $(function() {
         dataType: 'json',
         success: function(data) {
             if (data.form_is_valid) {
-                window.location = "{%url 'subjectOffering-list' instance.pk %}"
+                window.location = "{%url 'subjectOffering-list' school_year.pk %}"
             }
             else {
                 console.log(data.form_is_valid);

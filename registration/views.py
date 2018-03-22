@@ -326,6 +326,7 @@ def deleteScholar(request):
 
 
 def StudentScholarFormView(request, pk='pk',template = "registrar/student-registration/student-scholarship-add.html" ):
+    print pk
     regist = Enrollment.objects.get(enrollment_ID=pk)
     
     if request.method == 'POST':

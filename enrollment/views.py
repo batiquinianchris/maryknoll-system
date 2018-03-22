@@ -218,7 +218,7 @@ def sectionTable(request):
     
     #Pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(section_list, 3)
+    paginator = Paginator(section_list, 6)
     
     try:
         section = paginator.page(page)
@@ -301,7 +301,8 @@ def getSectionList(request):
                 Q(section_ID__contains=search)|
                 Q(section_name__icontains=search)|
                 Q(section_capacity__contains=search)|
-                Q(adviser__icontains=search)|
+                Q(adviser__first_name__icontains=search)|
+                Q(adviser__last_name__icontains=search)|
                 Q(room__icontains=search)
             )
         if(genre == "None" or genre == "All categories"):
@@ -320,7 +321,8 @@ def getSectionList(request):
         elif(genre == "Room"):
             query = Section.objects.filter(room__icontains=search)
         elif(genre == "Adviser"):
-            query = Section.objects.filter(adviser__icontains=search)
+            query = Section.objects.filter(Q(adviser__first_name__icontains=search)|
+                Q(adviser__last_name__icontains=search))
         else:
             print "wala"
             query = Section.objects.all() 
@@ -500,6 +502,7 @@ def subjectOfferingList(request, pk='pk'):
     school_year = School_Year.objects.get(pk=pk)
     context = {'school_year': school_year}
     return render(request, 'enrollment/subject-offering.html', context)
+    
 def newSchoolYear(request):
     school_year = School_Year.objects.latest('date_start')
     #redirect page to list
@@ -507,9 +510,10 @@ def newSchoolYear(request):
 def addSubjectOfferingProfile(request, pk):
     school_year = School_Year.objects.get(id=pk)
     return render(request, 'enrollment/subject-offering-add.html', context= {'school_year':school_year})
+    
 def tableSubjectOfferingList(request, pk):
     sy = School_Year.objects.get(id=pk)
-    subjectOffering_list = Offering.objects.filter(school_year = sy)
+    subjectOffering_list = getOfferingList(request, sy.pk)
     #Pagination
     page = request.GET.get('page', 1)
     paginator = Paginator(subjectOffering_list, 10)
@@ -565,7 +569,7 @@ def subjectOfferingDetail(request, pk='pk'):
 
 def updateSubjectOffering(request, pk='pk'):
     instance = get_object_or_404(Offering, pk=pk)
-    return render(request, 'enrollment/subject-offering-update.html', {'instance': instance})
+    return render(request, 'enrollment/subject-offering-update.html', {'instance': instance, 'school_year':instance.school_year})
 
 def editSubjectOfferingForm(request, pk='pk'):
     instance = get_object_or_404(Offering, pk=pk)
@@ -584,12 +588,56 @@ def editSubjectOfferingForm(request, pk='pk'):
             data['form_is_valid'] = False
     else:
         form = SubjectOfferingForms(instance = instance)
-    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance}
+    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance, 'school_year': instance.school_year}
     data['html_form'] = render_to_string('enrollment/forms-subject-offering-edit.html',
         context,
         request=request,
     )
     return JsonResponse(data)
+
+def getOfferingList(request, pk):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
+    except:
+        isNum = False
+    if(request.GET.get('search')!= "None"):
+        if( (genre == "None" or genre == "All Categories") and isNum):
+            query = Offering.objects.filter(
+                Q(offering_ID__contains=search)|
+                Q(subject__subject_name__icontains=search)|
+                Q(teacher__first_name__icontains==search)|
+                Q(teacher__last_name__icontains==search)|
+                Q(section__section_name__icontains=search)
+            )
+        if(genre == "None" or genre == "All categories"):
+            query = Offering.objects.filter(
+                Q(offering_ID__contains=search)|
+                Q(subject__subject_name__icontains=search)|
+                Q(teacher__first_name__icontains==search)|
+                Q(teacher__first_name__icontains==search)|
+                Q(section__section_name__icontains=search)
+            )
+        elif(genre == "Offering ID"):
+            print "id"
+            query = Offering.objects.filter(offering_ID__contains=search)
+        elif(genre == "Subject Description"):
+            query = Offering.objects.filter(subject__subject_name__icontains=search)
+        elif(genre == "Teacher Assigned"):
+            query = Offering.objects.filter( Q(teacher__first_name__icontains==search)|
+                Q(teacher__last_name__icontains==search))
+        elif(genre == "Section Assigned"):
+            query = Offering.objects.filter(section__section_name__icontains=search)
+        else:
+            print "wala"
+            query = Offering.objects.all() 
+            
+    else:
+        return []
+    return query
+
     
 #--------------------------------------SCHOOL YEAR------------------------------------------------
 
