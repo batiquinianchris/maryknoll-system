@@ -29,3 +29,35 @@
      {%endfor%}
     </tbody>
   </table>
+
+{% if subjectOffering_list.has_other_pages %}
+<nav aria-label="Page navigation" class="no-print">
+  <ul class="pagination pagination-md justify-content-center">
+    {% if subjectOffering_list.has_previous %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ subjectOffering_list.previous_page_number }})" tabindex="-1">Previous</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#" tabindex="-1">Previous</a>
+    </li>
+    {%endif%} 
+    {% for i in subjectOffering_list.paginator.page_range %} 
+      {% if subjectOffering_list.number == i %}
+        <li class="page-item active"><a class="page-link " href="#" >{{i}}<span class="sr-only">(current)</span></a></li>
+      {% else %}
+        <li class="page-item"><a class="page-link" href="javascript:generatePage({{i}})">{{i}}</a></li>
+      {% endif %} 
+    {% endfor %} 
+    {% if subjectOffering_list.has_next %}
+    <li class="page-item">
+      <a class="page-link" href="javascript:generatePage({{ subjectOffering_list.next_page_number }})">Next</a>
+    </li>
+    {%else%}
+    <li class="page-item disabled">
+      <a class="page-link" href="#">Next</a>
+    </li>
+    {%endif%}
+  </ul>
+</nav>
+{% endif %}
