@@ -62,7 +62,7 @@ class EnrollmentTransactionsMade(models.Model):
         return name
     def __str__(self):
         """Unicode representation of EnrollmentTransactionsMade."""
-        return str(self.ORnum)
+        return "%s --- %s" % (str(self.date_paid),str(self.ORnum))
 
 
 class EnrollmentORDetails(models.Model):
