@@ -46,7 +46,8 @@ class Echo(object):
 # LIST OF ENROLLED STUDENTS (WITH OLD STUDENTS)
 class Enrolled_List_Report(View):
     def get(self, request, *args, **kwargs):
-        query = Enrollment.objects.filter(~Q(get_enrollment_status_display = 'Dropped out'))
+        
+        query = Enrollment.objects.filter(~Q(get_enrollment_status_display = 'Dropped out')).filter(date_enrolled= datetime.date.today())
         file_name = 'Enrolled_List'+ str(str(datetime.date.today())) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
@@ -104,7 +105,7 @@ class Scholars_List_Report(View):
         
         scholars = Enrollment.objects.filter(enrollment_ID__in=list_of_ids)
         query = scholars
-        file_name = 'Scholars_List'+ str(str(datetime.date.today())) + '.csv'
+        file_name = 'Scholars_List_'+ str(str(datetime.date.today())) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers
@@ -187,7 +188,7 @@ class Echo(object):
 class Curriculum_Subject_List(View):
     def get(self, request, *args, **kwargs):
         query = Curriculum_Subject_List.objects.all()
-        file_name = 'Curriculum_Subject_List'+ str(datetime.date.today()) + '.csv'
+        file_name = 'Curriculum_Subject_List_'+ str(datetime.date.today()) + '.csv'
         model = query.model
         model_fields = model._meta.fields + model._meta.many_to_many
         headers = [field.name for field in model_fields] # Create CSV headers

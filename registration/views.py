@@ -348,7 +348,7 @@ def tableTransactionLogs(request,pk='pk',template="registrar/student-registratio
     registration = Enrollment.objects.get(enrollment_ID=pk)
 
     transaction_list = EnrollmentTransactionsMade.objects.filter(student=registration)
-
+    
     context = {'transaction_list_enrollment': transaction_list, 'registration':registration}
     return ajaxTable(request,template,context)
 

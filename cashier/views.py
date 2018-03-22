@@ -219,8 +219,21 @@ def summaryView(request, pk='pk',template="cashier/transactions/payment-summary.
 def table_financialRecordsView(request, pk='pk',template="cashier/table-financial-records.html"):
     registration = Enrollment.objects.get(enrollment_ID = pk)
     payment_list = fees_list = EnrollmentBreakdown.objects.filter(year_level=registration.year_level)
-    balance = getTotalGradeLevelPayment(registration.year_level)
-    context = {'balance': balance, 'payment_list': payment_list}
+    studentGradeLevelAccount = getTotalGradeLevelPayment(registration.year_level)
+    if studentGradeLevelAccount == None:
+        studentGradeLevelAccount = float(0)
+    totalPaymentOfStudent = getTotalpayment(registration)
+    if totalPaymentOfStudent == None:
+        totalPaymentOfStudent = float(0)
+    deductions = getTotalDeductions(registration)
+    total_balance = studentGradeLevelAccount
+    balance = studentGradeLevelAccount - deductions
+    context = {'student': registration.student,
+            'total_balance': total_balance,
+            'balance':balance, 
+            'amount_paid': totalPaymentOfStudent,
+            'scholarship_deductions': deductions,
+            'registration':registration, 'payment_list': payment_list}
     return ajaxTable(request,template,context)
 @csrf_exempt
 def testView(request,pk='pk', template="test.html"):

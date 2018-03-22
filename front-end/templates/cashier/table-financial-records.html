@@ -18,8 +18,14 @@
                     {%endif%}
                 {% endfor %}
             <tr>
-              <td> </td>
-              <td> </td>
+              <td>Total(Current): </td>
+              <td>₱ {{total_balance|floatformat:2|intcomma}} </td>
+              <td>Less scholarship:</td>
+              <td>₱ {{scholarship_deductions|floatformat:2|intcomma}}</td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
               <td><h3 style="color: red"> Balance: </h3></td>
               <td><h3 style="color: red"> {{balance|floatformat:2|intcomma}} </h3></td>
             </tr>
