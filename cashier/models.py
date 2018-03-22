@@ -28,7 +28,7 @@ class EnrollmentTransactionsMade(models.Model):
         'registration.Enrollment', on_delete=models.CASCADE)
     
     date_paid = models.DateField(auto_now=True)
-    ORnum = models.CharField(max_length=100,blank=True,null=True)
+    ORnum = models.CharField(max_length=250,blank=True,null=True)
     method_CHOICES = (
         ('Cash', 'Cash'),
         ('Cheque', 'Cheque'),
@@ -52,8 +52,13 @@ class EnrollmentTransactionsMade(models.Model):
         return amount['money_given__sum']
     def get_particular_name(self):
         items = EnrollmentORDetails.objects.filter(ORnumber=self)
+        name = ""
         for item in items:
-            name = name + ", " + item.particular_name
+            name += str(item.particular_name)
+            if item.month != None:
+                name += " [%s], " % (str(item.month))
+            else:
+                name += ", "
         return name
     def __str__(self):
         """Unicode representation of EnrollmentTransactionsMade."""

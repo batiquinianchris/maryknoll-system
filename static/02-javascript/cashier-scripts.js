@@ -99,25 +99,35 @@ var add = function (){
           '<div class="col-md-6">'+
             '<label class="card-subtitle">Particular:</label>'+
             '<select class="custom-select btn-block" id="particularList" required>'+
-              '<option selected>Choose particular:</option>'+
-              '<option value="TuitionFee">Tuition Fee</option>'+
+              '<option selected value="TuitionFee">Tuition Fee</option>'+
             '</select>'+
           '</div>'+
           '<div class="col-md-6">'+
-            '<div class="details">'+
-              '<label class="card-subtitle">Month:</label>'+
-              '<select class="custom-select btn-block" required>'+
-              '<option selected>Choose payment month:</option>'+
-              '<option value="January">January</option>'+
-              '<option value="February">February</option>'+
-              '<option value="March">March</option></select></div>'+
+          '<div class="details">'
+          +'<label class="card-subtitle">Month:</label>'
+          +'<select class="custom-select btn-block monthList" id="monthList" required>'
+          +'<option value="">Choose payment month:</option>'
+          +'<option value="JAN">January</option>'
+          +'<option value="FEB">Febuary</option>'
+          +'<option value="MAR">March</option>'
+          +'<option value="APR">April</option>'
+          +'<option value="MAY">May</option>'
+          +'<option value="JUN">June</option>'
+          +'<option value="JUL">July</option>'
+          +'<option value="AUG">August</option>'
+          +'<option value="SEP">September</option>'
+          +'<option value="OCT">October</option>'
+          +'<option value="NOV">November</option>'
+          +'<option value="DEC">December</option>'
+          +'</select>'+
+        '</div>'+
             '</div>'+
           '</div>'+
           '<div class="row">'+
             '<div class="col-md-6">'+
               '<div class="tuitionPayment">'+
                '<label class="card-subtitle">Amount:</label>'+
-               '<input type="text" class="form-control">'+
+               '<input onchange="updateAmountDue();" type="text" name="amountTuition" id="amountTuition" class="form-control">'+
               '</div>'+
             '</div>'+
           '</div>'+

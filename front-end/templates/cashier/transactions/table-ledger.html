@@ -14,9 +14,7 @@
         {% for transaction in transaction_list %}
         <tr>
             <td>{{transaction.date_paid}}</td>
-            <td>{% for item in items_list  %}
-              {{item.particular_name}}
-            {% endfor %}</td>
+            <td>{{transaction.get_particular_name}}</td>
             <td>{{transaction.get_payment_method_display}}</td>
             <td>₱ {{transaction.get_total_sum|floatformat:2|intcomma}}</td>
             <td> </td>

@@ -339,6 +339,7 @@
     setTimeout(function () { init(); }, 50);
   });
   //Variables
+  var total = 0.0
   var change = 0.0
   var backEndDataObject = {
     "particularType": "",
@@ -409,8 +410,11 @@
   function sendData() {
     backEndDataObject.payment_method = $('[name="paymentMethod"]').val()
     backEndDataObject.ORNumber = $('[name="ORNumber"]').val()
-    var total = 0.0
-
+    
+    if(backEndDataObject.ORNumber == ""){
+      alert("No OR Number Detected! Please try again")
+      return false
+    }
 
     jsonData = JSON.stringify(backEndDataObject)
     $.ajax({

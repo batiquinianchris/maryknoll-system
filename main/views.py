@@ -18,5 +18,6 @@ def settings(request,template = 'settings.html'):
     return render(request,template, context={'school_year':latest_sy})
 
 @login_required
-def reports(request, template="admin-reports.html"):
-    pass
+def reports(request, template="administrative/reports/admin-reports.html"):
+    context = {}
+    return render(request, template, context)

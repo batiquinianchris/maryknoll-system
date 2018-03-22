@@ -252,6 +252,7 @@ def testView(request,pk='pk', template="test.html"):
                     if data['payment_method'] != 'Others':
                         new_transaction = EnrollmentTransactionsMade.objects.create(
                             student = registration,
+                            ORnum = data['ORNumber'],
                             date_paid = datetime.date.today(),
                             payment_method = data['payment_method'],
                         )
@@ -259,7 +260,7 @@ def testView(request,pk='pk', template="test.html"):
                             ORnumber = new_transaction,
                             money_given = data['amount_due'],
                             # Details
-                            particular_name = 'ENROLLMENT',
+                            particular_name = 'Enrollment',
                             # Details
                             month = None,
                         )
@@ -269,6 +270,7 @@ def testView(request,pk='pk', template="test.html"):
                 if data['payment_method'] != 'Others':
                     new_transaction = EnrollmentTransactionsMade.objects.create(
                          student = registration,
+                         ORnum = data['ORNumber'],
                          date_paid = datetime.date.today(),
                          payment_method = data['payment_method'],
                     )
@@ -278,7 +280,7 @@ def testView(request,pk='pk', template="test.html"):
                             ORnumber = new_transaction,
                             money_given = amount,
                             # Details
-                            particular_name = 'ENROLLMENT',
+                            particular_name = 'Tuition',
                             # Details
                             month = month,
                     )

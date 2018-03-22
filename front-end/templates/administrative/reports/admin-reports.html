@@ -1,0 +1,74 @@
+{% extends 'base.html' %} {% block reports %}
+<li class="nav-item active">
+  <a class="nav-link" href="{% url 'reports' %}">Reports</a>
+  <span class="sr-only">(current)</span>
+</li>
+{% endblock %} {%block title%} Admin Reports {%endblock%} {%load static%} {% block content %}
+<div class="container-fluid bg-content">
+    <div class="content container">
+      <h2> Reports </h2>
+      <div class="menu-flex search-bar no-print">
+          <div class="sort-reports">
+              <label for="sortReport" class="nowrap">Sort:
+                  <select class="custom-select btn-block sort-reports" id="sortReport" required>
+                      <option selected>Most Recent</option>
+                      <option value="1">Most Relevant</option>
+                      <option value="2">By Department</option>
+                      <option value="3">By Type</option>
+                  </select>
+              </label>
+          </div>
+      </div>
+      <div class="row table-records table-responsive">
+          <table class="table">
+          <thead class="thead-light">
+              <tr>
+                  <!-- Refer to database for headings -->
+                  <th scope="col">Department</th>
+                  <th scope="col">Report Name</th>
+                  <th scope="col">Date Generated <i class="fa fa-sort sort-btn" aria-hidden="true"></th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Download</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td>Cashier</td>
+                  <td>Daily Cash Report</td>
+                  <td>March 3, 2018</td>
+                  <td>CSV</td>
+                  <td class="text-center"><a href="{%url 'download-cashreports' %}" class="btn btn-success btn-sm view-button">Download</a></td>
+              </tr>
+          </tbody>
+          </table>
+      </div>
+      <nav aria-label="Page navigation" class="no-print">
+          <ul class="pagination pagination-md justify-content-center">
+          <li class="page-item disabled">
+              <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+              <a class="page-link" href="#">Next</a>
+          </li>
+          </ul>
+      </nav>
+    </div>
+  </div>
+  
+  <script>
+      //Listeners
+      $('#sortReport').change(function(){
+        switch ($(this).val()){
+            case 1:
+                // Most Relevant
+            case 2:
+                // Department
+            case 3:
+                // By Type
+        }
+      });
+  </script>
+  {%endblock%}

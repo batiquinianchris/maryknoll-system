@@ -16,4 +16,8 @@ urlpatterns = [
 #Download Links
 urlpatterns += [
         url(r'^enrolled-students/$', Enrolled_List_Report.as_view(), name = 'download-enrolled'),
+        url(r'^curriculum-subject/$', Curriculum_Subject_List.as_view(), name = 'download-curriculum'),
+        url(r'^enrolled-scholars/$', Scholars_List_Report.as_view(), name = 'download-scholars'),
+        url(r'^cash-reports/$', cash_reports.as_view(), name = 'download-cashreports'),
+        url(r'^student-profiles/download$', Export_Model_To_CSV.as_view(), name = 'download-profiles'),
 ]
