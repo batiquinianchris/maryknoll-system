@@ -121,22 +121,7 @@
       {% endif %}
     </div>
   </div>
-  <h5 class="sm-headings">Sisters/Brothers enrolled in Maryknoll (Maximum: 5)</h5>
-  <div class="row" id="addSibs">
-    <div class="col-md-6">
-      <label>Sibling's Name</label>
-      <input type="text" class="form-control" placeholder="Last name, First name">
-      <!-- Dito sana ba kay autocomplete from database records -->
-    </div>
-    <div class="col-md-6">
-      <label>Year Graduated</label>
-      <input type="text" class="form-control">
-    </div>
-  </div>
-  <div class="row">
-    <button type="button" onclick="add()" class="btn btn-link">
-      <i class="fa fa-plus" aria-hidden="true"></i> Add another sibling</button>
-  </div>
+  
   <div class="row">
     <div class="col-md-6{% if form.guardian.errors %} text-danger has-error{% endif %}">
       <label>Guardian's Name</label> {{form.guardian|add_class:"form-control"}} {% if form.guardian.errors %}

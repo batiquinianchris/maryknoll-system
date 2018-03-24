@@ -42,7 +42,7 @@
                 <div class="col-sm-4">
                   <h6 class="card-subtitle mb-2 link">Student ID: <span class="text-muted">{{student.student_ID}}</span></h6>
                   <h6 class="card-subtitle link mb-2 ">Student Level:<span class="text-muted"> {{student.get_student_level_display}}</span></h6>
-                  <h6 class="card-subtitle link mb-2 ">Year Level/Section:<span class="text-muted"> {# current section #}</span></h6>
+                  <h6 class="card-subtitle link mb-2 ">Year Level/Section:<span class="text-muted">{{record.year_level}} / {{record.section}}</span></h6>
                   <h6 class="card-subtitle mb-2 link">Place of Birth: <span class=" text-muted">{{student.birthplace}}</span></h6>
                   <h6 class="card-subtitle link mb-2 ">Date of Birth: <span class="text-muted">{{student.birthdate}}</span></h6>
                 </div>
@@ -145,7 +145,7 @@
                   <div class="col-md-4">
                     <div class="btn-group float-right no-print">
                       {% if record %}
-                      <a href="{% url 'student-scholars-add' record.enrollment_ID %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
+                      <a href="{% url 'student-scholars-add' record.pk %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
                       {% else %}
                       <a href="#" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Add Scholarship</a>
                       {% endif %}

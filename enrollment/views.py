@@ -57,7 +57,7 @@ def getLatest(model, attribute):
 @login_required
 def curriculumList(request):
     '''simple error handling: if current year is == year of latest curriculum created, disable the button'''
-
+    disabled = False
     try:
         latest_curr = Curriculum.objects.latest('curriculum_year')
     

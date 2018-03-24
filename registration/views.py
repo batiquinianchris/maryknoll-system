@@ -276,22 +276,20 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/student-registrat
     else:
         form = RegistrationForms()
 
-    # !!! 3/12/2018 -- Jim -- We need to provide two more context variables: Scholarships and Sections
     context = {'form': form, 'student':current_student, 'last_record':enrollment}
 
     return ajaxTable(request,template,context,data)
 
 def editEnrollment(request, pk='pk', template = 'registrar/student-registration/student-profile-update.html'):
     registration = get_object_or_404(Enrollment, pk=pk)
-    student_ID = int(request.GET.get('student', None))
-    student = Student.objects.get(student_ID=student_ID)
+    student = registration.student
     context = {'enrollment':registration, 'student':student}
     return render(request, template, context)
     
 def form_editEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-edit.html'):
-    student_ID = request.GET.get('student', None)
-    student = Student.objects.get(student_ID=1)
+    
     instance = get_object_or_404(Enrollment, enrollment_ID=pk)
+    student = instance.student
     data = {'form_is_valid' : False }
     
 
@@ -326,7 +324,6 @@ def deleteScholar(request):
 
 
 def StudentScholarFormView(request, pk='pk',template = "registrar/student-registration/student-scholarship-add.html" ):
-    print pk
     regist = Enrollment.objects.get(enrollment_ID=pk)
     
     if request.method == 'POST':
@@ -341,7 +338,7 @@ def StudentScholarFormView(request, pk='pk',template = "registrar/student-regist
     else:
         form = StudentScholarForm()
     
-    context = {'form':form, 'student':regist.student}
+    context = {'form':form, 'student':regist.student, 'record': regist}
 
     return render(request, template, context)
 
