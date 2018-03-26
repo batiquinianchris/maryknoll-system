@@ -118,16 +118,17 @@ def verifyActive():
     student_list = Student.objects.all()
     for curr_student in student_list:
         try:
-            last_record = Enrollment.objects.get(student=curr_student.student_ID)
+            last_record = Enrollment.objects.get(student=curr_student)
         except:
             last_record = None
         try:
-            curr_schoolyear = School_Year.objects.latest('year_name')
+            curr_schoolyear = School_Year.objects.latest('id')
         except:
             curr_schoolyear = None
         if ((curr_schoolyear == None) or (last_record == None)):
             break
         elif (curr_schoolyear == last_record.school_year):
+            print curr_student.status
             curr_student.status = "a"
             curr_student.save()
 
@@ -242,6 +243,9 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
     print last_record
     return render(request, template, {'student': current_student, 'record':last_record})
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
+    verifyScholarship()
+    verifyRegistrationStatus()
+    
     student = get_object_or_404(Student, pk=pk)
     enrollment_list = Enrollment.objects.filter(student=student)
     curr_enrollment = getLatest(Enrollment,'enrollment_ID')
@@ -256,7 +260,6 @@ def addEnrollment(request, pk='pk', template='registrar/student-registration/stu
     return render(request, template, {'student': student})
 def form_addEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-create.html'):
     data = {'form_is_valid' : False }
-
     current_student = get_object_or_404(Student, pk=pk)
     enrollment = getLatest(Enrollment, 'enrollment_ID')
 
