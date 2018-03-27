@@ -4,6 +4,7 @@ administrative/forms.pyc
 administrative/models.pyc
 administrative/urls.pyc
 administrative/views.pyc
+administrative/reports_class.pyc
 
 cashier/__init__.pyc
 cashier/admin.pyc
