@@ -143,8 +143,7 @@ def getEmployeeList(request):
             query = Employee.objects.filter(emp_status=search)
         else:
             print "wala"
-            query = Employee.objects.all() 
-            
+            query = Employee.objects.all()
     else:
         return []
     return query
