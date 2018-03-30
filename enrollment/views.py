@@ -191,7 +191,7 @@ def getOfferingList(request, pk):
 
 #--------------------------------------CURRICULUM------------------------------------------------------
 @login_required
-def curriculumList(request, template = 'enrollment/curriculum-list.html'):
+def curriculumList(request, template = 'enrollment/curriculum/curriculum-list.html'):
     '''simple error handling: if current year is == year of latest curriculum created, disable the button'''
     disabled = False
     try:
@@ -204,6 +204,7 @@ def curriculumList(request, template = 'enrollment/curriculum-list.html'):
     context = {'disabled':disabled}
     return render(request, template, context)
 
+#this function initiates a new curriculum
 def addCurriculumProfile(request):
     #This simply adds a new curriculum to the database
     new_curriculum = Curriculum(curriculum_status='Active')
@@ -211,12 +212,12 @@ def addCurriculumProfile(request):
     data = {'form_is_valid' : True }
     return JsonResponse(data)
 
-def openCurriculumSubjectAdd(request, pk='pk', template = 'enrollment/curriculum-list-add.html' ):
+def openCurriculumSubjectAdd(request, pk='pk', template = 'enrollment/curriculum/curriculum-list-add.html' ):
     curriculum = Curriculum.objects.get(curriculum_ID=pk)
     context = {'curriculum':curriculum}
     return render(request, template, context)
 
-def tableCurriculumList(request, template = 'enrollment/table-curriculum-list.html'):
+def tableCurriculumList(request, template = 'enrollment/curriculum/table-curriculum-list.html'):
     curriculum_list = Curriculum.objects.all()
     curriculum = paginateThis(request,curriculum_list, 10)
         
@@ -224,7 +225,7 @@ def tableCurriculumList(request, template = 'enrollment/table-curriculum-list.ht
     
     return ajaxTable(request,template,context)
 
-def createCurriculumProfile(request, pk, template = 'enrollment/forms-curriculum-subjects-list-create.html'):
+def createCurriculumProfile(request, pk, template = 'enrollment/curriculum/forms-curriculum-subjects-list-create.html'):
     curr = Curriculum.objects.get(curriculum_ID = pk)
     data = {'form_is_valid' : False }
 
@@ -242,7 +243,7 @@ def createCurriculumProfile(request, pk, template = 'enrollment/forms-curriculum
     context = {'form': form, 'curriculum':curr}
     return ajaxTable(request,template,context,data)
     
-def curriculumDetails(request, pk='pk', template = 'enrollment/curriculum-subjects-list.html'):
+def curriculumDetails(request, pk='pk', template = 'enrollment/curriculum/curriculum-subjects-list.html'):
     curriculum = get_object_or_404(Curriculum, curriculum_ID=pk)
     try:
         last_record = Subjects.objects.filter(curriculum=curriculum).latest('enrollment_ID')
@@ -252,7 +253,7 @@ def curriculumDetails(request, pk='pk', template = 'enrollment/curriculum-subjec
     context = {'curriculum': curriculum, 'record':last_record}
     return render(request, template, context)
     
-def tableCurriculumSubjectList(request, pk='pk', template='enrollment/table-curriculum-subject-list.html'):
+def tableCurriculumSubjectList(request, pk='pk', template='enrollment/curriculum/table-curriculum-subject-list.html'):
     curriculum = get_object_or_404(Curriculum, pk=pk)
     subject_list = Subjects.objects.filter(curriculum = curriculum)
     
@@ -260,16 +261,17 @@ def tableCurriculumSubjectList(request, pk='pk', template='enrollment/table-curr
     context = {'subject_list': subjects, "curriculum": curriculum}
     return ajaxTable(request,template,context)
 
-def editSubject(request, pk='pk', template = 'enrollment/curriculum-subjects-list-update.html'):
+def editSubject(request, pk='pk', template = 'enrollment/curriculum/curriculum-subjects-list-update.html'):
     subject = get_object_or_404(Subjects, pk=pk)
     curriculum = subject.curriculum
     context = {'subject':subject, 'curriculum':curriculum}
     return render(request, template, context)
     
-def form_editSubject(request, pk='pk', template = 'enrollment/forms-curriculum-subjects-list-edit.html'):
+def form_editSubject(request, pk='pk', template = 'enrollment/curriculum/forms-curriculum-subjects-list-edit.html'):
     instance = get_object_or_404(Subjects, subject_ID=pk)
+    data = {'form_is_valid' : False }
     curriculum = instance.curriculum
-    context = {'form': form, 'curriculum':curriculum, 'instance': instance}
+    
 
     forms = updateInstance(request, SubjectForm, instance)
 
@@ -277,28 +279,28 @@ def form_editSubject(request, pk='pk', template = 'enrollment/forms-curriculum-s
         data['form_is_valid'] = True
     else:
         data['form_is_valid'] = False
-
+    context = {'form': forms, 'curriculum':curriculum, 'instance': instance}
     return ajaxTable(request,template,context,data)
     
 #--------------------------------------SECTION--------------------------------------------------------
-def sectionList(request, template = 'enrollment/section-list.html'):
+def sectionList(request, template = 'enrollment/section/section-list.html'):
     return render(request, template)
     
-def addSection(request, template = 'enrollment/section-list-add.html'):
+def addSection(request, template = 'enrollment/section/section-list-add.html'):
     return render(request, template)
     
-def sectionTable(request, template = 'enrollment/table-section-list.html'):
+def sectionTable(request, template = 'enrollment/section/table-section-list.html'):
     section_list = getSectionList(request)
     section = paginateThis(request,section_list, 6)
     context = {'section_list': section}
     return ajaxTable(request,template,context)
     
-def sectionDetails(request, pk='pk', template = 'enrollment/section-details.html'):
+def sectionDetails(request, pk='pk', template = 'enrollment/section/section-details.html'):
     section = get_object_or_404(Section, pk=pk)
     context = {'section': section}
     return render(request, template, context)
     
-def tableSectionDetail(request, pk='pk',template='enrollment/table-section-details.html'):
+def tableSectionDetail(request, pk='pk',template='enrollment/section/table-section-details.html'):
     section = get_object_or_404(Section, pk=pk)
     section_enrollee_list = Enrollment.objects.filter(section = section)
     section_page = paginateThis(request, section_enrollee_list, 50)
@@ -307,13 +309,13 @@ def tableSectionDetail(request, pk='pk',template='enrollment/table-section-detai
 
     return ajaxTable(request,template,context)
 
-def sectionDetailAdd(request, pk='pk', template = 'enrollment/section-details-add.html'):
+def sectionDetailAdd(request, pk='pk', template = 'enrollment/section/section-details-add.html'):
     section = get_object_or_404(Section, pk=pk)
     context = {'section': section}
     return render(request, template, context)
 
 
-def generateSectionForm(request,template='enrollment/forms-section-create.html'):
+def generateSectionForm(request,template='enrollment/section/forms-section-create.html'):
     data = {'form_is_valid' : False }
     last_section = getLatest(Section,'section_ID')
    
@@ -331,12 +333,12 @@ def generateSectionForm(request,template='enrollment/forms-section-create.html')
     context = {'forms': form, 'section':last_section}
     return ajaxTable(request,template,context,data)
 
-def editSection(request, pk='pk',template = 'enrollment/section-list-update.html'):
+def editSection(request, pk='pk',template = 'enrollment/section/section-list-update.html'):
     instance = get_object_or_404(Section, pk=pk)
     context = {'instance': instance}
     return render(request, template, context)
     
-def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit.html'):
+def form_editSection(request, pk='pk', template = 'enrollment/section/forms-section-edit.html'):
     instance = get_object_or_404(Section, pk=pk)
     data = {'form_is_valid' : False }
     last_section = getLatest(Section,'section_ID')
@@ -353,20 +355,20 @@ def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit
     
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
-def scholarshipList(request, template = 'enrollment/scholarship-list.html'):
+def scholarshipList(request, template = 'enrollment/scholarship/scholarship-list.html'):
     return render(request, template)
 
-def addScholarshipProfile(request, template = 'enrollment/scholarship-list-add.html'):
+def addScholarshipProfile(request, template = 'enrollment/scholarship/scholarship-list-add.html'):
     return render(request, template)
     
-def tableScholarshipList(request, template = 'enrollment/table-scholarship-list.html'):
+def tableScholarshipList(request, template = 'enrollment/scholarship/table-scholarship-list.html'):
     schoolyear_list = getScholarshipList(request)
     scholarship = paginateThis(request, schoolyear_list, 5)
         
     context = {'scholarship_list': scholarship}
-    return ajaxTable(redirect,template,context)
+    return ajaxTable(request,template,context)
 
-def createScholarshipProfile(request, template = 'enrollment/forms-scholarship-create.html'):
+def createScholarshipProfile(request, template = 'enrollment/scholarship/forms-scholarship-create.html'):
     data = {'form_is_valid' : False }
     try:
         last_scholarship = Scholarship.objects.latest('scholarship_ID')
@@ -385,13 +387,13 @@ def createScholarshipProfile(request, template = 'enrollment/forms-scholarship-c
     context = {'form': form, 'scholarship':last_scholarship}
     return ajaxTable(request,template,context,data)
     
-def updateScholarship(request, pk='pk',template = 'enrollment/scholarship-list-update.html'):
+def updateScholarship(request, pk='pk',template = 'enrollment/scholarship/scholarship-list-update.html'):
     instance = get_object_or_404(Scholarship, pk=pk)
     context = {'instance': instance}
     return render(request, template,context)
 
 
-def editScholarshipForm(request, pk='pk', template = 'enrollment/forms-scholarship-edit.html'):
+def editScholarshipForm(request, pk='pk', template = 'enrollment/scholarship/forms-scholarship-edit.html'):
     instance = get_object_or_404(Scholarship, pk=pk)
     data = {'form_is_valid' : False }
     try:
@@ -413,17 +415,17 @@ def editScholarshipForm(request, pk='pk', template = 'enrollment/forms-scholarsh
     
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 @login_required
-def subjectOfferingList(request, pk='pk', template='enrollment/subject-offering.html'):
+def subjectOfferingList(request, pk='pk', template='enrollment/subject-offering/subject-offering.html'):
     school_year = School_Year.objects.get(pk=pk)
     context = {'school_year': school_year}
     return render(request, template, context)
     
-def addSubjectOfferingProfile(request, pk, template='enrollment/subject-offering-add.html'):
+def addSubjectOfferingProfile(request, pk, template='enrollment/subject-offering/subject-offering-add.html'):
     school_year = School_Year.objects.get(id=pk)
     context= {'school_year':school_year}
     return render(request, template,context)
     
-def tableSubjectOfferingList(request, pk,template = 'enrollment/table-subject-offering.html'):
+def tableSubjectOfferingList(request, pk,template = 'enrollment/subject-offering/table-subject-offering.html'):
     sy = School_Year.objects.get(id=pk)
     subjectOffering_list = getOfferingList(request, sy.pk)
     subjectOffering = paginateThis(request,subjectOffering_list,10)
@@ -431,7 +433,7 @@ def tableSubjectOfferingList(request, pk,template = 'enrollment/table-subject-of
     context = {'subjectOffering_list': subjectOffering}
     return ajaxTable(request,template,context)
 
-def createSubjectOfferingProfile(request, pk, template = 'enrollment/forms-subject-offering-create.html'):
+def createSubjectOfferingProfile(request, pk, template = 'enrollment/subject-offering/forms-subject-offering-create.html'):
     curr_sy = School_Year.objects.get(id=pk)
     data = {'form_is_valid' : False }
     try:
@@ -452,7 +454,7 @@ def createSubjectOfferingProfile(request, pk, template = 'enrollment/forms-subje
     context = {'form': form, 'subjectOffering':last_subjectOffering, 'school_year': curr_sy}
     return ajaxTable(request,template,context,data)
     
-def subjectOfferingDetail(request, pk='pk', template = 'enrollment/subject-offering-add.html.html'):
+def subjectOfferingDetail(request, pk='pk', template = 'enrollment/subject-offering/subject-offering-add.html.html'):
     subjOffering = get_object_or_404(Student, pk=pk)
     try:
         last_record = Enrollment.objects.filter(subjOffering=subjOffering).latest('enrollment_ID')
@@ -463,12 +465,12 @@ def subjectOfferingDetail(request, pk='pk', template = 'enrollment/subject-offer
     
 
 
-def updateSubjectOffering(request, pk='pk', template='enrollment/subject-offering-update.html'):
+def updateSubjectOffering(request, pk='pk', template='enrollment/subject-offering/subject-offering-update.html'):
     instance = get_object_or_404(Offering, pk=pk)
     context = {'instance': instance, 'school_year':instance.school_year}
     return render(request, template, context)
 
-def editSubjectOfferingForm(request, pk='pk',template = 'enrollment/forms-subject-offering-edit.html'):
+def editSubjectOfferingForm(request, pk='pk',template = 'enrollment/subject-offering/forms-subject-offering-edit.html'):
     instance = get_object_or_404(Offering, pk=pk)
     data = {'form_is_valid' : False }
     last_subjectOffering = getLatest(Offering, 'subjectOffering_ID')
@@ -485,20 +487,20 @@ def editSubjectOfferingForm(request, pk='pk',template = 'enrollment/forms-subjec
     
 #--------------------------------------SCHOOL YEAR------------------------------------------------
 
-def schoolYearList(request, template='enrollment/schoolyear-list.html'):
+def schoolYearList(request, template='enrollment/school-year/schoolyear-list.html'):
     return render(request,template)
 
-def tableSchoolYearList(request,template='enrollment/table-schoolyear-list.html'):
+def tableSchoolYearList(request,template='enrollment/school-year/table-schoolyear-list.html'):
     schoolyear_list = School_Year.objects.all()
     school_year = paginateThis(request,schoolyear_list, 5)
     
     context = {'schoolyear_list': school_year}
     return ajaxTable(request,template,context)
     
-def createSchoolYear(request, template='enrollment/schoolyear-list-add.html'):
+def createSchoolYear(request, template='enrollment/school-year/schoolyear-list-add.html'):
     return render(request,template)
 
-def form_createSchoolYear(request,template='enrollment/forms-schoolyear-create.html'):
+def form_createSchoolYear(request,template='enrollment/school-year/forms-schoolyear-create.html'):
     data = {'form_is_valid' : False }
     last_schoolYear = getLatest(School_Year, School_Year._meta.pk)
     
@@ -514,12 +516,12 @@ def form_createSchoolYear(request,template='enrollment/forms-schoolyear-create.h
     context = {'forms': form, 'schoolYear':last_schoolYear}
     return ajaxTable(request,template,context,data)
 
-def editSchoolYear(request, pk='pk',template = 'enrollment/schoolyear-list-update.html'):
+def editSchoolYear(request, pk='pk',template = 'enrollment/school-year/schoolyear-list-update.html'):
     instance = get_object_or_404(School_Year, pk=pk)
     context = {'instance': instance}
     return render(request, template, context)
     
-def form_editSchoolYear(request, pk='pk', template = 'enrollment/forms-schoolyear-edit.html'):
+def form_editSchoolYear(request, pk='pk', template = 'enrollment/school-year/forms-schoolyear-edit.html'):
     instance = get_object_or_404(School_Year, pk=pk)
     data = {'form_is_valid' : False }
     last_school_year = getLatest(School_Year, School_Year._meta.pk)
@@ -540,7 +542,7 @@ def delete_schoolYear(request, pk='pk'):
     message.success(request, "Deleted!")
     return redirect('enrollment:schoolyear-list')
 
-#--------------------------------------SCHOOL YEAR------------------------------------------------
+#--------------------------------------YEAR LEVEL------------------------------------------------
 
 def yearLevelList(request,template='enrollment/year-level/year-level-list.html'):
     return render(request,template)
