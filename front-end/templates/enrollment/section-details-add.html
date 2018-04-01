@@ -19,7 +19,7 @@
 <script>
 $(function() {
   $.ajax({
-        url: '{% url "section-detail-form" section.pk %}',
+        url: '{% url "section-student-search" section.pk %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -27,10 +27,10 @@ $(function() {
         }
   });
   
-  $(".content").on("submit", ".section-detail-form", function() {
+  $(".content").on("submit", ".section-student-search", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "section-detail-form" section.pk%}',
+        url: '{% url "section-student-search" section.pk%}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',

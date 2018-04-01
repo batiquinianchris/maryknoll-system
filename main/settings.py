@@ -86,6 +86,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'main.wsgi.application'
 
 
+
+
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -146,3 +148,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 MEDIA_URL = "/media/"
+
+
+

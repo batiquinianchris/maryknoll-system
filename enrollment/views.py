@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, render_to_response
 from django.views import generic
 from django.utils import timezone
 from datetime import datetime
@@ -264,29 +264,6 @@ def sectionDetailAdd(request, pk='pk'):
     section = get_object_or_404(Section, pk=pk)
     return render(request, 'enrollment/section-details-add.html', {'section': section})
 
-class sectionDetailFormAutoComp(autocomplete.Select2QuerySetView):
-    def query_set(self):
-        data = {'form_is_valid' : True }
-        section = get_object_or_404(Section, pk=pk)
-        section_enrollee = Enrollment.objects.filter(section = section)
-        try:
-            enrollment = Enrollment.objects.latest('enrollment_ID')
-        except:
-            enrollment = None
-        
-        if self.q:
-            qs = Enrollment.objects.filter(student__name__icontains=q)
-            
-        return qs
-        
-            
-        context = {'last_record':enrollment, 'section': section}
-        data['html_form'] = render_to_string('enrollment/forms-section-detail-create.html',
-            context,
-            request=request,
-        )
-        return JsonResponse(data)
-
 def getSectionList(request):
     search = request.GET.get('search')
     genre = request.GET.get('genre')
@@ -376,6 +353,18 @@ def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit
     context = {'forms': forms, 'section':last_section, 'instance': instance}
     return ajaxTable(request,template,context,data)
     
+def sectionStudentSearch(request, pk='pk'):
+    section = get_object_or_404(Section, pk=pk)
+    
+    if request.method == "POST":
+        search_text = request.POST['search_text']
+    else:
+        search_text = ""
+        
+    student = Enrollment.objects.filter(student__student_ID__icontains=search_text)
+    context = {student: 'student', section: 'section'}
+    
+    return render_to_response('enrollment/forms-section-detail-create.html', context)
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
 def scholarshipList(request):
@@ -396,7 +385,6 @@ def tableScholarshipList(request):
         scholarship = paginator.page(1)
     except EmptyPage:
         scholarship = paginator.page(paginator.num_pages)
-        
     context = {'scholarship_list': scholarship}
     html_form = render_to_string('enrollment/table-scholarship-list.html',
         context,
