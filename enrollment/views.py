@@ -353,18 +353,25 @@ def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit
     context = {'forms': forms, 'section':last_section, 'instance': instance}
     return ajaxTable(request,template,context,data)
     
-def sectionStudentSearch(request, pk='pk'):
+def sectionStudentSearch(request, pk='pk', template = 'enrollment/forms-section-detail-create.html'):
     section = get_object_or_404(Section, pk=pk)
     
-    if request.method == "POST":
-        search_text = request.POST['search_text']
+    if request.method == "GET":
+        search = request.GET.get('search')
     else:
-        search_text = ""
-        
-    student = Enrollment.objects.filter(student__student_ID__icontains=search_text)
+        print "wala"
+        search = "None"
+    
+    data = {'form_is_valid' : True }
+    
+    if(request.GET.get('search')!= "None"):
+        student = Enrollment.objects.filter(student__student_ID__icontains=1)
+    else:
+        print "walang wala"
+        return []
     context = {student: 'student', section: 'section'}
     
-    return render_to_response('enrollment/forms-section-detail-create.html', context)
+    return ajaxTable(request,template,context,data)
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
 def scholarshipList(request):
