@@ -496,7 +496,7 @@ def editSubjectOfferingForm(request, pk='pk',template = 'enrollment/subject-offe
     else:
         data['form_is_valid'] = False
     
-    context = {'form': form, 'subjectOffering':last_subjectOffering, 'instance': instance, 'school_year': instance.school_year}
+    context = {'form': forms, 'subjectOffering':last_subjectOffering, 'instance': instance, 'school_year': instance.school_year}
     return ajaxTable(request,template,context,data)
 
     

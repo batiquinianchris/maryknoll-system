@@ -121,7 +121,7 @@ class Section(models.Model):
     class Meta:
         verbose_name = "Section"
     def __str__(self):
-        return "%s - %s" % (self.curriculum,self.section_name)
+        return "%s" % (self.section_name)
     
     def get_abosulute_url(self):
 	    return reverse('section-detail', kwargs={"id": self.section_ID})
