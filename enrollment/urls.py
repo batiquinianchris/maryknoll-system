@@ -39,6 +39,9 @@ urlpatterns = [
         
         url(r'^scholarship-list/update/(?P<pk>\d+)$', views.updateScholarship, name = 'scholarship-update'),
         url(r'^scholarship-list/edit-form/(?P<pk>\d+)$', views.editScholarshipForm, name = 'scholarship-edit-form'),
+
+        url(r'^scholars-list/(?P<pk>\d+)$', views.scholarList, name = 'scholar-list'),
+        url(r'^scholars-list/table/(?P<pk>\d+)$', views.scholarTable, name = 'table-scholar-list'),
         #-----------------------SUBJECT OFFERING----------------------------------------------------
        
         url(r'^subjectOffering-list/(?P<pk>\d+)$', views.subjectOfferingList, name = 'subjectOffering-list'),

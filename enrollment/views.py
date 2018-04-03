@@ -412,7 +412,18 @@ def editScholarshipForm(request, pk='pk', template = 'enrollment/scholarship/for
         form = ScholarshipForms(instance = instance)
     context = {'form': form, 'scholarship':last_scholarship, 'instance': instance}
     return ajaxTable(request,template,context,data)
-    
+
+def scholarList(request, pk, template='enrollment/scholarship/scholarship-details-list.html'):
+    scholarship = Scholarship.objects.get(pk=pk)
+    context = {'scholarship':scholarship}
+    return render(request,template,context) 
+
+def scholarTable(request,pk,template='enrollment/scholarship/table-scholarship-details-list.html'):
+    scholarship = Scholarship.objects.get(pk=pk)
+    context = {'scholarship':scholarship}
+    return ajaxTable(request,template,context)
+
+
 #--------------------------------------SUBJECT OFFERING------------------------------------------------
 @login_required
 def subjectOfferingList(request, pk='pk', template='enrollment/subject-offering/subject-offering.html'):
