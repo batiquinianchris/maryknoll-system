@@ -29,7 +29,7 @@ urlpatterns = [
         url(r'^section-list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
         url(r'^section-list/detail-table/(?P<pk>\d+)$', views.tableSectionDetail, name = 'section-detail-table'),
         url(r'^section-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
-        
+        url(r'^section-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailForm, name = 'section-detail-form'),
         
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),
@@ -81,7 +81,6 @@ urlpatterns += [
 
 ''' URL DUMP
 
-#url(r'^section-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailFormAutoComp.as_view(), name = 'section-detail-form'),
 #url(r'^curriculum-list/update/(?P<pk>\d+)$', views.updateCurriculum, name = 'curriculum-update'),
 #url(r'^curriculum-list/edit-form/(?P<pk>\d+)$', views.editCurriculumForm, name = 'curriculum-edit-form'),
 #url(r'^school-year/create$', views.newSchoolYear, name = 'create-schoolyear'),

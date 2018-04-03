@@ -314,6 +314,10 @@ def sectionDetailAdd(request, pk='pk', template = 'enrollment/section/section-de
     context = {'section': section}
     return render(request, template, context)
 
+def sectionDetailForm(request,pk,template='enrollment/section/forms-section-detail-create.html'):
+    section = get_object_or_404(Section, pk=pk)
+    context = {'section': section}
+    return ajaxTable(request,template,context)
 
 def generateSectionForm(request,template='enrollment/section/forms-section-create.html'):
     data = {'form_is_valid' : False }
