@@ -243,8 +243,8 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
     print last_record
     return render(request, template, {'student': current_student, 'record':last_record})
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
-    verifyScholarship()
-    verifyRegistrationStatus()
+    #verifyScholarship()
+    #verifyRegistrationStatus()
     
     student = get_object_or_404(Student, pk=pk)
     enrollment_list = Enrollment.objects.filter(student=student)
