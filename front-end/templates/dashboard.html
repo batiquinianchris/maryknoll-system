@@ -23,7 +23,11 @@
     {% include "enrollment/acad_head-dashboard.html" %}
 {% endif %} 
 -->
-
+<script>
+    $(function(){
+        $(".bg-content").attr('class', 'bg-dashboard');
+    });
+</script>
 {% endblock %}
 
 {%block footer%}
@@ -34,6 +38,7 @@
         </div>
     </div>
 </footer>
+
 {%endblock %}
 
- 
+
