@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{%block title%} Admin Settings {%endblock%}
+{%block title%} {{student.first_name}} {{student.middle_name}} {{student.last_name}} {%endblock%}
 {% block settings %}
 <li class="nav-item active">
     <a class="nav-link" href="{% url 'settings' %}">Settings

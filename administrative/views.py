@@ -148,3 +148,8 @@ def getEmployeeList(request):
         return []
     return query
     
+
+def employeeDetails(request,pk,template="administrative/employee-profile.html"):
+    employee = Employee.objects.get(pk=pk)
+    context = {'employee':employee}
+    return render(request,template,context)
