@@ -31,7 +31,6 @@ urlpatterns = [
         url(r'^section-list/(?P<pk>\d+)/$', views.sectionDetails, name = 'section-detail'),
         url(r'^section-list/detail-table/(?P<pk>\d+)$', views.tableSectionDetail, name = 'section-detail-table'),
         url(r'^section-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
-        url(r'^section-list/search/(?P<pk>\d+)$', views.sectionStudentSearch, name='section-student-search'),
         
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),

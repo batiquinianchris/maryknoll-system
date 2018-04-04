@@ -261,6 +261,7 @@ def tableSectionDetail(request, pk='pk'):
     return JsonResponse({'html_form' : html_form})
 
 def sectionDetailAdd(request, pk='pk'):
+    print "wan"
     section = get_object_or_404(Section, pk=pk)
     return render(request, 'enrollment/section-details-add.html', {'section': section})
 
@@ -355,23 +356,27 @@ def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit
     
 def sectionStudentSearch(request, pk='pk', template = 'enrollment/forms-section-detail-create.html'):
     section = get_object_or_404(Section, pk=pk)
-    
-    if request.method == "GET":
-        search = request.GET.get('search')
+    data = {'form_is_valid' : False }
+    try:
+        last_section = Section.objects.latest('section_ID')
+    except:
+        last_section = None
+    if request.method == 'POST':
+        form = RegistrationForms(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.section = self.section
+            form.save()
+            data['form_is_valid'] = True
+        else:
+            data['form_is_valid'] = False
     else:
-        print "wala"
-        search = "None"
-    
-    data = {'form_is_valid' : True }
-    
-    if(request.GET.get('search')!= "None"):
-        student = Enrollment.objects.filter(student__student_ID__icontains=1)
-    else:
-        print "walang wala"
-        return []
-    context = {student: 'student', section: 'section'}
-    
-    return ajaxTable(request,template,context,data)
+        form = RegistrationForms()
+    context = {'forms': form, 'section':last_section}
+    print(form.is_valid())
+    print(form.errors)
+    data['html_form'] = render_to_string(template, context, request=request,)
+    return JsonResponse(data)
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
 def scholarshipList(request):
