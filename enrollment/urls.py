@@ -30,6 +30,8 @@ urlpatterns = [
         url(r'^section-list/detail-table/(?P<pk>\d+)$', views.tableSectionDetail, name = 'section-detail-table'),
         url(r'^section-list/section-detail-add/(?P<pk>\d+)$', views.sectionDetailAdd, name = 'section-detail-add'),
         url(r'^section-list/section-detail-form/(?P<pk>\d+)$', views.sectionDetailForm, name = 'section-detail-form'),
+
+        url(r'^student-names/$', views.studentNames, name = 'student-names'),
         
         #-----------------------SCHOLARSHIP--------------------------------------------------------
         url(r'^scholarship-list/$', views.scholarshipList, name = 'scholarship-list'),

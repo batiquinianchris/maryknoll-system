@@ -316,7 +316,26 @@ def sectionDetailAdd(request, pk='pk', template = 'enrollment/section/section-de
 
 def sectionDetailForm(request,pk,template='enrollment/section/forms-section-detail-create.html'):
     section = get_object_or_404(Section, pk=pk)
-    context = {'section': section}
+    students = Enrollment.objects.all()
+    context = {'section': section,'student_list':students}
+    data = {}
+    data['form_is_valid'] = False
+    if request.method == 'POST':
+        student_ID = request.POST.get('student_ID')
+        student = Enrollment.objects.get(pk=student_ID)
+        student.section = section
+        student.save()
+        data['form_is_valid'] = True
+
+    return ajaxTable(request,template,context,data)
+
+def studentNames(request,template="enrollment/section/student-details.html"):
+    registration_ID = request.GET.get('student')
+    try:
+        student = Enrollment.objects.get(pk=registration_ID)
+    except:
+        student = None
+    context = {'student':student}
     return ajaxTable(request,template,context)
 
 def generateSectionForm(request,template='enrollment/section/forms-section-create.html'):

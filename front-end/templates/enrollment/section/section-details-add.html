@@ -17,6 +17,18 @@
 {# BACKEND SCRIPTS #}
 
 <script>
+
+function updateDetails(){
+    $.ajax({
+        url: '{% url "student-names" %}?student='+$(".student-input").val(),
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".student-details").html(data.html_form);
+        }
+    });
+}
+
 $(function() {
   $.ajax({
         url: '{% url "section-detail-form" section.pk %}',
@@ -26,7 +38,8 @@ $(function() {
             $(".content").html(data.html_form);
         }
   });
-  
+  //For student details
+  updateDetails()
   $(".content").on("submit", ".section-detail-form", function() {
     var form = $(this);
     $.ajax({
@@ -47,5 +60,7 @@ $(function() {
     return false;
 });
 });
+
+
 </script>
 {%endblock%}
