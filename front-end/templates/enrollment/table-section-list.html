@@ -22,6 +22,12 @@
                 </div>
               </div>
             </div>
+            {% empty %}
+        <tbody>
+        <tr>
+          <td colspan="5" class="text-center">Search not found.</td>
+        </tr>
+        </tbody>
 {%endfor%}
 </div>
 {% if section_list.has_other_pages %}

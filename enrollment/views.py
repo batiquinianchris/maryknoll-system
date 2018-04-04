@@ -273,23 +273,27 @@ def getSectionList(request):
         int(search)
     except:
         isNum = False
+    if(genre == "Category"):
+        genre = "All categories"
+    
     if(request.GET.get('search')!= "None"):
         if( (genre == "None" or genre == "All Categories") and isNum):
             query = Section.objects.filter(
-                Q(section_ID__contains=search)|
+                Q(section_ID__icontains=search)|
+                Q(room__icontains=search)|
                 Q(section_name__icontains=search)|
-                Q(section_capacity__contains=search)|
+                Q(section_capacity__icontains=search)|
                 Q(adviser__first_name__icontains=search)|
-                Q(adviser__last_name__icontains=search)|
-                Q(room__icontains=search)
+                Q(adviser__last_name__icontains=search)
             )
         if(genre == "None" or genre == "All categories"):
             query = Section.objects.filter(
                 Q(section_ID__icontains=search)|
+                Q(room__icontains=search)|
                 Q(section_name__icontains=search)|
                 Q(section_capacity__icontains=search)|
-                Q(adviser__icontains=search)|
-                Q(room__icontains=search)
+                Q(adviser__first_name__icontains=search)|
+                Q(adviser__last_name__icontains=search)
             )
         elif(genre == "Section ID"):
             print "id"
@@ -304,7 +308,10 @@ def getSectionList(request):
         else:
             print "wala"
             query = Section.objects.all() 
-            
+        print genre
+        print isNum
+    elif(request.GET.get('search') == "None"):
+        query = Section.objects.all()
     else:
         return []
     return query
@@ -393,21 +400,21 @@ def getScholarshipList(request):
     if(request.GET.get('search')!= "None"):
         if( (genre == "None" or genre == "All Categories") and isNum):
             query = Scholarship.objects.filter(
-                Q(pk__contains=search)|
+                Q(pk__icontains=search)|
                 Q(scholarship_name__icontains=search)|
-                Q(school_year__contains=search)|
+                Q(school_year__icontains=search)|
                 Q(scholarship_type__icontains=search)
             )
         if(genre == "None" or genre == "All categories"):
             query = Scholarship.objects.filter(
-                Q(pk__contains=search)|
+                Q(pk__icontains=search)|
                 Q(scholarship_name__icontains=search)|
-                Q(school_year__contains=search)|
+                Q(school_year__icontains=search)|
                 Q(scholarship_type__icontains=search)
             )
         elif(genre == "Scholarship ID"):
             print "id"
-            query = Scholarship.objects.filter(pk__contains=search)
+            query = Scholarship.objects.filter(pk__icontains=search)
         elif(genre == "Scholarship Name"):
             query = Scholarship.objects.filter(scholarship_name__icontains=search)
         elif(genre == "Validity"):
@@ -584,7 +591,7 @@ def getOfferingList(request, pk):
     if(request.GET.get('search')!= "None"):
         if( (genre == "None" or genre == "All Categories") and isNum):
             query = Offering.objects.filter(
-                Q(offering_ID__contains=search)|
+                Q(offering_ID__icontains=search)|
                 Q(subject__subject_name__icontains=search)|
                 Q(teacher__first_name__icontains==search)|
                 Q(teacher__last_name__icontains==search)|
@@ -592,7 +599,7 @@ def getOfferingList(request, pk):
             )
         if(genre == "None" or genre == "All categories"):
             query = Offering.objects.filter(
-                Q(offering_ID__contains=search)|
+                Q(offering_ID__icontains=search)|
                 Q(subject__subject_name__icontains=search)|
                 Q(teacher__first_name__icontains==search)|
                 Q(teacher__first_name__icontains==search)|
@@ -600,7 +607,7 @@ def getOfferingList(request, pk):
             )
         elif(genre == "Offering ID"):
             print "id"
-            query = Offering.objects.filter(offering_ID__contains=search)
+            query = Offering.objects.filter(offering_ID__icontains=search)
         elif(genre == "Subject Description"):
             query = Offering.objects.filter(subject__subject_name__icontains=search)
         elif(genre == "Teacher Assigned"):
