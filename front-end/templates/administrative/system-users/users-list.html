@@ -1,0 +1,67 @@
+
+{% extends 'base.html' %}
+{%block title%} System Users {%endblock%}
+{% block settings %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'settings' %}">Settings
+        <span class="sr-only">(current)</span>
+    </a>
+</li>
+{% endblock %} {%load static%} {% block content %}
+<h2> System Users </h2>
+<div class="menu-flex search-bar">
+    <div class="flex-search">
+    <div class="row">
+        <div class="col">
+        <div class="input-group">
+            <div class="input-group-btn">
+            <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+            </button>
+            <!-- Supply dropdown menu categories, refer to database -->
+            <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">All categories</a>
+                <a class="dropdown-item" href="#">User ID</a>
+                <a class="dropdown-item" href="#">Full Name</a>
+                <a class="dropdown-item" href="#">User Role</a>
+                <a class="dropdown-item" href="#">Department</a>
+                <a class="dropdown-item" href="#">Status</a>
+            </div>
+            </div>
+            <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+            <span class="input-group-btn">
+            <button type="button" class="btn btn-primary">Search</button>
+            </span>
+        </div>
+        </div>
+    </div>
+    </div>
+    <div class="flex-print">
+    <div class="btn-group float-right">
+        <a href="{%url 'users-list-add'%}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create System User</a>
+    </div>
+    </div>
+</div>
+<div class="row table-records table-responsive">
+    
+</div>
+
+
+{%endblock%}
+
+
+{% block backend_scripts %}
+    <script>
+        $(function () {
+            $.ajax({
+                url: '{% url "users-list-table" %}',
+                type: 'get',
+                dataType: 'json',
+                success: function (data) {
+                $(".table-records").html(data.html_form);
+                }
+            });
+            });
+    </script>
+{% endblock backend_scripts %}
+    
