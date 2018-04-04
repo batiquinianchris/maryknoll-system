@@ -285,15 +285,15 @@ def getSectionList(request):
             )
         if(genre == "None" or genre == "All categories"):
             query = Section.objects.filter(
-                Q(section_ID__contains=search)|
+                Q(section_ID__icontains=search)|
                 Q(section_name__icontains=search)|
-                Q(section_capacity__contains=search)|
+                Q(section_capacity__icontains=search)|
                 Q(adviser__icontains=search)|
                 Q(room__icontains=search)
             )
         elif(genre == "Section ID"):
             print "id"
-            query = Section.objects.filter(section_ID__contains=search)
+            query = Section.objects.filter(section_ID__icontains=search)
         elif(genre == "Section Name"):
             query = Section.objects.filter(section_name__icontains=search)
         elif(genre == "Room"):
@@ -354,29 +354,7 @@ def form_editSection(request, pk='pk', template = 'enrollment/forms-section-edit
     context = {'forms': forms, 'section':last_section, 'instance': instance}
     return ajaxTable(request,template,context,data)
     
-def sectionStudentSearch(request, pk='pk', template = 'enrollment/forms-section-detail-create.html'):
-    section = get_object_or_404(Section, pk=pk)
-    data = {'form_is_valid' : False }
-    try:
-        last_section = Section.objects.latest('section_ID')
-    except:
-        last_section = None
-    if request.method == 'POST':
-        form = RegistrationForms(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.section = self.section
-            form.save()
-            data['form_is_valid'] = True
-        else:
-            data['form_is_valid'] = False
-    else:
-        form = RegistrationForms()
-    context = {'forms': form, 'section':last_section}
-    print(form.is_valid())
-    print(form.errors)
-    data['html_form'] = render_to_string(template, context, request=request,)
-    return JsonResponse(data)
+
 #--------------------------------------SCHOLARSHIP----------------------------------------------------
 @login_required
 def scholarshipList(request):
