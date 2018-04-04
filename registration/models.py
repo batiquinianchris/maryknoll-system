@@ -8,7 +8,7 @@ from datetime import datetime
 ''' TAIL ENTITIES '''
 #Equivalent to student registration form (Part 1)
 ACTIVE = 'a'
-INACTIVE = 'i'
+INACTIVE = 'x'
 MALE = 'm'
 FEMALE = 'f'
 OTHERS = 'o'
@@ -107,6 +107,7 @@ class Enrollment(models.Model):
         (INCOMPLETE,'Incomplete'),
         (NO_PAY,'Pending'),
         (DROPPED, 'Dropped out'),
+        (INACTIVE, 'Inactive'),
         )
     enrollment_status = models.CharField(max_length=1,choices=TYPE_CHOICES,blank=False,default=NO_PAY)
     
