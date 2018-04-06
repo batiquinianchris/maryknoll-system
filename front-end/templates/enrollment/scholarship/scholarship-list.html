@@ -7,43 +7,50 @@
 
 {%load static%}
 {% block content %}
-    <!-- CONTENT -->
-        <h2> Scholarships </h2>
-        <div class="row search-bar">
-          <div class="col-lg-6">
-            <div class="input-group">
-              <div class="input-group-btn">
-                <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  Category
-                </button>
-                <!-- Supply dropdown menu categories, refer to database -->
-                <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">All categories</a>
-                  <a class="dropdown-item" href="#">Scholarship ID</a>
-                  <a class="dropdown-item" href="#">Scholarship Name</a>
-                  <a class="dropdown-item" href="#">Validity</a>
-                  <a class="dropdown-item" href="#">Scholarship Type</a>
-                </div>
+      <div class="seal"></div>
+      <h2> Scholarships </h2>
+      <div class="menu-flex search-bar no-print">
+        <div class="flex-search">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button id="selected" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+              </button>
+              <!-- Supply dropdown menu categories, refer to database -->
+              <div class="dropdown-menu">
+                <a class="dropdown-item" href="#">All categories</a>
+                <a class="dropdown-item" href="#">Scholarship ID</a>
+                <a class="dropdown-item" href="#">Validity</a>
+                <a class="dropdown-item" href="#">Scholarship Type</a>
               </div>
-              <input type="text" class="changeIfStatus form-control search-input" placeholder="Search records..." aria-label="Search records...">
-              <span class="input-group-btn">
-                <button type="button" class="btn btn-primary search">Search</button>
-              </span>
             </div>
+            <input type="text" class="changeIfStatus form-control" placeholder="Search records..." aria-label="Search records...">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-primary">Search</button>
+            </span>
           </div>
-          <div class="col-lg-6">
-            <div class="btn-group float-right">
-              <a href="{% url 'scholarship-add' %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create New Scholarship</a>
-            </div>
-            <a href="#" class="card-link margin float-right print"><i class="fa fa-print" aria-hidden="true"></i> Print Records</a>
-          </div>
-        </form>
-      </div>
-        <div class="row table-records table-responsive" id="scholarship-listings">
-          
         </div>
+        <div class="flex-print">
+          <a href="javascript:window.print()" class="card-link print btn btn-outline-primary"><i class="fa fa-print" aria-hidden="true"></i> Print Available Scholarships</a>
+          <a href="{%url 'scholarship-add' %}" class="add-button btn btn-primary "><i class="fa fa-plus" aria-hidden="true"></i> Create New Scholarship</a>
+        </div>
+    </div>
+      <div class="row table-records table-responsive" id="scholarship-listings">
         
-    <!-- CONTENT -->
+      </div>
+      <nav aria-label="Page navigation" class="no-print">
+        <ul class="pagination pagination-md justify-content-center">
+          <li class="page-item disabled">
+            <a class="page-link" href="#" tabindex="-1">Previous</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="#">1</a></li>
+          <li class="page-item"><a class="page-link" href="#">2</a></li>
+          <li class="page-item"><a class="page-link" href="#">3</a></li>
+          <li class="page-item">
+            <a class="page-link" href="#">Next</a>
+          </li>
+        </ul>
+      </nav>
 
     <!-- Allows dropdown menu to select child -->
 <script>

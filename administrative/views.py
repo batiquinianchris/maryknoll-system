@@ -12,6 +12,51 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import *
 from django.db.models import Q
 
+#GLOBAL FUNCTIONS
+def ajaxTable(request, template, context, data = None):
+    # For templates that needs ajax
+    html_form = render_to_string(template,
+        context,
+        request = request,
+    )
+    if data:
+        data['html_form'] = html_form
+    else:
+        data = {'html_form' : html_form}
+    return JsonResponse(data)
+def updateInstance(request, modelForm, instance):
+    if request.method == 'POST':
+        form = modelForm(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.save()
+    else:
+        form = modelForm(instance = instance)
+    return form
+def getLatest(model, attribute):
+    # Get latest record of a model, basing on a certain attribute
+    # Returns an instance
+    try:
+        latest = model.objects.latest(attribute)
+    except:
+        latest = None
+    return latest
+def paginateThis(request, obj_list, num):
+    # Pagination. Send request, the list you want to paginate, and number of items per page.
+    # This returns a limited list with pagination
+    page = request.GET.get('page', 1)
+    paginator = Paginator(obj_list, num)
+    try:
+        lists = paginator.page(page)
+    except PageNotAnInteger:
+        lists = paginator.page(1)
+    except EmptyPage:
+        lists = paginator.page(paginator.num_pages)
+    return lists
+#---------------
+
+
+
 @login_required
 def index(request):
     pass
@@ -148,3 +193,22 @@ def getEmployeeList(request):
         return []
     return query
     
+
+def employeeDetails(request,pk,template="administrative/employee-profile.html"):
+    employee = Employee.objects.get(pk=pk)
+    context = {'employee':employee}
+    return render(request,template,context)
+
+# SYSTEM USERS
+
+def usersList(request,template='administrative/system-users/users-list.html'):
+    context = {}
+    return render(request,template,context)
+
+def tableUsersList(request,template='administrative/system-users/table-users-list.html'):
+    context = {}
+    return ajaxTable(request,template,context)
+
+def addSystemUser(request,template='administrative/system-users/users-list-add.html'):
+    context={}
+    return render(request,template,context)

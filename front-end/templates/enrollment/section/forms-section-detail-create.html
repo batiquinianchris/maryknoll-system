@@ -1,0 +1,31 @@
+<form action="{% url 'section-detail-form' section.pk %}" method="POST" class="section-detail-form heading-label">
+    {% csrf_token %}
+  <div class="row">
+    <div class="col">
+      <h3 class="link" style="margin-top: 10px;"> Add Student to section</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <label>Student ID:</label>
+      <input onchange="updateDetails();"list="students" type="text" name="student_ID" class="form-control student-input" required><!-- Auto generate-->
+      <datalist id="students">
+        {% for student in student_list %}
+          <option value="{{student.pk}}"></option>
+        {% endfor %}
+      </datalist>
+    </div>
+  </div>
+  <div class="row student-details">
+    
+  </div>
+  <div class="btn-forms" style="display: flex; justify-content: flex-end">
+    <a href="{%url 'section-detail' section.pk %}" class="btn btn-link">Cancel</a>
+    <button type="submit" class="btn btn-primary "><i class="fa fa-check-circle" aria-hidden="true"></i> Save Student to Section</button>
+  </div>
+</form>
+<script>
+    $(function() {
+      alert("henlo")
+    });
+</script>

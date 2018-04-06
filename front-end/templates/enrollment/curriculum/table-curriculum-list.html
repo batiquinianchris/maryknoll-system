@@ -11,7 +11,11 @@
     {%for c in curriculum_list%}
     <tr>
       <td>{{c.curriculum_year|date:'Y'}}</td>
-      <td>{%if c.curriculum_status == 'a'%}<i class="fa fa-circle active-status"></i>{%else%} <i class="fa fa-circle inactive-status"></i>{%endif%}{{c.get_curriculum_status_display}}</td>
+      <td>{%if c.get_curriculum_status_display == 'Active'%}
+        <i class="fa fa-circle active-status"></i>
+        {%else%} 
+        <i class="fa fa-circle inactive-status"></i>
+        {%endif%}{{c.get_curriculum_status_display}}</td>
       <td class="text-center"><a href="{%url 'curriculum-detail' c.pk %}" class="btn btn-success btn-sm view-button">View</a></td>
     </tr>
     {% empty %}

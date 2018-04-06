@@ -4,6 +4,7 @@
   <span class="sr-only">(current)</span>
 </li>
 {% endblock %} {%block title%} Admin Reports {%endblock%} {%load static%} {% block content %}
+
 <div class="container-fluid bg-content">
     <div class="content container">
       <h2> Reports </h2>
@@ -35,10 +36,31 @@
               <tr>
                   <td>Cashier</td>
                   <td>Daily Cash Report</td>
-                  <td>March 3, 2018</td>
+                  <td>{% now "jS F Y" %}</td>
                   <td>CSV</td>
                   <td class="text-center"><a href="{%url 'download-cashreports' %}" class="btn btn-success btn-sm view-button">Download</a></td>
               </tr>
+              <tr>
+                    <td>Academic Head</td>
+                    <td>Enrolled Students</td>
+                    <td>{% now "jS F Y" %}</td>
+                    <td>CSV</td>
+                    <td class="text-center"><a href="{%url 'download-enrolled' %}" class="btn btn-success btn-sm view-button">Download</a></td>
+                </tr>
+            <tr>
+                <td>Acdemic Head</td>
+                <td>Curriculum Subjects</td>
+                <td>{% now "jS F Y" %}</td>
+                <td>CSV</td>
+                <td class="text-center"><a href="{%url 'download-curriculum' %}" class="btn btn-success btn-sm view-button">Download</a></td>
+            </tr>
+            <tr>
+                    <td>Registrar</td>
+                    <td>List of Students</td>
+                    <td>{% now "jS F Y" %}</td>
+                    <td>CSV</td>
+                    <td class="text-center"><a href="{%url 'download-profiles' %}" class="btn btn-success btn-sm view-button">Download</a></td>
+                </tr>
           </tbody>
           </table>
       </div>

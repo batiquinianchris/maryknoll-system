@@ -1,0 +1,63 @@
+{% extends 'base.html' %} {% block settings %}
+<li class="nav-item active-menu">
+  <a class="nav-link" href="{% url 'settings' %}" style="color: #4688F1;">Settings</a>
+</li>
+{% endblock %} {%load static%} {% block content %}
+<!-- CONTENT -->
+<a href="{%url 'section-list'%}" class="no-print"><h4><i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4></a>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="row">
+            <div class="col-md-8">
+              <div class="seal"></div>
+              <h1 class="card-title">{{section.section_name}}</h1>
+            </div>
+            <div class="col-md-4 float-right">
+              <br/><!-- bwahaha tricks-->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <h6 class="card-subtitle mb-2 link">Room: <span class="text-muted"> {{section.room}}</span></h6>
+              <h6 class="card-subtitle link mb-2 ">Adviser:<span class="text-muted"> {{section.adviser}}</span></h6>
+              <h6 class="card-subtitle mb-2 link">Total Number of Students: <span class=" text-muted">{{section.enrollment_set.all|length}}/{{section.section_capacity}}</span></h6>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row records menu-flex">
+        <div class="col-md-8 no-print">
+          <h2>Student List</h2>
+        </div>
+        <div class="flex-print no-print">
+          <a href="javascript:window.print()" class="card-link btn btn-outline-primary">
+            <i class="fa fa-print" aria-hidden="true"></i>Print Section Details</a>
+          <a href="{%url 'section-detail-add' section.pk %}" class="add-button btn btn-primary ">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+        </div>
+      </div>
+      <div class="row table-records table-responsive">
+        
+      </div>
+    </div>
+  </div>
+<!-- CONTENT -->
+
+{# backend scripts #}
+
+<script>
+$(function() {
+  $.ajax({
+        url: '{% url "section-detail-table" section.pk %}',
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".table-records").html(data.html_form);
+        }
+    });
+});
+</script>
+
+{%endblock%}

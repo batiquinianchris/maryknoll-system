@@ -1,30 +1,31 @@
 <table class="table table-bordered bg-nav table-hover">
-    <thead class="thead-light">
+  <thead class="thead-light">
+    <tr>
+      <!-- Refer to database for headings -->
+      <th scope="col">Scholarship Name <i class="fa fa-sort sort-btn" aria-hidden="true"></th>
+      <th scope="col">Scholarship Amount</th>
+      <th scope="col">Scholarship Type <i class="fa fa-sort sort-btn" aria-hidden="true"></th>
+      <th scope="col">Valid for</th>
+      <th scope="col" class="no-print">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {%for s in scholarship_list %}
+    <tr>
+      <td>{{s.scholarship_name}}</td>
+      <td>{{s.fee_amount}}</td>
+      <td>{{s.get_scholarship_type_display}}</td>
+      <td>{{s.school_year}}</td>
+      <td class="text-center no-print">
+          <a href="{% url 'scholar-list' pk=s.pk %}" class="btn btn-success btn-sm view-button">View</a>
+          <a href="{% url 'scholarship-update' pk=s.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
+    </tr>
+    {% empty %}
       <tr>
-        <!-- Refer to database for headings -->
-        <th scope="col">Scholarship Name </th>
-        <th scope="col">Scholarship Amount </th>
-        <th scope="col">Scholarship Type</th>
-        <th scope="col">Valid for</th>
-        <th scope="col">Actions</th>
+        <td colspan="5" class="text-center">No Scholarship</td>
       </tr>
-    </thead>
-    <tbody>
-     {%for s in scholarship_list %}
-      <tr>
-        <td>{{s.scholarship_name}}</td>
-        <td>{{s.fee_amount}}</td>
-        <td>{{s.get_scholarship_type_display}}</td>
-        <td>{{s.school_year}}</td>
-        <td class="text-center"><a href="{% url 'scholarship-update' pk=s.pk %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
-      </tr>
-     {% empty %}
-        <tr>
-          <td colspan="5" class="text-center">No Scholarship</td>
-        </tr>
-     {%endfor%}
-      
-    </tbody>
+    {%endfor%}
+  </tbody>
 </table>
 {% if scholarship_list.has_other_pages %}
 <nav aria-label="Page navigation" class="no-print">

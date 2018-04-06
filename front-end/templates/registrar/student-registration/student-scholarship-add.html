@@ -14,7 +14,7 @@
 {% block content %}
 <div class="container-fluid bg-content">
     <div class="content container">
-        <form action="{%url 'student-scholars-add' student.student_ID%}" method="POST" class="heading-label">
+        <form action="{%url 'student-scholars-add' record.enrollment_ID%}" method="POST" class="heading-label">
             {%csrf_token%}
             <div class="row">
                 <div class="col-md-4">

@@ -10,9 +10,21 @@
 
 
 
-<!-- ---------------------------BACKEND SCRIPTS ------------------------------->
+{# BACKEND SCRIPTS #}
 
 <script>
+
+function updateDetails(){
+    $.ajax({
+        url: '{% url "student-names" %}?student='+$(".student-input").val(),
+        type: 'get',
+        dataType: 'json',
+        success: function(data) {
+            $(".student-details").html(data.html_form);
+        }
+    });
+}
+
 $(function() {
   $.ajax({
         url: '{% url "section-student-search" section.pk %}',
@@ -22,8 +34,9 @@ $(function() {
             $(".content").html(data.html_form);
         }
   });
-  
-  $(".content").on("submit", ".section-student-search", function() {
+  //For student details
+  updateDetails()
+  $(".content").on("submit", ".section-detail-form", function() {
     var form = $(this);
     $.ajax({
         url: '{% url "section-student-search" section.pk%}',
@@ -43,5 +56,7 @@ $(function() {
     return false;
 });
 });
+
+
 </script>
 {%endblock%}

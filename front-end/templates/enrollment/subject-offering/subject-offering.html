@@ -4,8 +4,6 @@
 </li>
 {% endblock %} {%load static%} {% block content %}
 <!-- CONTENT -->
-<div class="container-fluid bg-content">
-  <div class="content">
     <div class="seal"></div>
     <div class="menu-flex margin">
       <div class="flex-item no-print">
@@ -29,14 +27,6 @@
           <a class="text-right" href="{# Link for next school year details #}">
             <h4>Initialize School Year <i class="fa fa-chevron-right" aria-hidden="true"></i></h4>
           </a>
-        {% else %}
-          {# if disabled == False #}
-            <a class="text-right" href="{% url 'create-schoolyear'%}">
-              <h4>Initialize School Year <i class="fa fa-plus" aria-hidden="true"></i></h4>
-            </a>
-          {# endif #}
-            
-          
         {% endif %}
       </div>
     </div>
@@ -73,9 +63,6 @@
       <!-- Table here-->
     </div>
   </div>
-</div>
-</div>
-
 </div>
 <!-- CONTENT -->
 

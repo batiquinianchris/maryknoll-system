@@ -14,14 +14,17 @@
       <td>{{emp.last_name}}, {{emp.first_name}}</td>
       <td>{{emp.get_emp_type_display}}</td>
       <td>{{emp.get_work_type_display}}</td>
-      <td><i class="fa fa-circle 
-                  {%if emp.emp_status == 'a'%}
-                      active-status">
-                      </i> Active</td>
-      {%else%} inactive-status">
-      </i> Inactive</td>
-      {%endif%}
+      <td>
+          {% if emp.get_emp_status_display == "On Leave" %}
+          <i class="fa fa-circle text-warning"></i> On Leave</td>
+          {% elif emp.get_emp_status_display == "Inactive" %}
+          <i class="fa fa-circle text-danger"></i> Inactive </td>
+          {% else %}
+          <i class="fa fa-circle active-status"></i> Active</td>
+          {% endif %}
+        
       <td class="no-print text-center">
+        <a href="{% url 'employee-details' pk=emp.employee_ID %}" class="btn btn-success btn-sm view-button">View</a>
         <a href="{% url 'employee-update' pk=emp.employee_ID %}" class="btn btn-secondary btn-sm view-button">Edit</a></td>
     </tr>
     {% empty %}

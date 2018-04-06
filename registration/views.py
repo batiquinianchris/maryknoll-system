@@ -118,16 +118,17 @@ def verifyActive():
     student_list = Student.objects.all()
     for curr_student in student_list:
         try:
-            last_record = Enrollment.objects.get(student=curr_student.student_ID)
+            last_record = Enrollment.objects.get(student=curr_student)
         except:
             last_record = None
         try:
-            curr_schoolyear = School_Year.objects.latest('year_name')
+            curr_schoolyear = School_Year.objects.latest('id')
         except:
             curr_schoolyear = None
         if ((curr_schoolyear == None) or (last_record == None)):
             break
         elif (curr_schoolyear == last_record.school_year):
+            print curr_student.status
             curr_student.status = "a"
             curr_student.save()
 
@@ -242,6 +243,9 @@ def studentDetails(request, pk='pk', template='registrar/student-registration/st
     print last_record
     return render(request, template, {'student': current_student, 'record':last_record})
 def table_studentDetails(request, pk='pk', template = 'registrar/student-registration/table-student-profile.html'):
+    #verifyScholarship()
+    #verifyRegistrationStatus()
+    
     student = get_object_or_404(Student, pk=pk)
     enrollment_list = Enrollment.objects.filter(student=student)
     curr_enrollment = getLatest(Enrollment,'enrollment_ID')
@@ -256,7 +260,6 @@ def addEnrollment(request, pk='pk', template='registrar/student-registration/stu
     return render(request, template, {'student': student})
 def form_addEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-create.html'):
     data = {'form_is_valid' : False }
-
     current_student = get_object_or_404(Student, pk=pk)
     enrollment = getLatest(Enrollment, 'enrollment_ID')
 
@@ -276,22 +279,20 @@ def form_addEnrollment(request, pk='pk', template = 'registrar/student-registrat
     else:
         form = RegistrationForms()
 
-    # !!! 3/12/2018 -- Jim -- We need to provide two more context variables: Scholarships and Sections
     context = {'form': form, 'student':current_student, 'last_record':enrollment}
 
     return ajaxTable(request,template,context,data)
 
 def editEnrollment(request, pk='pk', template = 'registrar/student-registration/student-profile-update.html'):
     registration = get_object_or_404(Enrollment, pk=pk)
-    student_ID = int(request.GET.get('student', None))
-    student = Student.objects.get(student_ID=student_ID)
+    student = registration.student
     context = {'enrollment':registration, 'student':student}
     return render(request, template, context)
     
 def form_editEnrollment(request, pk='pk', template = 'registrar/student-registration/forms-registration-edit.html'):
-    student_ID = request.GET.get('student', None)
-    student = Student.objects.get(student_ID=1)
+    
     instance = get_object_or_404(Enrollment, enrollment_ID=pk)
+    student = instance.student
     data = {'form_is_valid' : False }
     
 
@@ -326,7 +327,6 @@ def deleteScholar(request):
 
 
 def StudentScholarFormView(request, pk='pk',template = "registrar/student-registration/student-scholarship-add.html" ):
-    print pk
     regist = Enrollment.objects.get(enrollment_ID=pk)
     
     if request.method == 'POST':
@@ -341,7 +341,7 @@ def StudentScholarFormView(request, pk='pk',template = "registrar/student-regist
     else:
         form = StudentScholarForm()
     
-    context = {'form':form, 'student':regist.student}
+    context = {'form':form, 'student':regist.student, 'record': regist}
 
     return render(request, template, context)
 

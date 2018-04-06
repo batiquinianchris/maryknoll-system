@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{%block title%} List of Scholars {%endblock%}
+{% block settings %}
+<li class="nav-item active">
+    <a class="nav-link" href="{% url 'settings' %}">Settings
+        <span class="sr-only">(current)</span>
+    </a>
+</li>
+{% endblock %} {%load static%} {% block content %}
+<a href="{%url 'curriculum-list'%}">
+<h4 class="no-print">
+    <i class="fa fa-angle-left" aria-hidden="true"></i> Back to records list</h4>
+</a>
+<div class="card">
+<div class="card-body">
+    <div class="seal"></div>
+    <div class="row records">
+    <div class="col-md-6">
+        <h2>Scholars List</h2>
+    </div>
+    <div class="col-md-6">
+        <div class="flex-container no-print">
+        <div class="align-right-item">
+            <a href="javascript:window.print()" class="card-link  print flex-item btn btn-outline-primary">
+            <i class="fa fa-print" aria-hidden="true"></i> Print Scholars List</a>
+            <a href="#" class="add-button btn btn-primary ">
+            <i class="fa fa-plus" aria-hidden="true"></i> Add Student</a>
+        </div>
+        </div>
+    </div>
+    </div>
+    <div class="row table-records table-responsive">
+    
+    </div>
+</div>
+</div>
+
+<script>
+    $(function() {
+        $.ajax({
+                url: '{% url "table-scholar-list" scholarship.pk %}',
+                type: 'get',
+                dataType: 'json',
+                success: function(data) {
+                    $(".table-records").html(data.html_form);
+                }
+            });
+        });
+</script>
+
+{%endblock%}

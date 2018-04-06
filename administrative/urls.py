@@ -13,6 +13,17 @@ urlpatterns = [
         url(r'^employee-list/edit-form/(?P<pk>\d+)$', views.updateEmployeeForm, name = 'employee-update-form'),
     ]
 
+urlpatterns += [
+        url(r'^employee-detail/(?P<pk>\d+)$', views.employeeDetails, name = 'employee-details'),
+]
+# System Users
+
+urlpatterns += [
+        url(r'^users-list/$', views.usersList, name = 'users-list'),
+        url(r'^users-list/table$', views.tableUsersList, name = 'users-list-table'),
+        url(r'^users-list/add$', views.addSystemUser, name = 'users-list-add'),
+]
+
 #Download Links
 urlpatterns += [
         url(r'^enrolled-students/$', Enrolled_List_Report.as_view(), name = 'download-enrolled'),
