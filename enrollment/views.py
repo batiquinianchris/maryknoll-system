@@ -306,6 +306,9 @@ def tableSectionDetail(request, pk='pk',template='enrollment/section/table-secti
     section_page = paginateThis(request, section_enrollee_list, 50)
 
     context = {'section_enrollee_list': section_page}
+    
+    html_form = render_to_string(template, context, request = request,)
+    return JsonResponse({'html_form' : html_form})
 
 def sectionDetailAdd(request, pk='pk'):
     print "wan"
@@ -335,6 +338,17 @@ def studentNames(request,template="enrollment/section/student-details.html"):
     registration_ID = request.GET.get('student')
     try:
         student = Enrollment.objects.get(pk=registration_ID)
+    except:
+        student = None
+    context = {'student':student}
+    return ajaxTable(request,template,context)
+    
+def getSectionList(request):
+    search = request.GET.get('search')
+    genre = request.GET.get('genre')
+    isNum = True
+    try:
+        int(search)
     except:
         isNum = False
     if(genre == "Category"):
@@ -829,7 +843,7 @@ class sectionDetailFormAutoComp(autocomplete.Select2QuerySetView):
             context,
             request=request,
         )
-        return JsonResponse(data
+        return JsonResponse(data)
 
 
 '''

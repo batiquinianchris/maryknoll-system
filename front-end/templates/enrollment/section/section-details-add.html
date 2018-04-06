@@ -7,13 +7,16 @@
 
 {%load static%}
 {% block content %}
-
+<div class="container-fluid bg-content">
+  <div class="content">
+    
+  </div>
+</div>
 
 
 {# BACKEND SCRIPTS #}
 
 <script>
-
 function updateDetails(){
     $.ajax({
         url: '{% url "student-names" %}?student='+$(".student-input").val(),
@@ -24,10 +27,9 @@ function updateDetails(){
         }
     });
 }
-
 $(function() {
   $.ajax({
-        url: '{% url "section-student-search" section.pk %}',
+        url: '{% url "section-detail-form" section.pk %}',
         type: 'get',
         dataType: 'json',
         success: function(data) {
@@ -39,7 +41,7 @@ $(function() {
   $(".content").on("submit", ".section-detail-form", function() {
     var form = $(this);
     $.ajax({
-        url: '{% url "section-student-search" section.pk%}',
+        url: '{% url "section-detail-form" section.pk%}',
         data: form.serialize(),
         type: form.attr("method"),
         dataType: 'json',
@@ -56,7 +58,5 @@ $(function() {
     return false;
 });
 });
-
-
 </script>
 {%endblock%}
