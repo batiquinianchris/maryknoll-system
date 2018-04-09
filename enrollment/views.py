@@ -106,7 +106,8 @@ def getSectionList(request):
         else:
             print "wala"
             query = Section.objects.all() 
-            
+    elif(request.GET.get('search') == "None"):     
+        query = Section.objects.all() 
     else:
         return []
     return query
