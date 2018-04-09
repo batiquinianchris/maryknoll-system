@@ -70,23 +70,28 @@ def getSectionList(request):
         int(search)
     except:
         isNum = False
+        
+    if(genre == "Category"):
+        genre = "All categories"
+        
     if(request.GET.get('search')!= "None"):
         if( (genre == "None" or genre == "All Categories") and isNum):
             query = Section.objects.filter(
                 Q(section_ID__contains=search)|
+                Q(room__icontains=search)|
                 Q(section_name__icontains=search)|
                 Q(section_capacity__contains=search)|
                 Q(adviser__first_name__icontains=search)|
-                Q(adviser__last_name__icontains=search)|
-                Q(room__icontains=search)
+                Q(adviser__last_name__icontains=search)
             )
         if(genre == "None" or genre == "All categories"):
             query = Section.objects.filter(
                 Q(section_ID__contains=search)|
+                Q(room__icontains=search)|
                 Q(section_name__icontains=search)|
                 Q(section_capacity__contains=search)|
-                Q(adviser__icontains=search)|
-                Q(room__icontains=search)
+                Q(adviser__first_name__icontains=search)|
+                Q(adviser__last_name__icontains=search)
             )
         elif(genre == "Section ID"):
             print "id"
@@ -105,27 +110,34 @@ def getSectionList(request):
     else:
         return []
     return query
+    
 def getScholarshipList(request):
     search = request.GET.get('search')
     genre = request.GET.get('genre')
     isNum = True
     try:
-        int(search)
+        float(search)
     except:
         isNum = False
+    
+    if(genre == "Category"):
+        genre = "All categories"
+        
     if(request.GET.get('search')!= "None"):
         if( (genre == "None" or genre == "All Categories") and isNum):
             query = Scholarship.objects.filter(
                 Q(pk__contains=search)|
+                Q(fee_amount__icontains=search)|
                 Q(scholarship_name__icontains=search)|
-                Q(school_year__contains=search)|
+                Q(school_year__icontains=search)|
                 Q(scholarship_type__icontains=search)
             )
         if(genre == "None" or genre == "All categories"):
             query = Scholarship.objects.filter(
                 Q(pk__contains=search)|
+                Q(fee_amount__icontains=search)|
                 Q(scholarship_name__icontains=search)|
-                Q(school_year__contains=search)|
+                Q(school_year__icontains=search)|
                 Q(scholarship_type__icontains=search)
             )
         elif(genre == "Scholarship ID"):
@@ -152,6 +164,10 @@ def getOfferingList(request, pk):
         int(search)
     except:
         isNum = False
+    
+    if(genre == "Category"):
+        genre = "All categories"
+        
     if(request.GET.get('search')!= "None"):
         if( (genre == "None" or genre == "All Categories") and isNum):
             query = Offering.objects.filter(
@@ -310,10 +326,6 @@ def tableSectionDetail(request, pk='pk',template='enrollment/section/table-secti
     html_form = render_to_string(template, context, request = request,)
     return JsonResponse({'html_form' : html_form})
 
-def sectionDetailAdd(request, pk='pk'):
-    print "wan"
-    return ajaxTable(request,template,context)
-
 def sectionDetailAdd(request, pk='pk', template = 'enrollment/section/section-details-add.html'):
     section = get_object_or_404(Section, pk=pk)
     context = {'section': section}
@@ -342,57 +354,6 @@ def studentNames(request,template="enrollment/section/student-details.html"):
         student = None
     context = {'student':student}
     return ajaxTable(request,template,context)
-    
-def getSectionList(request):
-    search = request.GET.get('search')
-    genre = request.GET.get('genre')
-    isNum = True
-    try:
-        int(search)
-    except:
-        isNum = False
-    if(genre == "Category"):
-        genre = "All categories"
-    
-    if(request.GET.get('search')!= "None"):
-        if( (genre == "None" or genre == "All Categories") and isNum):
-            query = Section.objects.filter(
-                Q(section_ID__icontains=search)|
-                Q(room__icontains=search)|
-                Q(section_name__icontains=search)|
-                Q(section_capacity__icontains=search)|
-                Q(adviser__first_name__icontains=search)|
-                Q(adviser__last_name__icontains=search)
-            )
-        if(genre == "None" or genre == "All categories"):
-            query = Section.objects.filter(
-                Q(section_ID__icontains=search)|
-                Q(room__icontains=search)|
-                Q(section_name__icontains=search)|
-                Q(section_capacity__icontains=search)|
-                Q(adviser__first_name__icontains=search)|
-                Q(adviser__last_name__icontains=search)
-            )
-        elif(genre == "Section ID"):
-            print "id"
-            query = Section.objects.filter(section_ID__icontains=search)
-        elif(genre == "Section Name"):
-            query = Section.objects.filter(section_name__icontains=search)
-        elif(genre == "Room"):
-            query = Section.objects.filter(room__icontains=search)
-        elif(genre == "Adviser"):
-            query = Section.objects.filter(Q(adviser__first_name__icontains=search)|
-                Q(adviser__last_name__icontains=search))
-        else:
-            print "wala"
-            query = Section.objects.all() 
-        print genre
-        print isNum
-    elif(request.GET.get('search') == "None"):
-        query = Section.objects.all()
-    else:
-        return []
-    return query
     
 def generateSectionForm(request):
     student = None
@@ -460,55 +421,11 @@ def tableScholarshipList(request, template = 'enrollment/scholarship/table-schol
     except EmptyPage:
         scholarship = paginator.page(paginator.num_pages)
     context = {'scholarship_list': scholarship}
-    html_form = render_to_string('enrollment/table-scholarship-list.html',
+    html_form = render_to_string(template,
         context,
         request = request,
     )
     return JsonResponse({'html_form' : html_form})
-
-def getScholarshipList(request):
-    search = request.GET.get('search')
-    genre = request.GET.get('genre')
-    isNum = True
-    try:
-        int(search)
-    except:
-        isNum = False
-    if(request.GET.get('search')!= "None"):
-        if( (genre == "None" or genre == "All Categories") and isNum):
-            query = Scholarship.objects.filter(
-                Q(pk__icontains=search)|
-                Q(scholarship_name__icontains=search)|
-                Q(school_year__icontains=search)|
-                Q(scholarship_type__icontains=search)
-            )
-        if(genre == "None" or genre == "All categories"):
-            query = Scholarship.objects.filter(
-                Q(pk__icontains=search)|
-                Q(scholarship_name__icontains=search)|
-                Q(school_year__icontains=search)|
-                Q(scholarship_type__icontains=search)
-            )
-        elif(genre == "Scholarship ID"):
-            print "id"
-            query = Scholarship.objects.filter(pk__icontains=search)
-        elif(genre == "Scholarship Name"):
-            query = Scholarship.objects.filter(scholarship_name__icontains=search)
-        elif(genre == "Validity"):
-            query = Scholarship.objects.filter(school_year__icontains=search)
-        elif(genre == "Scholarship Type"):
-            query = Scholarship.objects.filter(scholarship_type__icontains=search)
-        else:
-            print "wala"
-            query = Scholarship.objects.all()
-            
-    else:
-        return []
-    return query
-    scholarship = paginateThis(request, schoolyear_list, 5)
-        
-    context = {'scholarship_list': scholarship}
-    return ajaxTable(request,template,context)
 
 def createScholarshipProfile(request, template = 'enrollment/scholarship/forms-scholarship-create.html'):
     data = {'form_is_valid' : False }
