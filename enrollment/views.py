@@ -8,6 +8,7 @@ from dal import autocomplete
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
+from django.contrib import messages
 # Create your views here.
 from .models import *
 from registration.models import *
@@ -41,6 +42,17 @@ def updateInstance(request, modelForm, instance):
     else:
         form = modelForm(instance = instance)
     return form
+
+def deleteInstance(request, modelForm, instance):
+    if request.method == 'POST':
+        form = modelForm(request.POST, instance = instance)
+        if form.is_valid():
+            instance = form.save()
+            instance.delete()
+    else:
+        form = modelForm(instance = instance)
+    return form
+
 def getLatest(model, attribute):
     # Get latest record of a model, basing on a certain attribute
     # Returns an instance
@@ -645,12 +657,28 @@ def form_editSchoolYear(request, pk='pk', template = 'enrollment/school-year/for
 
     context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
     return ajaxTable(request,template,context,data)
-
-def delete_schoolYear(request, pk='pk'):
+ 
+def deleteSchoolYear(request, pk='pk',template = 'enrollment/school-year/school-year-list-delete.html'):
     instance = get_object_or_404(School_Year, pk=pk)
-    instance.delete()
-    message.success(request, "Deleted!")
-    return redirect('enrollment:schoolyear-list')
+    context = {'instance': instance}
+    return render(request, template, context)
+
+def form_deleteSchoolYear(request, pk='pk', template = 'enrollment/school-year/forms-schoolyear-delete.html'):
+    instance = get_object_or_404(School_Year, pk=pk)
+    data = {'form_is_valid' : False }
+    last_school_year = getLatest(School_Year, School_Year._meta.pk)
+
+    forms = deleteInstance(request, School_YearForm, instance)
+    
+    if forms.is_valid():
+        data['form_is_valid'] = True
+    else:
+        data['form_is_valid'] = False
+    
+    
+
+    context = {'forms': forms, 'school_year':last_school_year, 'instance': instance}
+    return ajaxTable(request,template,context,data)
 
 #--------------------------------------YEAR LEVEL------------------------------------------------
 
@@ -706,7 +734,7 @@ def form_editYearLevel(request, pk='pk', template = 'enrollment/year-level/forms
 def delete_yearLevel(request, pk='pk'):
     instance = get_object_or_404(YearLevel, pk=pk)
     instance.delete()
-    message.success(request, "Deleted!")
+    messages.success(request, "Deleted!")
     return redirect('enrollment:year-level-list')
     
 def deleteSubj(request):
